@@ -227,7 +227,7 @@ console.log(chalk.green.bold(`[ ⌬ ]  Conectado a: ${userName}`))    }
       m.message = Object.keys(m.message)[0] === "ephemeralMessage" ? m.message.ephemeralMessage.message : m.message
       if (m.key && m.key.remoteJid === "status@broadcast") return
       if (!client.public && !m.key.fromMe && messages.type === "notify") return
-      if (m.key.id.startsWith("BAE5") && m.key.id.length === 16) return
+      // if (m.key.id.startsWith("BAE5") && m.key.id.length === 16) return
       m = await smsg(client, m)
       main(client, m, messages)
     } catch (err) {

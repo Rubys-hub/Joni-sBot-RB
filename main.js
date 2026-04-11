@@ -15,7 +15,10 @@ seecmds();
 export default async (client, m) => {
   const sender = m.sender;
   let body = m.message.conversation || m.message.extendedTextMessage?.text || m.message.imageMessage?.caption || m.message.videoMessage?.caption || m.message.buttonsResponseMessage?.selectedButtonId || m.message.listResponseMessage?.singleSelectReply?.selectedRowId || m.message.templateButtonReplyMessage?.selectedId || '';
-  if ((m.id.startsWith("3EB0") || (m.id.startsWith("BAE5") && m.id.length === 16) || (m.id.startsWith("B24E") && m.id.length === 20))) return
+
+  m.text = body
+
+  // if ((m.id.startsWith("3EB0") || (m.id.startsWith("BAE5") && m.id.length === 16) || (m.id.startsWith("B24E") && m.id.length === 20))) return
   initDB(m, client)
   antilink(client, m);
 
@@ -73,10 +76,10 @@ const rawBotname = settings.namebot || 'RubyJX'; // Cambiado Yuki -> RubyJX
   }
   const strRegex = (str) => str.replace(/[|\\{}()[\]^$+*?.]/g, '\\$&');
   let pluginPrefix = client.prefix ? client.prefix : prefix;
-  let matchs = pluginPrefix instanceof RegExp ? [[pluginPrefix.exec(m.text), pluginPrefix]] : Array.isArray(pluginPrefix) ? pluginPrefix.map(p => {
-    let regex = p instanceof RegExp ? p : new RegExp(strRegex(p));
-    return [regex.exec(m.text), regex];
-  }) : typeof pluginPrefix === 'string' ? [[new RegExp(strRegex(pluginPrefix)).exec(m.text), new RegExp(strRegex(pluginPrefix))]] : [[null, null]];
+let matchs = pluginPrefix instanceof RegExp ? [[pluginPrefix.exec(body), pluginPrefix]] : Array.isArray(pluginPrefix) ? pluginPrefix.map(p => {
+  let regex = p instanceof RegExp ? p : new RegExp(strRegex(p));
+  return [regex.exec(body), regex];
+}) : typeof pluginPrefix === 'string' ? [[new RegExp(strRegex(pluginPrefix)).exec(body), new RegExp(strRegex(pluginPrefix))]] : [[null, null]];
   let match = matchs.find(p => p[0]);
 
   for (const name in global.plugins) {
@@ -96,7 +99,7 @@ const rawBotname = settings.namebot || 'RubyJX'; // Cambiado Yuki -> RubyJX
 
   if (!match) return;
   let usedPrefix = (match[0] || [])[0] || '';
-  let args = m.text.slice(usedPrefix.length).trim().split(" ");
+  let args = body.slice(usedPrefix.length).trim().split(" ");
   let command = (args.shift() || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
   let text = args.join(' ');
   if (!command) return;
@@ -107,7 +110,7 @@ const rawBotname = settings.namebot || 'RubyJX'; // Cambiado Yuki -> RubyJX
     console.log(chalk.bold.cyan(`ʀᴜʙʏᴊx ʙᴏᴛ  •  ʟᴏɢ sʏsᴛᴇᴍ\n${chalk.cyan('ʙᴏᴛ')}: ${gradient('cyan', 'blue')(botJid)}\n${chalk.bold.yellow('ғᴇᴄʜᴀ')}: ${gradient('orange', 'yellow')(moment().format('DD/MM/YY HH:mm:ss'))}\n${chalk.bold.blueBright('ᴜsᴜᴀʀɪᴏ')}: ${gradient('cyan', 'blue')(pushname)}\n${chalk.bold.magentaBright('ʀᴇᴍɪᴛᴇɴᴛᴇ')}: ${gradient('deepskyblue', 'darkorchid')(sender)}\n${m.isGroup ? chalk.bold.green('ɢʀᴜᴘᴏ') + ': ' + gradient('green', 'lime')(groupName) : chalk.bold.green('ᴘʀɪᴠᴀᴅᴏ') + ': ' + gradient('pink', 'magenta')('Chat Privado')}\n${chalk.bold.magenta('ɪᴅ')}: ${gradient('violet', 'midnightblue')(m.isGroup ? from : 'Chat Privado')}\n${chalk.bold.cyanBright('ᴄᴏᴍᴀɴᴅᴏ ᴜsᴀᴅᴏ')}: ${chalk.gray(command ? command : 'No Command')}\n`));
   }
   
-  const hasPrefix = settings.prefix === true ? true : (Array.isArray(settings.prefix) ? settings.prefix : typeof settings.prefix === 'string' ? [settings.prefix] : []).some(p => m.text?.startsWith(p));
+  const hasPrefix = settings.prefix === true ? true : (Array.isArray(settings.prefix) ? settings.prefix : typeof settings.prefix === 'string' ? [settings.prefix] : []).some(p => body?.startsWith(p));
   function getAllSessionBots() {
     const sessionDirs = ['./Sessions/Subs']
     let bots = []

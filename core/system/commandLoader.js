@@ -9,6 +9,7 @@ global.comandos = new Map();
 global.plugins = {};
 const pluginCache = new Map();
 const commandsFolder = path.join(__dirname, "../../cmds");
+const menusFolder = path.join(__dirname, "../../menus");
 
 async function seeCommands(dir = commandsFolder) {
   const items = fs.readdirSync(dir);
@@ -130,4 +131,7 @@ function startWatcher() {
 }
 startWatcher();
 
-export default seeCommands;
+export default async function loadAll() {
+  await seeCommands(commandsFolder);
+  await seeCommands(menusFolder);
+};
