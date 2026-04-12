@@ -16,6 +16,9 @@ export default {
 │⚘ *DEVICE ::* ACTIVE
 │○ *STATUS ::* ONLINE
 │𓏸 *MODE ::* FULL MENU ACCESS
+│         ✦ CHANNEL :: https://whatsapp.com/channel/0029Vb7O3ugGZNCpbDTDhr3F
+│       ✦ COMMUNITY :: https://chat.whatsapp.com/KtXac3mqt1zFv3FAfDkJ23
+│  
 ╰┈ࠢ͜┅ࠦ͜͜╾݊͜─ׄ͜─ׄ֟፝͜─ׄ͜─ׄ͜╴ ⋱࣭ ᩴ ⋮֔ ᩴ ⋰╶͜─ׄ͜─ׄ֟፝͜─ׄ͜─ׄ݊͜͜╼┅ࠦ͜͜┈ࠢ͜╯
 
 ╭────────────〔 💰 ECONOMY 〕────────────╮

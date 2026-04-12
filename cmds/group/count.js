@@ -4,6 +4,7 @@ export default {
   command: ['count', 'mensajes', 'messages', 'msgcount'],
   category: 'grupo',
   run: async (client, m, args, usedPrefix, command, text) => {
+    
     const db = global.db.data
     const chatId = m.chat
     const chatData = db.chats[chatId]

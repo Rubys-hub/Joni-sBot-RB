@@ -15,7 +15,7 @@ export default {
       '5': 'sockets',
       '6': 'stickers',
       '7': 'utilities',
-      '8': 'grupo',
+      '8': 'group',
       '9': 'nsfw',
       '10': 'anime',
 
@@ -29,57 +29,40 @@ export default {
       sockets: 'sockets',
       socket: 'sockets',
       stickers: 'stickers',
-      sticker: 'stickers',
+      stickermenu: 'stickers',
       utilities: 'utilities',
       utility: 'utilities',
-      grupo: 'grupo',
-      groups: 'grupo',
-      group: 'grupo',
+      utils: 'utilities',
+      grupo: 'group',
+      groups: 'group',
+      group: 'group',
       nsfw: 'nsfw',
       anime: 'anime'
     }
 
     const selected = map[query]
 
-    if (selected === 'economia' && global.plugins?.economia?.default?.run) {
-      return global.plugins.economia.default.run(client, m, [], currentPrefix, 'economia', '')
+    const openMenu = async (pluginKey, cmdName) => {
+      const plugin =
+        global.plugins?.[pluginKey]?.default ||
+        global.plugins?.[pluginKey]
+
+      if (plugin?.run) {
+        return plugin.run(client, m, [], currentPrefix, cmdName, '')
+      }
+      return null
     }
 
-    if (selected === 'gacha' && global.plugins?.gacha?.default?.run) {
-      return global.plugins.gacha.default.run(client, m, [], currentPrefix, 'gacha', '')
-    }
-
-    if (selected === 'downloads' && global.plugins?.downloads?.default?.run) {
-      return global.plugins.downloads.default.run(client, m, [], currentPrefix, 'downloads', '')
-    }
-
-    if (selected === 'profile' && global.plugins?.profile?.default?.run) {
-      return global.plugins.profile.default.run(client, m, [], currentPrefix, 'profile', '')
-    }
-
-    if (selected === 'sockets' && global.plugins?.sockets?.default?.run) {
-      return global.plugins.sockets.default.run(client, m, [], currentPrefix, 'sockets', '')
-    }
-
-    if (selected === 'stickers' && global.plugins?.stickers?.default?.run) {
-      return global.plugins.stickers.default.run(client, m, [], currentPrefix, 'stickers', '')
-    }
-
-    if (selected === 'utilities' && global.plugins?.utilities?.default?.run) {
-      return global.plugins.utilities.default.run(client, m, [], currentPrefix, 'utilities', '')
-    }
-
-    if (selected === 'grupo' && global.plugins?.grupo?.default?.run) {
-      return global.plugins.grupo.default.run(client, m, [], currentPrefix, 'grupo', '')
-    }
-
-    if (selected === 'nsfw' && global.plugins?.nsfw?.default?.run) {
-      return global.plugins.nsfw.default.run(client, m, [], currentPrefix, 'nsfw', '')
-    }
-
-    if (selected === 'anime' && global.plugins?.anime?.default?.run) {
-      return global.plugins.anime.default.run(client, m, [], currentPrefix, 'anime', '')
-    }
+    if (selected === 'economia') return await openMenu('economia', 'economia')
+    if (selected === 'gacha') return await openMenu('gacha', 'gacha')
+    if (selected === 'downloads') return await openMenu('downloads', 'downloads')
+    if (selected === 'profile') return await openMenu('profile', 'profile')
+    if (selected === 'sockets') return await openMenu('socket', 'sockets')
+    if (selected === 'stickers') return await openMenu('sticker', 'stickers')
+    if (selected === 'utilities') return await openMenu('utilities', 'utilities')
+    if (selected === 'group') return await openMenu('group', 'group')
+    if (selected === 'nsfw') return await openMenu('nsfw', 'nsfw')
+    if (selected === 'anime') return await openMenu('anime', 'anime')
 
     const textMenu = `> 𖧧 *Hola, ${pushname}*
 > Aquí tienes el panel de *menús disponibles*
@@ -114,7 +97,7 @@ export default {
 > ${currentPrefix}menu utilities o ${currentPrefix}menu 7
 
 *8.* 👥 *GROUPS* (30)
-> ${currentPrefix}menu grupo o ${currentPrefix}menu 8
+> ${currentPrefix}menu group o ${currentPrefix}menu 8
 
 *9.* 🔞 *NSFW* (38)
 > ${currentPrefix}menu nsfw o ${currentPrefix}menu 9

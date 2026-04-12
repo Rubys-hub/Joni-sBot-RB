@@ -5,13 +5,23 @@ export default {
     'alerts', 'alertas',
     'nsfw',
     'antilink', 'antienlaces', 'antilinks',
+    'antilinksoft',
     'rpg', 'economy', 'economia',
     'gacha',
     'adminonly', 'onlyadmin'
   ],
   category: 'grupo',
-  isAdmin: true,
+  
   run: async (client, m, args, usedPrefix, command) => {
+
+    const OWNER_NUMBER = '51901931862'
+const senderNumber = m.sender.split('@')[0]
+const isOwnerBot = senderNumber === OWNER_NUMBER
+
+if (!isOwnerBot && !m.isAdmin) {
+  return m.reply('Este comando solo puede ser usado por administradores del grupo o por el owner del bot.')
+}
+
     const chatData = global.db.data.chats[m.chat]
     const botname = global.db.data.settings[client.user.id.split(':')[0] + "@s.whatsapp.net"].botname 
     const stateArg = args[0]?.toLowerCase()
@@ -20,6 +30,7 @@ export default {
       antilinks: 'antilinks',
       antienlaces: 'antilinks',
       antilink: 'antilinks',
+      antilinksoft: 'antilinksoft',
       welcome: 'welcome',
       bienvenida: 'welcome',
       goodbye: 'goodbye',
@@ -36,6 +47,7 @@ export default {
     }
     const featureNames = {
       antilinks: 'el *AntiEnlace*',
+      antilinksoft: 'el modo *AntiLink Soft*',
       welcome: 'el mensaje de *Bienvenida*',
       goodbye: 'el mensaje de *Despedida*',
       alerts: 'las *Alertas*',
@@ -46,6 +58,7 @@ export default {
     }
     const featureTitles = {
       antilinks: 'AntiEnlace',
+      antilinksoft: 'antilinksoft',
       welcome: 'Bienvenida',
       goodbye: 'Despedida',
       alerts: 'Alertas',

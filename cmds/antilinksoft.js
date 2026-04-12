@@ -1,16 +1,24 @@
-const linkRegex = /(https?:\/\/)?(chat\.whatsapp\.com\/[0-9A-Za-z]{20,24}|whatsapp\.com\/channel\/[0-9A-Za-z]{20,24})/i
+const OWNER_NUMBER = '51901931862'
 
 const allowedLinks = [
   'https://whatsapp.com/channel/0029Vb64nWqLo4hb8cuxe23n'
 ]
 
-export default async function antilink(client, m) {
+const linkRegex =
+  /(?:https?:\/\/|www\.|chat\.whatsapp\.com\/|whatsapp\.com\/channel\/|wa\.me\/|t\.me\/|discord\.gg\/)[^\s]+/i
+
+const stateRegex =
+  /estado|estados|etiqueten en sus estados|etiqueta en tus estados|suban a sus estados|sube a tu estado|comparte en tu estado|compartan en sus estados|difundan en sus estados|viral en estados/i
+
+export default async function antilinksoft(client, m) {
   try {
     const text =
       m.text ||
       m.body ||
       m.message?.conversation ||
       m.message?.extendedTextMessage?.text ||
+      m.message?.imageMessage?.caption ||
+      m.message?.videoMessage?.caption ||
       ''
 
     if (!m.isGroup || !text) return
@@ -35,7 +43,7 @@ export default async function antilink(client, m) {
     if (isSelf) return
 
     const chat = global?.db?.data?.chats?.[m.chat]
-    if (!chat?.antilinks) return
+    if (!chat?.antilinksoft) return
 
     const primaryBotId = chat?.primaryBot
     const isPrimary = !primaryBotId || primaryBotId === botId
@@ -68,8 +76,10 @@ export default async function antilink(client, m) {
     const hasAllowedLink = allowedLinks.some(link => text.includes(link))
     if (hasAllowedLink) return
 
-    const isGroupLink = linkRegex.test(text)
-    if (!isGroupLink) return
+    const hasLink = linkRegex.test(text)
+    const hasStateSpam = stateRegex.test(text)
+
+    if (!hasLink && !hasStateSpam) return
 
     try {
       await client.sendMessage(m.chat, {
@@ -82,17 +92,19 @@ export default async function antilink(client, m) {
       })
     } catch {}
 
-    const isChannelLink = /whatsapp\.com\/channel\//i.test(text)
-    const userName = global.db.data.users?.[m.sender]?.name || 'Usuario'
+    let reason = 'contenido prohibido'
+    if (hasStateSpam && hasLink) reason = 'enlaces y promoción en estados'
+    else if (hasStateSpam) reason = 'promoción o etiquetado en estados'
+    else if (/whatsapp\.com\/channel\//i.test(text)) reason = 'enlaces de canales'
+    else if (/chat\.whatsapp\.com\//i.test(text)) reason = 'enlaces de grupos'
+    else reason = 'enlaces externos'
 
     await client.reply(
       m.chat,
-      `> ⌬ Se ha eliminado a *${userName}* del grupo por \`Anti-Link\`, no permitimos enlaces de *${isChannelLink ? 'canales' : 'otros grupos'}*.`,
+      `> ⌬ Mensaje eliminado por *AntiLink Soft*.\n> Motivo: *${reason}*.`,
       null
     )
-
-    await client.groupParticipantsUpdate(m.chat, [m.sender], 'remove')
   } catch (e) {
-    console.error('[ANTILINK ERROR]', e)
+    console.error('[ANTILINKSOFT ERROR]', e)
   }
 }

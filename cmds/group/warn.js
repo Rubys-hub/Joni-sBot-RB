@@ -3,8 +3,18 @@ import { resolveLidToRealJid } from "../../core/utils.js"
 export default {
   command: ['warn'],
   category: 'group',
-  isAdmin: true,
+  
   run: async (client, m, args, usedPrefix, command) => {
+
+    const OWNER_NUMBER = '51901931862'
+const senderNumber = m.sender.split('@')[0]
+const isOwnerBot = senderNumber === OWNER_NUMBER
+
+if (!isOwnerBot && !m.isAdmin) {
+  return m.reply('Este comando solo puede ser usado por administradores del grupo o por el owner del bot.')
+}
+
+
     const chat = global.db.data.chats[m.chat]
     const mentioned = m.mentionedJid
     const who2 = mentioned.length > 0 ? mentioned[0] : m.quoted ? m.quoted.sender : false

@@ -1,6 +1,5 @@
 export default {
-  command: ['stickers', 'sticker'],
-  category: 'main',
+command: ['stickers', 'stickermenu', 'menusticker'],  category: 'main',
 
   run: async (client, m, args, usedPrefix, command, text) => {
     const currentPrefix = usedPrefix || '.'
@@ -18,7 +17,9 @@ export default {
 │        ⟣ VERSION :: ^3.0 - Latest
 │           ⌬ DEVICE :: ACTIVE
 │           ⟐ STATUS :: ONLINE
-│
+│         ✦ CHANNEL :: https://whatsapp.com/channel/0029Vb7O3ugGZNCpbDTDhr3F
+│       ✦ COMMUNITY :: https://chat.whatsapp.com/KtXac3mqt1zFv3FAfDkJ23
+│  
 ╰┈ࠢ͜┅ࠦ͜͜╾݊͜─ׄ͜─ׄ֟፝͜─ׄ͜─ׄ͜╴ ⋱࣭ ᩴ ⋮֔ ᩴ ⋰ ╶͜─ׄ͜─ׄ֟፝͜─ׄ͜─ׄ݊͜͜╼┅ࠦ͜͜┈ࠢ͜╯
 
 ╭────────────〔 🎨 STICKER SYSTEM 〕────────────╮

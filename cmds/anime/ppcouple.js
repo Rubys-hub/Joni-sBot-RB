@@ -9,9 +9,15 @@ export default {
       let data = await (await fetch('https://raw.githubusercontent.com/ShirokamiRyzen/WAbot-DB/main/fitur_db/ppcp.json')).json()
       let cita = data[Math.floor(Math.random() * data.length)]
       let cowi = Buffer.from(await (await fetch(cita.cowo)).arrayBuffer())
-      await client.sendFile(m.chat, cowi, '', '*Masculino* ♂', m)
+      await client.sendMessage(m.chat, {
+  image: cowi,
+  caption: '*Masculino* ♂'
+}, { quoted: m })
       let ciwi = Buffer.from(await (await fetch(cita.cewe)).arrayBuffer())
-      await client.sendFile(m.chat, ciwi, '', '*Femenina* ♀', m)
+      await client.sendMessage(m.chat, {
+  image: ciwi,
+  caption: '*Femenina* ♀'
+}, { quoted: m })
       await m.react('✔️')
     } catch (e) {
       await m.react('✖️')

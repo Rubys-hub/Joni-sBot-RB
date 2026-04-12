@@ -12,7 +12,10 @@ export default {
       let json = await res.json()
       if (!json.url) return
       let img = Buffer.from(await (await fetch(json.url)).arrayBuffer())
-      await client.sendFile(m.chat, img, 'thumbnail.jpg', `⌬ Aquí tienes tu *${command.toUpperCase()}* ฅ^•ﻌ•^ฅ`, m)
+      await client.sendMessage(m.chat, {
+  image: img,
+  caption: `⌬ Aquí tienes tu *${command.toUpperCase()}* >:3`
+}, { quoted: m })
       await m.react('✔️')
     } catch (e) {
       await m.react('✖️')

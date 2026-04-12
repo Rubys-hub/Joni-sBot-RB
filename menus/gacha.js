@@ -18,7 +18,9 @@ export default {
 │        ⟣ VERSION :: ^3.0 - Latest
 │           ⌬ DEVICE :: ACTIVE
 │           ⟐ STATUS :: ONLINE
-│
+│         ✦ CHANNEL :: https://whatsapp.com/channel/0029Vb7O3ugGZNCpbDTDhr3F
+│       ✦ COMMUNITY :: https://chat.whatsapp.com/KtXac3mqt1zFv3FAfDkJ23
+│  
 ╰┈ࠢ͜┅ࠦ͜͜╾݊͜─ׄ͜─ׄ֟፝͜─ׄ͜─ׄ͜╴ ⋱࣭ ᩴ ⋮֔ ᩴ ⋰ ╶͜─ׄ͜─ׄ֟፝͜─ׄ͜─ׄ݊͜͜╼┅ࠦ͜͜┈ࠢ͜╯
 
 ╭────────────〔 🎴 GACHA SYSTEM 〕────────────╮
