@@ -8,6 +8,7 @@ import seecmds from './core/system/commandLoader.js';
 import initDB from './core/system/initDB.js';
 import antilink from './cmds/antilink.js';
 import level from './cmds/level.js';
+import automod from './cmds/automod.js';
 import { getGroupAdmins } from './core/message.js';
 
 seecmds();
@@ -21,6 +22,7 @@ export default async (client, m) => {
   // if ((m.id.startsWith("3EB0") || (m.id.startsWith("BAE5") && m.id.length === 16) || (m.id.startsWith("B24E") && m.id.length === 20))) return
   initDB(m, client)
   antilink(client, m);
+  await automod(client, m);
 
   const from = m.key.remoteJid;
   const botJid = client.user.id.split(':')[0] + '@s.whatsapp.net' || client.user.lid;

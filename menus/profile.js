@@ -1,5 +1,5 @@
 export default {
-  command: ['profile', 'perfil'],
+  command: ['menu profile', 'menuperfil'],
   category: 'main',
 
   run: async (client, m, args, usedPrefix, command, text) => {
