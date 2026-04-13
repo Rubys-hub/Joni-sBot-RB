@@ -1,6 +1,7 @@
 export default {
   command: ['anonmsg', 'anonimo', 'anon'],
   category: 'tools',
+
   run: async (client, m, args) => {
     try {
       if (m.isGroup) {
@@ -8,7 +9,7 @@ export default {
           'Usa este comando por privado con el bot.\n\n' +
           'Ejemplos:\n' +
           'anon 1 | hola grupo\n' +
-          'anon 1  (respondiendo a un sticker)'
+          'anon 1  (respondiendo a un sticker, imagen o video)'
         )
       }
 
@@ -35,7 +36,10 @@ export default {
       const text = args.join(' ').trim()
       const quoted = m.quoted || null
       const quotedMime = (quoted?.msg || quoted)?.mimetype || ''
+
       const isStickerQuoted = /webp/i.test(quotedMime)
+      const isImageQuoted = /image/i.test(quotedMime)
+      const isVideoQuoted = /video/i.test(quotedMime)
 
       const groupChats = Object.keys(global.db.data.chats).filter(jid => jid.endsWith('@g.us'))
       const sharedGroups = []
@@ -100,7 +104,7 @@ export default {
         return m.reply('No encontré grupos compartidos entre tú y el bot.')
       }
 
-      if (!text && !isStickerQuoted) {
+      if (!text && !isStickerQuoted && !isImageQuoted && !isVideoQuoted) {
         let msg = '📩 *Sistema de mensajes anónimos*\n\n'
         msg += 'Estos son los grupos compartidos entre tú y el bot:\n\n'
 
@@ -115,13 +119,15 @@ export default {
         msg += '1. Debes elegir el número del grupo de la lista.\n'
         msg += '2. Para texto usa este formato exacto:\n\n'
         msg += '   anon NUMERO | tu mensaje\n\n'
-        msg += '3. Para sticker, responde al sticker y usa:\n\n'
+        msg += '3. Para sticker, imagen o video, responde al contenido y usa:\n\n'
         msg += '   anon NUMERO\n\n'
         msg += '4. La barrita `|` es obligatoria solo para mensajes de texto.\n'
         msg += '5. Todo lo que escribas después de la barrita será enviado de forma anónima al grupo.\n\n'
         msg += 'Ejemplos:\n'
         msg += '   anon 2 | hola grupo\n'
-        msg += '   anon 2   (respondiendo a un sticker)\n\n'
+        msg += '   anon 2   (respondiendo a un sticker)\n'
+        msg += '   anon 2   (respondiendo a una imagen)\n'
+        msg += '   anon 2   (respondiendo a un video)\n\n'
         msg += '⚠️ *Importante:*\n'
         msg += '- No se permiten enlaces en mensajes de texto.\n'
         msg += '- Máximo 300 caracteres para texto.\n'
@@ -149,7 +155,7 @@ export default {
         })
         msg += 'Para enviar texto usa:\n'
         msg += 'anon NUMERO | tu mensaje\n\n'
-        msg += 'Para enviar sticker responde a un sticker y usa:\n'
+        msg += 'Para enviar sticker, imagen o video responde al contenido y usa:\n'
         msg += 'anon NUMERO\n\n'
         msg += 'Si quieres plantilla, escribe:\n'
         msg += 'anon si'
@@ -202,25 +208,31 @@ export default {
       let target = null
       let mensaje = null
       let sendSticker = false
+      let sendImage = false
+      let sendVideo = false
 
-      if (isStickerQuoted) {
-        const matchSticker = text.match(/^(\d+)$/)
-        if (!matchSticker) {
+      if (isStickerQuoted || isImageQuoted || isVideoQuoted) {
+        const match = text.match(/^(\d+)$/)
+
+        if (!match) {
           return m.reply(
-            'Para enviar un sticker anónimo debes responder al sticker y escribir:\n\n' +
+            'Para enviar contenido anónimo debes responder al sticker, imagen o video y escribir:\n\n' +
             'anon NUMERO\n\n' +
             'Ejemplo:\n' +
             'anon 1'
           )
         }
 
-        const index = parseInt(matchSticker[1])
+        const index = parseInt(match[1])
         if (!index || index < 1 || index > sharedGroups.length) {
           return m.reply('El número de grupo no es válido. Usa `anon` o `anon lista`.')
         }
 
         target = sharedGroups[index - 1]
-        sendSticker = true
+
+        if (isStickerQuoted) sendSticker = true
+        if (isImageQuoted) sendImage = true
+        if (isVideoQuoted) sendVideo = true
       } else {
         const match = text.match(/^(\d+)\s*\|\s*([\s\S]+)$/)
         if (!match) {
@@ -230,8 +242,8 @@ export default {
             'anon NUMERO | tu mensaje\n\n' +
             'Ejemplo:\n' +
             'anon 1 | hola grupo\n\n' +
-            'Para sticker:\n' +
-            'responde a un sticker y usa:\n' +
+            'Para sticker, imagen o video:\n' +
+            'responde al contenido y usa:\n' +
             'anon 1'
           )
         }
@@ -262,38 +274,44 @@ export default {
         target = sharedGroups[index - 1]
       }
 
-      if (sendSticker) {
-  const sticker = await quoted.download()
-  if (!sticker) {
-    return m.reply('No se pudo descargar el sticker citado.')
-  }
+      if (sendSticker || sendImage || sendVideo) {
+        const media = await quoted.download()
 
-  // 1️⃣ Mensaje previo
-  await client.sendMessage(target.jid, {
-    text: '📩 *Sticker anónimo*\n\n⏳ Enviando...'
-  })
-
-  // 2️⃣ Pequeño delay (opcional pero queda GOD)
-  await new Promise(resolve => setTimeout(resolve, 1500))
-
-  // 3️⃣ Enviar sticker
-  await client.sendMessage(target.jid, {
-    sticker
-  })
-
-  user.anonLastMessage = '[sticker]'
-  user.anonLastType = 'sticker'
-
-        if (!sticker) {
-          return m.reply('No se pudo descargar el sticker citado.')
+        if (!media) {
+          return m.reply('No se pudo descargar el contenido.')
         }
 
+        let tipo = 'Contenido'
+        if (sendSticker) tipo = 'Sticker'
+        if (sendImage) tipo = 'Imagen'
+        if (sendVideo) tipo = 'Video'
+
         await client.sendMessage(target.jid, {
-          sticker
+          text: `📩 *${tipo} anónimo*\n\n⏳ Enviando...`
         })
 
-        user.anonLastMessage = '[sticker]'
-        user.anonLastType = 'sticker'
+        await new Promise(resolve => setTimeout(resolve, 1500))
+
+        if (sendSticker) {
+          await client.sendMessage(target.jid, { sticker: media })
+        }
+
+        if (sendImage) {
+          await client.sendMessage(target.jid, {
+            image: media,
+            caption: '📩 *Imagen anónima*'
+          })
+        }
+
+        if (sendVideo) {
+          await client.sendMessage(target.jid, {
+            video: media,
+            caption: '📩 *Video anónimo*'
+          })
+        }
+
+        user.anonLastMessage = `[${tipo}]`
+        user.anonLastType = tipo.toLowerCase()
       } else {
         const anonText = `📩 *Mensaje anónimo*\n\n${mensaje}`
         await client.sendMessage(target.jid, { text: anonText })
@@ -312,8 +330,13 @@ export default {
       user.anonLastGroup = target.jid
       user.anonLastSentAt = now
 
+      let sentType = 'Mensaje'
+      if (sendSticker) sentType = 'Sticker'
+      if (sendImage) sentType = 'Imagen'
+      if (sendVideo) sentType = 'Video'
+
       return m.reply(
-        `${sendSticker ? 'Sticker anónimo' : 'Mensaje anónimo'} enviado a *${target.name}*.\n\n` +
+        `${sentType} anónimo enviado a *${target.name}*.\n\n` +
         (isMainOwner
           ? 'Como eres owner principal, no se te aplicó cooldown.'
           : 'Cooldown activado: *30 minutos*.')
