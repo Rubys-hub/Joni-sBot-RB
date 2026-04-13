@@ -18,7 +18,7 @@
     },
     "51901931862@s.whatsapp.net": {
       "name": "PJF",
-      "exp": 23730,
+      "exp": 23934,
       "level": 38,
       "usedcommands": 0,
       "pasatiempo": "",
@@ -28,7 +28,7 @@
       "birth": "",
       "metadatos": "RubyJX Bot",
       "metadatos2": "",
-      "usedcmds": 462,
+      "usedcmds": 465,
       "minxp": 23529,
       "maxxp": 25156,
       "Subs": 1775787930834,
@@ -1188,7 +1188,7 @@
     },
     "573205194898@s.whatsapp.net": {
       "name": "🌹ɪᴠᴀɴ🧃🌷",
-      "exp": 7401,
+      "exp": 7478,
       "level": 24,
       "usedcommands": 0,
       "pasatiempo": "",
@@ -1198,7 +1198,7 @@
       "birth": "",
       "metadatos": null,
       "metadatos2": null,
-      "usedcmds": 132,
+      "usedcmds": 134,
       "minxp": 7201,
       "maxxp": 7999
     },
@@ -6658,6 +6658,32 @@
       "metadatos": null,
       "metadatos2": null,
       "usedcmds": 1
+    },
+    "5216251564650@s.whatsapp.net": {
+      "name": "♡La fea🖤",
+      "exp": 0,
+      "level": 0,
+      "usedcommands": 0,
+      "pasatiempo": "",
+      "description": "",
+      "marry": "",
+      "genre": "",
+      "birth": "",
+      "metadatos": null,
+      "metadatos2": null
+    },
+    "584148089732@s.whatsapp.net": {
+      "name": "Á;ngry jp",
+      "exp": 0,
+      "level": 0,
+      "usedcommands": 0,
+      "pasatiempo": "",
+      "description": "",
+      "marry": "",
+      "genre": "",
+      "birth": "",
+      "metadatos": null,
+      "metadatos2": null
     }
   },
   "chats": {
@@ -16219,7 +16245,7 @@
         "51930789552@s.whatsapp.net": {
           "stats": {
             "2026-04-13": {
-              "msgs": 71,
+              "msgs": 86,
               "cmds": 0
             }
           },
@@ -16234,12 +16260,12 @@
         "51901931862@s.whatsapp.net": {
           "stats": {
             "2026-04-13": {
-              "msgs": 60,
-              "cmds": 22
+              "msgs": 77,
+              "cmds": 25
             }
           },
-          "usedTime": "2026-04-13T18:23:05.577Z",
-          "lastCmd": 1776104585577,
+          "usedTime": "2026-04-13T20:33:08.451Z",
+          "lastCmd": 1776112388451,
           "coins": 0,
           "bank": 0,
           "afk": -1,
@@ -16264,12 +16290,12 @@
         "573205194898@s.whatsapp.net": {
           "stats": {
             "2026-04-13": {
-              "msgs": 157,
-              "cmds": 18
+              "msgs": 184,
+              "cmds": 20
             }
           },
-          "usedTime": "2026-04-13T18:41:52.333Z",
-          "lastCmd": 1776105712333,
+          "usedTime": "2026-04-13T20:17:38.366Z",
+          "lastCmd": 1776111458366,
           "coins": 0,
           "bank": 0,
           "afk": -1,
@@ -16340,7 +16366,7 @@
         "5219221210705@s.whatsapp.net": {
           "stats": {
             "2026-04-13": {
-              "msgs": 5,
+              "msgs": 6,
               "cmds": 2
             }
           },
@@ -16350,12 +16376,19 @@
           "bank": 0,
           "afk": -1,
           "afkReason": "",
-          "characters": []
+          "characters": [],
+          "warnings": [
+            {
+              "reason": "mentiras",
+              "timestamp": "13 de abril de 2026 a las 03:33 p. m.",
+              "by": "51901931862@s.whatsapp.net"
+            }
+          ]
         },
         "51973133803@s.whatsapp.net": {
           "stats": {
             "2026-04-13": {
-              "msgs": 30,
+              "msgs": 32,
               "cmds": 0
             }
           },
@@ -16460,7 +16493,7 @@
         "5216961120387@s.whatsapp.net": {
           "stats": {
             "2026-04-13": {
-              "msgs": 35,
+              "msgs": 41,
               "cmds": 0
             }
           },
@@ -16475,7 +16508,7 @@
         "51900458088@s.whatsapp.net": {
           "stats": {
             "2026-04-13": {
-              "msgs": 3,
+              "msgs": 4,
               "cmds": 0
             }
           },
@@ -16535,7 +16568,7 @@
         "51960584010@s.whatsapp.net": {
           "stats": {
             "2026-04-13": {
-              "msgs": 16,
+              "msgs": 21,
               "cmds": 0
             }
           },
@@ -16591,6 +16624,36 @@
           "afk": -1,
           "afkReason": "",
           "characters": []
+        },
+        "5216251564650@s.whatsapp.net": {
+          "stats": {
+            "2026-04-13": {
+              "msgs": 2,
+              "cmds": 0
+            }
+          },
+          "usedTime": null,
+          "lastCmd": 0,
+          "coins": 0,
+          "bank": 0,
+          "afk": -1,
+          "afkReason": "",
+          "characters": []
+        },
+        "584148089732@s.whatsapp.net": {
+          "stats": {
+            "2026-04-13": {
+              "msgs": 4,
+              "cmds": 0
+            }
+          },
+          "usedTime": null,
+          "lastCmd": 0,
+          "coins": 0,
+          "bank": 0,
+          "afk": -1,
+          "afkReason": "",
+          "characters": []
         }
       },
       "isBanned": false,
@@ -16617,7 +16680,13 @@
           "expiresAt": 1776098551299
         }
       },
-      "badwords": true
+      "badwords": true,
+      "lastGreetingReply": {
+        "5216251564650@s.whatsapp.net": 1776111571209,
+        "51930789552:31@s.whatsapp.net": 1776112294446,
+        "573205194898@s.whatsapp.net": 1776111659954,
+        "51901931862@s.whatsapp.net": 1776112292244
+      }
     },
     "51939849146@s.whatsapp.net": {
       "users": {
@@ -16704,7 +16773,7 @@
       "namebot": "RubyJX",
       "botname": "RubyJX (JBot)",
       "owner": "51901931862@s.whatsapp.net",
-      "cmdsejecut": 946
+      "cmdsejecut": 951
     }
   },
   "characters": {},

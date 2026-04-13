@@ -44,6 +44,10 @@ export default async (client, m) => {
   const isAdmins = m.isGroup ? groupAdmins.some(p => p.phoneNumber === sender || p.jid === sender || p.id === sender || p.lid === sender ) : false
   const isOwners = [botJid, ...(settings.owner ? [settings.owner] : []), ...global.owner.map(num => num + '@s.whatsapp.net')].includes(sender);
 
+  m.isAdmin = isAdmins
+m.isBotAdmin = isBotAdmins
+m.isOwner = isOwners
+
   for (const name in global.plugins) {
     const plugin = global.plugins[name];
     if (plugin && typeof plugin.all === "function") {
