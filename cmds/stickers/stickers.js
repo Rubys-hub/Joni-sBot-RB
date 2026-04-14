@@ -1,136 +1,198 @@
-import axios from 'axios';
-import fs from 'fs';
-import { spawn } from 'child_process';
-import webpmux from 'node-webpmux';
+import fs from 'fs'
+import { spawn } from 'child_process'
+import fetch from 'node-fetch'
+import exif from '../../core/exif.js'
 
-const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
-const toBuffer = async (url) => Buffer.from((await axios.get(url, { responseType: 'arraybuffer', timeout: 15000 })).data);
+const { writeExif } = exif
 
-const toWebp = (buffer, isAnimated = false) => new Promise((resolve, reject) => {
-  const tmpIn = `./tmp/spack-in-${Date.now()}-${Math.random().toString(36).slice(2)}`;
-  const tmpOut = `./tmp/spack-out-${Date.now()}-${Math.random().toString(36).slice(2)}.webp`;
-  fs.writeFileSync(tmpIn, buffer);
-  const vf = 'scale=512:512:force_original_aspect_ratio=decrease,pad=512:512:(ow-iw)/2:(oh-ih)/2:color=0x00000000,format=rgba,format=yuva420p';
-  const codec = isAnimated ? 'libwebp_anim' : 'libwebp';
-  const args = ['-y', '-i', tmpIn, '-vf', vf, '-c:v', codec, '-q:v', '50', '-compression_level', '6'];
-  if (isAnimated) args.push('-loop', '0');
-  args.push(tmpOut);
-  const p = spawn('ffmpeg', args);
-  p.on('close', (code) => {
-    try { fs.unlinkSync(tmpIn); } catch {}
-    if (code === 0 && fs.existsSync(tmpOut)) {
-      const result = fs.readFileSync(tmpOut);
-      try { fs.unlinkSync(tmpOut); } catch {}
-      resolve(result);
-    } else {
-      reject(new Error('ffmpeg failed'));
-    }
-  });
-});
+function isUrl(text) {
+  return /https?:\/\/[^\s]+/i.test(text || '')
+}
 
-const isStickerUrl = (url) => /^(https?:\/\/)?(www\.)?sticker\.ly\/s\/[a-zA-Z0-9]+$/i.test(url);
+function buildFilter({ square = false, cover = false }) {
+  const W = 512
+  const H = 512
 
-const searchPacks = async (query, attempt = 1) => {
-  try {
-    const { data } = await axios.get('https://api.stellarwa.xyz/stickerly/search', { params: { query, key: 'YukiWaBot' }, timeout: 10000 });
-    return data;
-  } catch (e) {
-    if (e.response?.status === 429 && attempt <= 3) { await delay((e.response.headers['retry-after'] || 5) * 1000); return searchPacks(query, attempt + 1); }
-    throw e;
+  if (square) {
+    return `scale=${W}:${H},format=rgba,format=yuva420p`
   }
-};
 
-const downloadPack = async (url, attempt = 1) => {
-  try {
-    const { data } = await axios.get('https://api.stellarwa.xyz/stickerly/detail', { params: { url, key: 'YukiWaBot' }, timeout: 10000 });
-    return data;
-  } catch (e) {
-    if (e.response?.status === 429 && attempt <= 3) { await delay((e.response.headers['retry-after'] || 5) * 1000); return downloadPack(url, attempt + 1); }
-    if (e.response?.status === 500) return { status: false, error: 500 };
-    throw e;
+  if (cover) {
+    return `scale=${W}:${H}:force_original_aspect_ratio=increase,crop=${W}:${H},format=rgba,format=yuva420p`
   }
-};
 
-const filterRelevantPacks = (packs, query) => {
-  const searchTerm = query.toLowerCase().trim();
-  if (!searchTerm) return packs;
-  return packs.filter(pack => (pack.name || '').toLowerCase().includes(searchTerm));
-};
+  return `scale=${W}:${H}:force_original_aspect_ratio=decrease,pad=${W}:${H}:(ow-iw)/2:(oh-ih)/2:color=0x00000000,format=rgba,format=yuva420p`
+}
+
+async function ffmpegToWebp(inputPath, outputPath, { isVideo = false, square = false, cover = false }) {
+  const vf = buildFilter({ square, cover })
+
+  const args = isVideo
+    ? [
+        '-y',
+        '-i', inputPath,
+        '-t', '6',
+        '-an',
+        '-vf', `fps=12,${vf}`,
+        '-vcodec', 'libwebp',
+        '-lossless', '0',
+        '-compression_level', '6',
+        '-q:v', '55',
+        '-loop', '0',
+        '-preset', 'default',
+        '-vsync', '0',
+        outputPath
+      ]
+    : [
+        '-y',
+        '-i', inputPath,
+        '-vf', vf,
+        '-vcodec', 'libwebp',
+        '-lossless', '0',
+        '-compression_level', '6',
+        '-q:v', '70',
+        '-preset', 'picture',
+        outputPath
+      ]
+
+  await new Promise((resolve, reject) => {
+    const p = spawn('ffmpeg', args)
+    let err = ''
+
+    p.stderr.on('data', d => {
+      err += d.toString()
+    })
+
+    p.on('close', code => {
+      if (code === 0) resolve()
+      else reject(new Error(err || 'ffmpeg failed'))
+    })
+  })
+}
+
+async function sendStickerFromBuffer(client, m, webpBuffer, pack, author) {
+  const media = { mimetype: 'image/webp', data: webpBuffer }
+  const stickerPath = await writeExif(media, {
+    packname: pack,
+    author,
+    categories: ['']
+  })
+
+  await client.sendMessage(m.chat, {
+    sticker: { url: stickerPath }
+  }, { quoted: m })
+
+  try { fs.unlinkSync(stickerPath) } catch {}
+}
+
+async function processMedia(client, m, buffer, { ext, isVideo = false, square = false, pack, author }) {
+  const inputPath = `./tmp/stk-in-${Date.now()}.${ext}`
+  const outputPath = `./tmp/stk-out-${Date.now()}.webp`
+
+  fs.writeFileSync(inputPath, buffer)
+
+  try {
+    await ffmpegToWebp(inputPath, outputPath, { isVideo, square })
+    const webp = fs.readFileSync(outputPath)
+    await sendStickerFromBuffer(client, m, webp, pack, author)
+  } finally {
+    try { fs.unlinkSync(inputPath) } catch {}
+    try { fs.unlinkSync(outputPath) } catch {}
+  }
+}
 
 export default {
-  command: ['stickerpack', 'spack', 'stickers'],
+  command: ['sticker', 's', 's1'],
   category: 'stickers',
-  run: async (client, m, args, usedPrefix, command, text) => {
+
+  run: async (client, m, args, usedPrefix, command) => {
     try {
-      if (!text) return client.reply(m.chat, `《✧》 Ingresa un texto para buscar packs de stickers o una URL de sticker.ly.`, m);
-      await m.react('🕒');
-      const db = global.db.data;
-      const user = db.users[m.sender] || {};
-      const name = user.name || m.sender.split('@')[0];
-      let packData;
-      const stickerMatch = text.match(/(?:sticker\.ly\/s\/)([a-zA-Z0-9]+)(?:\s|$)/);
-      const url = stickerMatch ? 'https://sticker.ly/s/' + stickerMatch[1] : (isStickerUrl(text) ? text : null);
-      if (url) {
-        const detail = await downloadPack(url);
-        if (!detail || !detail.status || detail.error === 500) return client.reply(m.chat, `《✧》 El pack de la URL no está disponible o es privado.`, m);
-        if (!detail.detalles) return client.reply(m.chat, `《✧》 No se pudo obtener el pack desde la URL.`, m);
-        packData = detail.detalles;
-      } else {
-        const search = await searchPacks(text);
-        if (!search.status || !search.resultados?.length) return client.reply(m.chat, `《✧》 No se encontraron packs para *${text}*.`, m);
-        const relevantPacks = filterRelevantPacks(search.resultados, text);
-        const packsToTry = relevantPacks.length > 0 ? relevantPacks : search.resultados;
-        let detail = null;
-        let intentos = 0;
-        const maxIntentos = Math.min(packsToTry.length, 5);
-        const indices = [...Array(packsToTry.length).keys()];
-        for (let i = indices.length - 1; i > 0; i--) {
-          const j = Math.floor(Math.random() * (i + 1));
-          [indices[i], indices[j]] = [indices[j], indices[i]];
-        }
-        while (intentos < maxIntentos && !detail) {
-          const res = await downloadPack(packsToTry[indices[intentos]].url);
-          if (res?.status && res?.detalles?.stickers?.length > 0) detail = res.detalles;
-          intentos++;
-        }
-        if (!detail) return client.reply(m.chat, `《✧》 No se pudo descargar ningún pack válido.`, m);
-        packData = detail;
+      const quoted = m.quoted ? m.quoted : m
+      const mime = (quoted.msg || quoted).mimetype || ''
+
+      const db = global.db.data
+      const user = db.users[m.sender] || {}
+      const name = user.name || m.pushName || 'Usuario'
+
+      const meta1 = user.metadatos ? String(user.metadatos).trim() : ''
+      const meta2 = user.metadatos2 ? String(user.metadatos2).trim() : ''
+
+      const pack = meta1 || 'RubyJX Bot'
+      const author = meta2 || `@${name}`
+
+      const square = command === 's1'
+
+      let urlArg = null
+      const cleanArgs = []
+
+      for (const arg of args) {
+        if (isUrl(arg)) urlArg = arg
+        else cleanArgs.push(arg)
       }
-      const { name: packName, author, stickers, thumbnailUrl } = packData;
-      if (!stickers?.length) return client.reply(m.chat, `《✧》 El pack no contiene stickers válidos.`, m);
-      const MAX_STICKERS = 50;
-      const selectedStickers = stickers.slice(0, MAX_STICKERS);
-      const [cover, stickerResults] = await Promise.all([
-        (async () => {
-          try {
-            const buf = await toBuffer(thumbnailUrl);
-            const converted = await toWebp(buf, false);
-            const img = new webpmux.Image();
-            await img.load(converted);
-            return await img.save(null);
-          } catch {
-            return Buffer.alloc(0);
-          }
-        })(),
-        Promise.all(selectedStickers.map(async (s) => {
-          try {
-            const buffer = await toBuffer(s.imageUrl);
-            const sticker = await toWebp(buffer, s.isAnimated || false);
-            const img = new webpmux.Image();
-            await img.load(sticker);
-            const result = await img.save(null);
-            return { sticker: result, isAnimated: s.isAnimated || false, isLottie: false, emojis: ['🎭'] };
-          } catch {
-            return null;
-          }
-        })).then(results => results.filter(r => r !== null))
-      ]);
-      if (!stickerResults.length) return client.reply(m.chat, `《✧》 No se pudieron procesar los stickers del pack.`, m);
-      await client.sendMessage(m.chat, { stickerPack: { name: packName, publisher: author?.name || author?.username || `@${name}`, description: 'ʏᴜᴋɪ 🧠 Wᴀʙᴏᴛ', cover, stickers: stickerResults } }, { quoted: m });
-      await m.react('✔️');
+
+      if (/image/.test(mime)) {
+        const media = await quoted.download()
+        return await processMedia(client, m, media, {
+          ext: /png/i.test(mime) ? 'png' : 'jpg',
+          isVideo: false,
+          square,
+          pack,
+          author
+        })
+      }
+
+      if (/video/.test(mime)) {
+        const seconds = (quoted.msg || quoted).seconds || 0
+        if (seconds > 6) {
+          return m.reply('El video no puede durar más de 6 segundos.')
+        }
+
+        const media = await quoted.download()
+        return await processMedia(client, m, media, {
+          ext: 'mp4',
+          isVideo: true,
+          square,
+          pack,
+          author
+        })
+      }
+
+      if (urlArg) {
+        const res = await fetch(urlArg)
+        if (!res.ok) return m.reply('No pude descargar ese archivo.')
+
+        const buffer = Buffer.from(await res.arrayBuffer())
+
+        if (/\.(mp4|mov|webm|mkv)(\?.*)?$/i.test(urlArg)) {
+          return await processMedia(client, m, buffer, {
+            ext: 'mp4',
+            isVideo: true,
+            square,
+            pack,
+            author
+          })
+        }
+
+        if (/\.(png|jpg|jpeg|webp)(\?.*)?$/i.test(urlArg)) {
+          return await processMedia(client, m, buffer, {
+            ext: 'jpg',
+            isVideo: false,
+            square,
+            pack,
+            author
+          })
+        }
+
+        return m.reply('La URL debe ser de imagen o video.')
+      }
+
+      return m.reply(
+        `Responde a una imagen o video.\n\n` +
+        `• ${usedPrefix}s = sticker normal\n` +
+        `• ${usedPrefix}s1 = sticker cuadrado 1:1`
+      )
     } catch (e) {
-      await m.react('✖️');
-      return m.reply(`> An unexpected error occurred while executing command *${usedPrefix + command}*. Please try again or contact support if the issue persists.\n> [Error: *${e.message}*]`);
+      return m.reply(`Error: ${e.message}`)
     }
   }
-};
+}
