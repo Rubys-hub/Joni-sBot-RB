@@ -18,7 +18,7 @@
     },
     "51901931862@s.whatsapp.net": {
       "name": "PJF",
-      "exp": 29944,
+      "exp": 30293,
       "level": 41,
       "usedcommands": 0,
       "pasatiempo": "",
@@ -28,7 +28,7 @@
       "birth": "",
       "metadatos": "RubyJX Bot",
       "metadatos2": "",
-      "usedcmds": 588,
+      "usedcmds": 595,
       "minxp": 28617,
       "maxxp": 30449,
       "Subs": 1775787930834,
@@ -1188,7 +1188,7 @@
     },
     "573205194898@s.whatsapp.net": {
       "name": "🌹ɪᴠᴀɴ🧃🌷ᴀɴɪᴛᴀ ꨄ︎🌹💖",
-      "exp": 14373,
+      "exp": 14585,
       "level": 31,
       "usedcommands": 0,
       "pasatiempo": "",
@@ -1198,7 +1198,7 @@
       "birth": "",
       "metadatos": null,
       "metadatos2": null,
-      "usedcmds": 258,
+      "usedcmds": 263,
       "minxp": 13925,
       "maxxp": 15110
     },
@@ -7292,6 +7292,61 @@
       "birth": "",
       "metadatos": null,
       "metadatos2": null
+    },
+    "5493814138888@s.whatsapp.net": {
+      "name": "ㅤׄ  ㅤ ㅤ𝖱𝗜𝘕𝘾𝘠    ㅤ 凜",
+      "exp": 66,
+      "level": 3,
+      "usedcommands": 0,
+      "pasatiempo": "",
+      "description": "",
+      "marry": "",
+      "genre": "",
+      "birth": "",
+      "metadatos": null,
+      "metadatos2": null,
+      "usedcmds": 1,
+      "minxp": 35,
+      "maxxp": 71
+    },
+    "5214141404567@s.whatsapp.net": {
+      "name": "Jose Luis😝😝",
+      "exp": 0,
+      "level": 0,
+      "usedcommands": 0,
+      "pasatiempo": "",
+      "description": "",
+      "marry": "",
+      "genre": "",
+      "birth": "",
+      "metadatos": null,
+      "metadatos2": null
+    },
+    "573184383750@s.whatsapp.net": {
+      "name": "L",
+      "exp": 0,
+      "level": 0,
+      "usedcommands": 0,
+      "pasatiempo": "",
+      "description": "",
+      "marry": "",
+      "genre": "",
+      "birth": "",
+      "metadatos": null,
+      "metadatos2": null
+    },
+    "51952384444@s.whatsapp.net": {
+      "name": ".",
+      "exp": 0,
+      "level": 0,
+      "usedcommands": 0,
+      "pasatiempo": "",
+      "description": "",
+      "marry": "",
+      "genre": "",
+      "birth": "",
+      "metadatos": null,
+      "metadatos2": null
     }
   },
   "chats": {
@@ -8128,7 +8183,7 @@
               "cmds": 0
             },
             "2026-04-14": {
-              "msgs": 3,
+              "msgs": 4,
               "cmds": 0
             }
           },
@@ -8941,10 +8996,14 @@
             "2026-04-13": {
               "msgs": 10,
               "cmds": 0
+            },
+            "2026-04-14": {
+              "msgs": 3,
+              "cmds": 1
             }
           },
-          "usedTime": "2026-04-12T02:39:04.063Z",
-          "lastCmd": 1775961544063,
+          "usedTime": "2026-04-14T05:48:53.041Z",
+          "lastCmd": 1776145733041,
           "coins": 0,
           "bank": 0,
           "afk": -1,
@@ -8966,6 +9025,10 @@
               "cmds": 0
             },
             "2026-04-13": {
+              "msgs": 1,
+              "cmds": 0
+            },
+            "2026-04-14": {
               "msgs": 1,
               "cmds": 0
             }
@@ -9176,6 +9239,21 @@
           "afk": -1,
           "afkReason": "",
           "characters": []
+        },
+        "573184383750@s.whatsapp.net": {
+          "stats": {
+            "2026-04-14": {
+              "msgs": 1,
+              "cmds": 0
+            }
+          },
+          "usedTime": null,
+          "lastCmd": 0,
+          "coins": 0,
+          "bank": 0,
+          "afk": -1,
+          "afkReason": "",
+          "characters": []
         }
       },
       "isBanned": false,
@@ -9190,7 +9268,99 @@
       "adminonly": false,
       "primaryBot": null,
       "antilinks": true,
-      "rolls": {}
+      "rolls": {},
+      "messageLog": [
+        {
+          "id": "ACC2B1498FE1F1B2654607EBF7F95EF5",
+          "chat": "120363407867326565@g.us",
+          "sender": "51901931862@s.whatsapp.net",
+          "participant": "51901931862@s.whatsapp.net",
+          "fromMe": false,
+          "timestamp": 1776145629882
+        },
+        {
+          "id": "3EB07602B402110427DC94",
+          "chat": "120363407867326565@g.us",
+          "sender": "573184383750@s.whatsapp.net",
+          "participant": "573184383750@s.whatsapp.net",
+          "fromMe": false,
+          "timestamp": 1776145726539
+        },
+        {
+          "id": "AC16428362ABBC13AC0F13BC05F9B7BA",
+          "chat": "120363407867326565@g.us",
+          "sender": "51901931862@s.whatsapp.net",
+          "participant": "51901931862@s.whatsapp.net",
+          "fromMe": false,
+          "timestamp": 1776145733038
+        },
+        {
+          "id": "3EB03E5F878B65B387EEB3",
+          "chat": "120363407867326565@g.us",
+          "sender": "51930789552@s.whatsapp.net",
+          "participant": "51930789552@s.whatsapp.net",
+          "fromMe": true,
+          "timestamp": 1776145733891
+        },
+        {
+          "id": "ACE04173EAEC0961EDA3B2D2F62D0CE5",
+          "chat": "120363407867326565@g.us",
+          "sender": "51901931862@s.whatsapp.net",
+          "participant": "51901931862@s.whatsapp.net",
+          "fromMe": false,
+          "timestamp": 1776145739431
+        }
+      ],
+      "userMessageLog": {
+        "51901931862@s.whatsapp.net": [
+          {
+            "id": "ACC2B1498FE1F1B2654607EBF7F95EF5",
+            "chat": "120363407867326565@g.us",
+            "sender": "51901931862@s.whatsapp.net",
+            "participant": "51901931862@s.whatsapp.net",
+            "fromMe": false,
+            "timestamp": 1776145629882
+          },
+          {
+            "id": "AC16428362ABBC13AC0F13BC05F9B7BA",
+            "chat": "120363407867326565@g.us",
+            "sender": "51901931862@s.whatsapp.net",
+            "participant": "51901931862@s.whatsapp.net",
+            "fromMe": false,
+            "timestamp": 1776145733038
+          },
+          {
+            "id": "ACE04173EAEC0961EDA3B2D2F62D0CE5",
+            "chat": "120363407867326565@g.us",
+            "sender": "51901931862@s.whatsapp.net",
+            "participant": "51901931862@s.whatsapp.net",
+            "fromMe": false,
+            "timestamp": 1776145739431
+          }
+        ],
+        "573184383750@s.whatsapp.net": [
+          {
+            "id": "3EB07602B402110427DC94",
+            "chat": "120363407867326565@g.us",
+            "sender": "573184383750@s.whatsapp.net",
+            "participant": "573184383750@s.whatsapp.net",
+            "fromMe": false,
+            "timestamp": 1776145726539
+          }
+        ],
+        "51930789552@s.whatsapp.net": [
+          {
+            "id": "3EB03E5F878B65B387EEB3",
+            "chat": "120363407867326565@g.us",
+            "sender": "51930789552@s.whatsapp.net",
+            "participant": "51930789552@s.whatsapp.net",
+            "fromMe": true,
+            "timestamp": 1776145733891
+          }
+        ]
+      },
+      "warnLimit": 3,
+      "expulsar": true
     },
     "51918678576@s.whatsapp.net": {
       "users": {
@@ -9245,12 +9415,12 @@
               "cmds": 19
             },
             "2026-04-14": {
-              "msgs": 45,
-              "cmds": 12
+              "msgs": 75,
+              "cmds": 17
             }
           },
-          "usedTime": "2026-04-14T05:40:25.489Z",
-          "lastCmd": 1776145225489,
+          "usedTime": "2026-04-14T05:53:38.930Z",
+          "lastCmd": 1776146018930,
           "coins": 0,
           "bank": 0,
           "afk": -1,
@@ -9276,7 +9446,7 @@
               "cmds": 0
             },
             "2026-04-14": {
-              "msgs": 21,
+              "msgs": 55,
               "cmds": 0
             }
           },
@@ -9375,12 +9545,27 @@
               "cmds": 1
             },
             "2026-04-14": {
-              "msgs": 10,
-              "cmds": 0
+              "msgs": 43,
+              "cmds": 5
             }
           },
-          "usedTime": "2026-04-14T04:31:46.389Z",
-          "lastCmd": 1776141106389,
+          "usedTime": "2026-04-14T05:51:20.236Z",
+          "lastCmd": 1776145880236,
+          "coins": 0,
+          "bank": 0,
+          "afk": -1,
+          "afkReason": "",
+          "characters": []
+        },
+        "5493814138888@s.whatsapp.net": {
+          "stats": {
+            "2026-04-14": {
+              "msgs": 11,
+              "cmds": 1
+            }
+          },
+          "usedTime": "2026-04-14T05:46:57.694Z",
+          "lastCmd": 1776145617694,
           "coins": 0,
           "bank": 0,
           "afk": -1,
@@ -9429,91 +9614,427 @@
       },
       "messageLog": [
         {
-          "id": "3EB0579CBC84836C357515",
+          "id": "3EB00016E9131BBBCD90CC",
           "chat": "120363407781521054@g.us",
           "sender": "51930789552@s.whatsapp.net",
           "participant": "51930789552@s.whatsapp.net",
           "fromMe": true,
-          "timestamp": 1776145225639
+          "timestamp": 1776146019251
         },
         {
-          "id": "3EB08F194BF77035DAC098",
+          "id": "3EB0DD5ACABD4647516DBE",
           "chat": "120363407781521054@g.us",
-          "sender": "51901931862@s.whatsapp.net",
-          "participant": "51901931862@s.whatsapp.net",
-          "fromMe": false,
-          "timestamp": 1776145228685
+          "sender": "51930789552@s.whatsapp.net",
+          "participant": "51930789552@s.whatsapp.net",
+          "fromMe": true,
+          "timestamp": 1776146019380
         },
         {
-          "id": "3EB0147A373F59F9B21B85",
+          "id": "3EB0CD0DBD4ACD672E3250",
           "chat": "120363407781521054@g.us",
-          "sender": "51901931862@s.whatsapp.net",
-          "participant": "51901931862@s.whatsapp.net",
-          "fromMe": false,
-          "timestamp": 1776145230305
+          "sender": "51930789552@s.whatsapp.net",
+          "participant": "51930789552@s.whatsapp.net",
+          "fromMe": true,
+          "timestamp": 1776146019500
         },
         {
-          "id": "3EB00A45663563DFC6D66A",
+          "id": "3EB09DA21C6A8DFE8607E8",
           "chat": "120363407781521054@g.us",
-          "sender": "51901931862@s.whatsapp.net",
-          "participant": "51901931862@s.whatsapp.net",
-          "fromMe": false,
-          "timestamp": 1776145230961
+          "sender": "51930789552@s.whatsapp.net",
+          "participant": "51930789552@s.whatsapp.net",
+          "fromMe": true,
+          "timestamp": 1776146019623
         },
         {
-          "id": "ACA6D7D11E3B6DA70DD724F2792FA110",
+          "id": "3EB076ABC011842E708A38",
+          "chat": "120363407781521054@g.us",
+          "sender": "51930789552@s.whatsapp.net",
+          "participant": "51930789552@s.whatsapp.net",
+          "fromMe": true,
+          "timestamp": 1776146019751
+        },
+        {
+          "id": "3EB0F5DFCE93D9614A0B3F",
+          "chat": "120363407781521054@g.us",
+          "sender": "51930789552@s.whatsapp.net",
+          "participant": "51930789552@s.whatsapp.net",
+          "fromMe": true,
+          "timestamp": 1776146019892
+        },
+        {
+          "id": "3EB06F4702C1BC16B08EBD",
+          "chat": "120363407781521054@g.us",
+          "sender": "51930789552@s.whatsapp.net",
+          "participant": "51930789552@s.whatsapp.net",
+          "fromMe": true,
+          "timestamp": 1776146020045
+        },
+        {
+          "id": "3EB0F59A57BF00C36A37DD",
+          "chat": "120363407781521054@g.us",
+          "sender": "51930789552@s.whatsapp.net",
+          "participant": "51930789552@s.whatsapp.net",
+          "fromMe": true,
+          "timestamp": 1776146020188
+        },
+        {
+          "id": "3EB0719BD3F41E52F5E137",
+          "chat": "120363407781521054@g.us",
+          "sender": "51930789552@s.whatsapp.net",
+          "participant": "51930789552@s.whatsapp.net",
+          "fromMe": true,
+          "timestamp": 1776146020314
+        },
+        {
+          "id": "3EB01EF91C26AFB8624DF6",
+          "chat": "120363407781521054@g.us",
+          "sender": "51930789552@s.whatsapp.net",
+          "participant": "51930789552@s.whatsapp.net",
+          "fromMe": true,
+          "timestamp": 1776146020464
+        },
+        {
+          "id": "3EB077512B049841FE781F",
+          "chat": "120363407781521054@g.us",
+          "sender": "51930789552@s.whatsapp.net",
+          "participant": "51930789552@s.whatsapp.net",
+          "fromMe": true,
+          "timestamp": 1776146020595
+        },
+        {
+          "id": "3EB09819FB301F4FE954BA",
+          "chat": "120363407781521054@g.us",
+          "sender": "51930789552@s.whatsapp.net",
+          "participant": "51930789552@s.whatsapp.net",
+          "fromMe": true,
+          "timestamp": 1776146020743
+        },
+        {
+          "id": "3EB0D9E001295FA7D65692",
+          "chat": "120363407781521054@g.us",
+          "sender": "51930789552@s.whatsapp.net",
+          "participant": "51930789552@s.whatsapp.net",
+          "fromMe": true,
+          "timestamp": 1776146020895
+        },
+        {
+          "id": "3EB007D21A0A25BFA78816",
+          "chat": "120363407781521054@g.us",
+          "sender": "51930789552@s.whatsapp.net",
+          "participant": "51930789552@s.whatsapp.net",
+          "fromMe": true,
+          "timestamp": 1776146021122
+        },
+        {
+          "id": "3EB07BD36B5B29B9918A2C",
+          "chat": "120363407781521054@g.us",
+          "sender": "51930789552@s.whatsapp.net",
+          "participant": "51930789552@s.whatsapp.net",
+          "fromMe": true,
+          "timestamp": 1776146021356
+        },
+        {
+          "id": "3EB0DD3508AEF25AA99D5E",
+          "chat": "120363407781521054@g.us",
+          "sender": "51930789552@s.whatsapp.net",
+          "participant": "51930789552@s.whatsapp.net",
+          "fromMe": true,
+          "timestamp": 1776146021503
+        },
+        {
+          "id": "3EB0C49E7E863BA38C70D3",
+          "chat": "120363407781521054@g.us",
+          "sender": "51930789552@s.whatsapp.net",
+          "participant": "51930789552@s.whatsapp.net",
+          "fromMe": true,
+          "timestamp": 1776146021657
+        },
+        {
+          "id": "3EB01A412EB4F1E7BBFCC7",
+          "chat": "120363407781521054@g.us",
+          "sender": "51930789552@s.whatsapp.net",
+          "participant": "51930789552@s.whatsapp.net",
+          "fromMe": true,
+          "timestamp": 1776146021782
+        },
+        {
+          "id": "3EB01B67CCFD5C634476C1",
+          "chat": "120363407781521054@g.us",
+          "sender": "51930789552@s.whatsapp.net",
+          "participant": "51930789552@s.whatsapp.net",
+          "fromMe": true,
+          "timestamp": 1776146021932
+        },
+        {
+          "id": "3EB02B149968960217A3FF",
+          "chat": "120363407781521054@g.us",
+          "sender": "51930789552@s.whatsapp.net",
+          "participant": "51930789552@s.whatsapp.net",
+          "fromMe": true,
+          "timestamp": 1776146022069
+        },
+        {
+          "id": "3EB01048017748A871DFD5",
+          "chat": "120363407781521054@g.us",
+          "sender": "51930789552@s.whatsapp.net",
+          "participant": "51930789552@s.whatsapp.net",
+          "fromMe": true,
+          "timestamp": 1776146022210
+        },
+        {
+          "id": "ACA63EC99760E8F85BCCB3AF463A5C62",
           "chat": "120363407781521054@g.us",
           "sender": "573205194898@s.whatsapp.net",
           "participant": "573205194898@s.whatsapp.net",
           "fromMe": false,
-          "timestamp": 1776145239818
+          "timestamp": 1776146031703
+        },
+        {
+          "id": "3EB09203C0D3D4F2C325CB",
+          "chat": "120363407781521054@g.us",
+          "sender": "51901931862@s.whatsapp.net",
+          "participant": "51901931862@s.whatsapp.net",
+          "fromMe": false,
+          "timestamp": 1776146039386
+        },
+        {
+          "id": "AC67CF8C34A645984D714C0F3A408610",
+          "chat": "120363407781521054@g.us",
+          "sender": "573205194898@s.whatsapp.net",
+          "participant": "573205194898@s.whatsapp.net",
+          "fromMe": false,
+          "timestamp": 1776146062322
+        },
+        {
+          "id": "AC6F5B4DA154BD528C32609DCCC8D93E",
+          "chat": "120363407781521054@g.us",
+          "sender": "573205194898@s.whatsapp.net",
+          "participant": "573205194898@s.whatsapp.net",
+          "fromMe": false,
+          "timestamp": 1776146067361
+        },
+        {
+          "id": "3EB03E696B008E1316F057",
+          "chat": "120363407781521054@g.us",
+          "sender": "51901931862@s.whatsapp.net",
+          "participant": "51901931862@s.whatsapp.net",
+          "fromMe": false,
+          "timestamp": 1776146144038
         }
       ],
       "userMessageLog": {
         "51930789552@s.whatsapp.net": [
           {
-            "id": "3EB0579CBC84836C357515",
+            "id": "3EB00016E9131BBBCD90CC",
             "chat": "120363407781521054@g.us",
             "sender": "51930789552@s.whatsapp.net",
             "participant": "51930789552@s.whatsapp.net",
             "fromMe": true,
-            "timestamp": 1776145225639
-          }
-        ],
-        "51901931862@s.whatsapp.net": [
-          {
-            "id": "3EB08F194BF77035DAC098",
-            "chat": "120363407781521054@g.us",
-            "sender": "51901931862@s.whatsapp.net",
-            "participant": "51901931862@s.whatsapp.net",
-            "fromMe": false,
-            "timestamp": 1776145228685
+            "timestamp": 1776146019251
           },
           {
-            "id": "3EB0147A373F59F9B21B85",
+            "id": "3EB0DD5ACABD4647516DBE",
             "chat": "120363407781521054@g.us",
-            "sender": "51901931862@s.whatsapp.net",
-            "participant": "51901931862@s.whatsapp.net",
-            "fromMe": false,
-            "timestamp": 1776145230305
+            "sender": "51930789552@s.whatsapp.net",
+            "participant": "51930789552@s.whatsapp.net",
+            "fromMe": true,
+            "timestamp": 1776146019380
           },
           {
-            "id": "3EB00A45663563DFC6D66A",
+            "id": "3EB0CD0DBD4ACD672E3250",
             "chat": "120363407781521054@g.us",
-            "sender": "51901931862@s.whatsapp.net",
-            "participant": "51901931862@s.whatsapp.net",
-            "fromMe": false,
-            "timestamp": 1776145230961
+            "sender": "51930789552@s.whatsapp.net",
+            "participant": "51930789552@s.whatsapp.net",
+            "fromMe": true,
+            "timestamp": 1776146019500
+          },
+          {
+            "id": "3EB09DA21C6A8DFE8607E8",
+            "chat": "120363407781521054@g.us",
+            "sender": "51930789552@s.whatsapp.net",
+            "participant": "51930789552@s.whatsapp.net",
+            "fromMe": true,
+            "timestamp": 1776146019623
+          },
+          {
+            "id": "3EB076ABC011842E708A38",
+            "chat": "120363407781521054@g.us",
+            "sender": "51930789552@s.whatsapp.net",
+            "participant": "51930789552@s.whatsapp.net",
+            "fromMe": true,
+            "timestamp": 1776146019751
+          },
+          {
+            "id": "3EB0F5DFCE93D9614A0B3F",
+            "chat": "120363407781521054@g.us",
+            "sender": "51930789552@s.whatsapp.net",
+            "participant": "51930789552@s.whatsapp.net",
+            "fromMe": true,
+            "timestamp": 1776146019892
+          },
+          {
+            "id": "3EB06F4702C1BC16B08EBD",
+            "chat": "120363407781521054@g.us",
+            "sender": "51930789552@s.whatsapp.net",
+            "participant": "51930789552@s.whatsapp.net",
+            "fromMe": true,
+            "timestamp": 1776146020045
+          },
+          {
+            "id": "3EB0F59A57BF00C36A37DD",
+            "chat": "120363407781521054@g.us",
+            "sender": "51930789552@s.whatsapp.net",
+            "participant": "51930789552@s.whatsapp.net",
+            "fromMe": true,
+            "timestamp": 1776146020188
+          },
+          {
+            "id": "3EB0719BD3F41E52F5E137",
+            "chat": "120363407781521054@g.us",
+            "sender": "51930789552@s.whatsapp.net",
+            "participant": "51930789552@s.whatsapp.net",
+            "fromMe": true,
+            "timestamp": 1776146020314
+          },
+          {
+            "id": "3EB01EF91C26AFB8624DF6",
+            "chat": "120363407781521054@g.us",
+            "sender": "51930789552@s.whatsapp.net",
+            "participant": "51930789552@s.whatsapp.net",
+            "fromMe": true,
+            "timestamp": 1776146020464
+          },
+          {
+            "id": "3EB077512B049841FE781F",
+            "chat": "120363407781521054@g.us",
+            "sender": "51930789552@s.whatsapp.net",
+            "participant": "51930789552@s.whatsapp.net",
+            "fromMe": true,
+            "timestamp": 1776146020595
+          },
+          {
+            "id": "3EB09819FB301F4FE954BA",
+            "chat": "120363407781521054@g.us",
+            "sender": "51930789552@s.whatsapp.net",
+            "participant": "51930789552@s.whatsapp.net",
+            "fromMe": true,
+            "timestamp": 1776146020743
+          },
+          {
+            "id": "3EB0D9E001295FA7D65692",
+            "chat": "120363407781521054@g.us",
+            "sender": "51930789552@s.whatsapp.net",
+            "participant": "51930789552@s.whatsapp.net",
+            "fromMe": true,
+            "timestamp": 1776146020895
+          },
+          {
+            "id": "3EB007D21A0A25BFA78816",
+            "chat": "120363407781521054@g.us",
+            "sender": "51930789552@s.whatsapp.net",
+            "participant": "51930789552@s.whatsapp.net",
+            "fromMe": true,
+            "timestamp": 1776146021122
+          },
+          {
+            "id": "3EB07BD36B5B29B9918A2C",
+            "chat": "120363407781521054@g.us",
+            "sender": "51930789552@s.whatsapp.net",
+            "participant": "51930789552@s.whatsapp.net",
+            "fromMe": true,
+            "timestamp": 1776146021356
+          },
+          {
+            "id": "3EB0DD3508AEF25AA99D5E",
+            "chat": "120363407781521054@g.us",
+            "sender": "51930789552@s.whatsapp.net",
+            "participant": "51930789552@s.whatsapp.net",
+            "fromMe": true,
+            "timestamp": 1776146021503
+          },
+          {
+            "id": "3EB0C49E7E863BA38C70D3",
+            "chat": "120363407781521054@g.us",
+            "sender": "51930789552@s.whatsapp.net",
+            "participant": "51930789552@s.whatsapp.net",
+            "fromMe": true,
+            "timestamp": 1776146021657
+          },
+          {
+            "id": "3EB01A412EB4F1E7BBFCC7",
+            "chat": "120363407781521054@g.us",
+            "sender": "51930789552@s.whatsapp.net",
+            "participant": "51930789552@s.whatsapp.net",
+            "fromMe": true,
+            "timestamp": 1776146021782
+          },
+          {
+            "id": "3EB01B67CCFD5C634476C1",
+            "chat": "120363407781521054@g.us",
+            "sender": "51930789552@s.whatsapp.net",
+            "participant": "51930789552@s.whatsapp.net",
+            "fromMe": true,
+            "timestamp": 1776146021932
+          },
+          {
+            "id": "3EB02B149968960217A3FF",
+            "chat": "120363407781521054@g.us",
+            "sender": "51930789552@s.whatsapp.net",
+            "participant": "51930789552@s.whatsapp.net",
+            "fromMe": true,
+            "timestamp": 1776146022069
+          },
+          {
+            "id": "3EB01048017748A871DFD5",
+            "chat": "120363407781521054@g.us",
+            "sender": "51930789552@s.whatsapp.net",
+            "participant": "51930789552@s.whatsapp.net",
+            "fromMe": true,
+            "timestamp": 1776146022210
           }
         ],
         "573205194898@s.whatsapp.net": [
           {
-            "id": "ACA6D7D11E3B6DA70DD724F2792FA110",
+            "id": "ACA63EC99760E8F85BCCB3AF463A5C62",
             "chat": "120363407781521054@g.us",
             "sender": "573205194898@s.whatsapp.net",
             "participant": "573205194898@s.whatsapp.net",
             "fromMe": false,
-            "timestamp": 1776145239818
+            "timestamp": 1776146031703
+          },
+          {
+            "id": "AC67CF8C34A645984D714C0F3A408610",
+            "chat": "120363407781521054@g.us",
+            "sender": "573205194898@s.whatsapp.net",
+            "participant": "573205194898@s.whatsapp.net",
+            "fromMe": false,
+            "timestamp": 1776146062322
+          },
+          {
+            "id": "AC6F5B4DA154BD528C32609DCCC8D93E",
+            "chat": "120363407781521054@g.us",
+            "sender": "573205194898@s.whatsapp.net",
+            "participant": "573205194898@s.whatsapp.net",
+            "fromMe": false,
+            "timestamp": 1776146067361
+          }
+        ],
+        "51901931862@s.whatsapp.net": [
+          {
+            "id": "3EB09203C0D3D4F2C325CB",
+            "chat": "120363407781521054@g.us",
+            "sender": "51901931862@s.whatsapp.net",
+            "participant": "51901931862@s.whatsapp.net",
+            "fromMe": false,
+            "timestamp": 1776146039386
+          },
+          {
+            "id": "3EB03E696B008E1316F057",
+            "chat": "120363407781521054@g.us",
+            "sender": "51901931862@s.whatsapp.net",
+            "participant": "51901931862@s.whatsapp.net",
+            "fromMe": false,
+            "timestamp": 1776146144038
           }
         ]
       }
@@ -9892,6 +10413,21 @@
           "afk": -1,
           "afkReason": "",
           "characters": []
+        },
+        "51952384444@s.whatsapp.net": {
+          "stats": {
+            "2026-04-14": {
+              "msgs": 1,
+              "cmds": 0
+            }
+          },
+          "usedTime": null,
+          "lastCmd": 0,
+          "coins": 0,
+          "bank": 0,
+          "afk": -1,
+          "afkReason": "",
+          "characters": []
         }
       },
       "isBanned": false,
@@ -9956,6 +10492,28 @@
           "user": "51900864795@s.whatsapp.net",
           "claimedAt": 1775957089795
         }
+      },
+      "messageLog": [
+        {
+          "id": "3A7786DCEF5D402FE02E",
+          "chat": "120363423365232772@g.us",
+          "sender": "51952384444@s.whatsapp.net",
+          "participant": "51952384444@s.whatsapp.net",
+          "fromMe": false,
+          "timestamp": 1776145813089
+        }
+      ],
+      "userMessageLog": {
+        "51952384444@s.whatsapp.net": [
+          {
+            "id": "3A7786DCEF5D402FE02E",
+            "chat": "120363423365232772@g.us",
+            "sender": "51952384444@s.whatsapp.net",
+            "participant": "51952384444@s.whatsapp.net",
+            "fromMe": false,
+            "timestamp": 1776145813089
+          }
+        ]
       }
     },
     "51903371375@s.whatsapp.net": {
@@ -10547,7 +11105,7 @@
               "cmds": 0
             },
             "2026-04-14": {
-              "msgs": 1,
+              "msgs": 7,
               "cmds": 0
             }
           },
@@ -10568,10 +11126,14 @@
             "2026-04-13": {
               "msgs": 13,
               "cmds": 8
+            },
+            "2026-04-14": {
+              "msgs": 3,
+              "cmds": 1
             }
           },
-          "usedTime": "2026-04-14T03:32:27.152Z",
-          "lastCmd": 1776137547152,
+          "usedTime": "2026-04-14T05:47:59.598Z",
+          "lastCmd": 1776145679598,
           "coins": 0,
           "bank": 0,
           "afk": -1,
@@ -10589,7 +11151,7 @@
               "cmds": 0
             },
             "2026-04-14": {
-              "msgs": 4,
+              "msgs": 6,
               "cmds": 1
             }
           },
@@ -10796,6 +11358,21 @@
           "afk": -1,
           "afkReason": "",
           "characters": []
+        },
+        "5214141404567@s.whatsapp.net": {
+          "stats": {
+            "2026-04-14": {
+              "msgs": 6,
+              "cmds": 0
+            }
+          },
+          "usedTime": null,
+          "lastCmd": 0,
+          "coins": 0,
+          "bank": 0,
+          "afk": -1,
+          "afkReason": "",
+          "characters": []
         }
       },
       "isBanned": false,
@@ -10859,6 +11436,142 @@
           "participant": "18097371209@s.whatsapp.net",
           "fromMe": false,
           "timestamp": 1776145148458
+        },
+        {
+          "id": "3A56E61AAC4882E23870",
+          "chat": "120363413190098612@g.us",
+          "sender": "5214141404567@s.whatsapp.net",
+          "participant": "5214141404567@s.whatsapp.net",
+          "fromMe": false,
+          "timestamp": 1776145527892
+        },
+        {
+          "id": "AC4DA9666AEDA865DC4A42639F7E243A",
+          "chat": "120363413190098612@g.us",
+          "sender": "51901931862@s.whatsapp.net",
+          "participant": "51901931862@s.whatsapp.net",
+          "fromMe": false,
+          "timestamp": 1776145679592
+        },
+        {
+          "id": "3EB0261A15C7DCB843D9A3",
+          "chat": "120363413190098612@g.us",
+          "sender": "51930789552@s.whatsapp.net",
+          "participant": "51930789552@s.whatsapp.net",
+          "fromMe": true,
+          "timestamp": 1776145681005
+        },
+        {
+          "id": "ACF4969AD7C2F995A512D11C11D9786E",
+          "chat": "120363413190098612@g.us",
+          "sender": "18097371209@s.whatsapp.net",
+          "participant": "18097371209@s.whatsapp.net",
+          "fromMe": false,
+          "timestamp": 1776145681884
+        },
+        {
+          "id": "AC6C146F875CCC674082892E41BE3CA3",
+          "chat": "120363413190098612@g.us",
+          "sender": "51901931862@s.whatsapp.net",
+          "participant": "51901931862@s.whatsapp.net",
+          "fromMe": false,
+          "timestamp": 1776145686808
+        },
+        {
+          "id": "3EB09E7CB420385703C885",
+          "chat": "120363413190098612@g.us",
+          "sender": "51930789552@s.whatsapp.net",
+          "participant": "51930789552@s.whatsapp.net",
+          "fromMe": true,
+          "timestamp": 1776145686939
+        },
+        {
+          "id": "AC4706FE7E2E036920B43D3814AB66F3",
+          "chat": "120363413190098612@g.us",
+          "sender": "51901931862@s.whatsapp.net",
+          "participant": "51901931862@s.whatsapp.net",
+          "fromMe": false,
+          "timestamp": 1776145699622
+        },
+        {
+          "id": "3A121614F22BAE434FC9",
+          "chat": "120363413190098612@g.us",
+          "sender": "5214141404567@s.whatsapp.net",
+          "participant": "5214141404567@s.whatsapp.net",
+          "fromMe": false,
+          "timestamp": 1776145715283
+        },
+        {
+          "id": "ACB5C4CB0D585C3A508B7972334137C8",
+          "chat": "120363413190098612@g.us",
+          "sender": "18097371209@s.whatsapp.net",
+          "participant": "18097371209@s.whatsapp.net",
+          "fromMe": false,
+          "timestamp": 1776145738725
+        },
+        {
+          "id": "3A87FD569BA61209D94C",
+          "chat": "120363413190098612@g.us",
+          "sender": "5214141404567@s.whatsapp.net",
+          "participant": "5214141404567@s.whatsapp.net",
+          "fromMe": false,
+          "timestamp": 1776145752449
+        },
+        {
+          "id": "ACB66B2580F22A08DD789DB61D1AE02C",
+          "chat": "120363413190098612@g.us",
+          "sender": "18097371209@s.whatsapp.net",
+          "participant": "18097371209@s.whatsapp.net",
+          "fromMe": false,
+          "timestamp": 1776145959091
+        },
+        {
+          "id": "3AF7CFA8F0FAC0512179",
+          "chat": "120363413190098612@g.us",
+          "sender": "5214141404567@s.whatsapp.net",
+          "participant": "5214141404567@s.whatsapp.net",
+          "fromMe": false,
+          "timestamp": 1776146026569
+        },
+        {
+          "id": "ACC4BFC8480DC131068F37DDAAB8791A",
+          "chat": "120363413190098612@g.us",
+          "sender": "18097371209@s.whatsapp.net",
+          "participant": "18097371209@s.whatsapp.net",
+          "fromMe": false,
+          "timestamp": 1776146055262
+        },
+        {
+          "id": "3AEF122271FA9FF40DCA",
+          "chat": "120363413190098612@g.us",
+          "sender": "5214141404567@s.whatsapp.net",
+          "participant": "5214141404567@s.whatsapp.net",
+          "fromMe": false,
+          "timestamp": 1776146059242
+        },
+        {
+          "id": "AC41221789D7AF81B40DFF424B0CD26E",
+          "chat": "120363413190098612@g.us",
+          "sender": "18097371209@s.whatsapp.net",
+          "participant": "18097371209@s.whatsapp.net",
+          "fromMe": false,
+          "timestamp": 1776146074006
+        },
+        {
+          "id": "3A3E954821FAB981BFCB",
+          "chat": "120363413190098612@g.us",
+          "sender": "5214141404567@s.whatsapp.net",
+          "participant": "5214141404567@s.whatsapp.net",
+          "fromMe": false,
+          "timestamp": 1776146083922
+        },
+        {
+          "id": "AC81A614076CCA8B2D2DDB561D73A55D",
+          "chat": "120363413190098612@g.us",
+          "sender": "18097371209@s.whatsapp.net",
+          "participant": "18097371209@s.whatsapp.net",
+          "fromMe": false,
+          "timestamp": 1776146095312
         }
       ],
       "userMessageLog": {
@@ -10894,6 +11607,22 @@
             "participant": "51930789552@s.whatsapp.net",
             "fromMe": true,
             "timestamp": 1776145095964
+          },
+          {
+            "id": "3EB0261A15C7DCB843D9A3",
+            "chat": "120363413190098612@g.us",
+            "sender": "51930789552@s.whatsapp.net",
+            "participant": "51930789552@s.whatsapp.net",
+            "fromMe": true,
+            "timestamp": 1776145681005
+          },
+          {
+            "id": "3EB09E7CB420385703C885",
+            "chat": "120363413190098612@g.us",
+            "sender": "51930789552@s.whatsapp.net",
+            "participant": "51930789552@s.whatsapp.net",
+            "fromMe": true,
+            "timestamp": 1776145686939
           }
         ],
         "5218999112669@s.whatsapp.net": [
@@ -10914,9 +11643,134 @@
             "participant": "18097371209@s.whatsapp.net",
             "fromMe": false,
             "timestamp": 1776145148458
+          },
+          {
+            "id": "ACF4969AD7C2F995A512D11C11D9786E",
+            "chat": "120363413190098612@g.us",
+            "sender": "18097371209@s.whatsapp.net",
+            "participant": "18097371209@s.whatsapp.net",
+            "fromMe": false,
+            "timestamp": 1776145681884
+          },
+          {
+            "id": "ACB5C4CB0D585C3A508B7972334137C8",
+            "chat": "120363413190098612@g.us",
+            "sender": "18097371209@s.whatsapp.net",
+            "participant": "18097371209@s.whatsapp.net",
+            "fromMe": false,
+            "timestamp": 1776145738725
+          },
+          {
+            "id": "ACB66B2580F22A08DD789DB61D1AE02C",
+            "chat": "120363413190098612@g.us",
+            "sender": "18097371209@s.whatsapp.net",
+            "participant": "18097371209@s.whatsapp.net",
+            "fromMe": false,
+            "timestamp": 1776145959091
+          },
+          {
+            "id": "ACC4BFC8480DC131068F37DDAAB8791A",
+            "chat": "120363413190098612@g.us",
+            "sender": "18097371209@s.whatsapp.net",
+            "participant": "18097371209@s.whatsapp.net",
+            "fromMe": false,
+            "timestamp": 1776146055262
+          },
+          {
+            "id": "AC41221789D7AF81B40DFF424B0CD26E",
+            "chat": "120363413190098612@g.us",
+            "sender": "18097371209@s.whatsapp.net",
+            "participant": "18097371209@s.whatsapp.net",
+            "fromMe": false,
+            "timestamp": 1776146074006
+          },
+          {
+            "id": "AC81A614076CCA8B2D2DDB561D73A55D",
+            "chat": "120363413190098612@g.us",
+            "sender": "18097371209@s.whatsapp.net",
+            "participant": "18097371209@s.whatsapp.net",
+            "fromMe": false,
+            "timestamp": 1776146095312
+          }
+        ],
+        "5214141404567@s.whatsapp.net": [
+          {
+            "id": "3A56E61AAC4882E23870",
+            "chat": "120363413190098612@g.us",
+            "sender": "5214141404567@s.whatsapp.net",
+            "participant": "5214141404567@s.whatsapp.net",
+            "fromMe": false,
+            "timestamp": 1776145527892
+          },
+          {
+            "id": "3A121614F22BAE434FC9",
+            "chat": "120363413190098612@g.us",
+            "sender": "5214141404567@s.whatsapp.net",
+            "participant": "5214141404567@s.whatsapp.net",
+            "fromMe": false,
+            "timestamp": 1776145715283
+          },
+          {
+            "id": "3A87FD569BA61209D94C",
+            "chat": "120363413190098612@g.us",
+            "sender": "5214141404567@s.whatsapp.net",
+            "participant": "5214141404567@s.whatsapp.net",
+            "fromMe": false,
+            "timestamp": 1776145752449
+          },
+          {
+            "id": "3AF7CFA8F0FAC0512179",
+            "chat": "120363413190098612@g.us",
+            "sender": "5214141404567@s.whatsapp.net",
+            "participant": "5214141404567@s.whatsapp.net",
+            "fromMe": false,
+            "timestamp": 1776146026569
+          },
+          {
+            "id": "3AEF122271FA9FF40DCA",
+            "chat": "120363413190098612@g.us",
+            "sender": "5214141404567@s.whatsapp.net",
+            "participant": "5214141404567@s.whatsapp.net",
+            "fromMe": false,
+            "timestamp": 1776146059242
+          },
+          {
+            "id": "3A3E954821FAB981BFCB",
+            "chat": "120363413190098612@g.us",
+            "sender": "5214141404567@s.whatsapp.net",
+            "participant": "5214141404567@s.whatsapp.net",
+            "fromMe": false,
+            "timestamp": 1776146083922
+          }
+        ],
+        "51901931862@s.whatsapp.net": [
+          {
+            "id": "AC4DA9666AEDA865DC4A42639F7E243A",
+            "chat": "120363413190098612@g.us",
+            "sender": "51901931862@s.whatsapp.net",
+            "participant": "51901931862@s.whatsapp.net",
+            "fromMe": false,
+            "timestamp": 1776145679592
+          },
+          {
+            "id": "AC6C146F875CCC674082892E41BE3CA3",
+            "chat": "120363413190098612@g.us",
+            "sender": "51901931862@s.whatsapp.net",
+            "participant": "51901931862@s.whatsapp.net",
+            "fromMe": false,
+            "timestamp": 1776145686808
+          },
+          {
+            "id": "AC4706FE7E2E036920B43D3814AB66F3",
+            "chat": "120363413190098612@g.us",
+            "sender": "51901931862@s.whatsapp.net",
+            "participant": "51901931862@s.whatsapp.net",
+            "fromMe": false,
+            "timestamp": 1776145699622
           }
         ]
-      }
+      },
+      "badwords": true
     },
     "120363423103891696@g.us": {
       "users": {
@@ -18867,7 +19721,22 @@
         "51930789552@s.whatsapp.net": {
           "stats": {
             "2026-04-14": {
-              "msgs": 2,
+              "msgs": 7,
+              "cmds": 0
+            }
+          },
+          "usedTime": null,
+          "lastCmd": 0,
+          "coins": 0,
+          "bank": 0,
+          "afk": -1,
+          "afkReason": "",
+          "characters": []
+        },
+        "51980367392@s.whatsapp.net": {
+          "stats": {
+            "2026-04-14": {
+              "msgs": 12,
               "cmds": 0
             }
           },
@@ -18915,7 +19784,7 @@
       "namebot": "RubyJX",
       "botname": "RubyJX (JBot)",
       "owner": "51901931862@s.whatsapp.net",
-      "cmdsejecut": 1310
+      "cmdsejecut": 1323
     }
   },
   "characters": {},
