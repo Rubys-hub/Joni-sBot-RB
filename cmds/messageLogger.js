@@ -37,7 +37,7 @@ export default {
       }
 
 
-      console.log('[LOGGER OK]', m.chat, m.sender, m.key.id)
+  
       
       return false
     } catch (e) {
