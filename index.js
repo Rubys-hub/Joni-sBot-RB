@@ -213,27 +213,37 @@ console.log(chalk.green.bold(`[ ⌬ ]  Conectado a: ${userName}`))    }
     if (isNewLogin) {
       log.info("Nuevo dispositivo detectado")
     }
-    if (receivedPendingNotifications == "true") {
-      log.warn("Por favor espere aproximadamente 1 minuto...")
-      client.ev.flush()
-    }
+if (receivedPendingNotifications == "true") {
+  log.warn("Ignorando notificaciones pendientes al iniciar.")
+}
   });
 
-  let m
-  client.ev.on("messages.upsert", async ({ messages }) => {
-    try {
-      m = messages[0]
-      if (!m.message) return
-      m.message = Object.keys(m.message)[0] === "ephemeralMessage" ? m.message.ephemeralMessage.message : m.message
-      if (m.key && m.key.remoteJid === "status@broadcast") return
-      if (!client.public && !m.key.fromMe && messages.type === "notify") return
-      // if (m.key.id.startsWith("BAE5") && m.key.id.length === 16) return
-      m = await smsg(client, m)
-      main(client, m, messages)
-    } catch (err) {
-      console.log(err)
-    }
-  })
+  const startTime = Math.floor(Date.now() / 1000)
+
+let m
+client.ev.on("messages.upsert", async ({ messages, type }) => {
+  try {
+    if (type !== "notify") return
+
+    m = messages[0]
+    if (!m?.message) return
+    if (m.key && m.key.remoteJid === "status@broadcast") return
+
+    const msgTime = Number(m.messageTimestamp || 0)
+    if (msgTime && msgTime < startTime) return
+
+    m.message = Object.keys(m.message)[0] === "ephemeralMessage"
+      ? m.message.ephemeralMessage.message
+      : m.message
+
+    if (!client.public && !m.key.fromMe) return
+
+    m = await smsg(client, m)
+    main(client, m, messages)
+  } catch (err) {
+    console.log(err)
+  }
+})
   try {
   await events(client, m)
   } catch (err) {

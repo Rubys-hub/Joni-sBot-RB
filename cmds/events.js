@@ -68,8 +68,12 @@ function getRandomGreetingReply(phone) {
 }
 
 export default async (client, m) => {
-  client.ev.on('group-participants.update', async (anu) => {
-    try {
+const startTime = Math.floor(Date.now() / 1000)
+
+client.ev.on('group-participants.update', async (anu) => {
+  try {
+    // ❌ IGNORAR EVENTOS ANTIGUOS
+    if (anu?.timestamp && anu.timestamp < startTime) return
       const metadata = await client.groupMetadata(anu.id).catch(() => null)
       if (!metadata) return
 
@@ -188,9 +192,16 @@ export default async (client, m) => {
     }
   })
 
-  client.ev.on('messages.upsert', async ({ messages }) => {
-    const msg = messages[0]
-    if (!msg?.message) return
+client.ev.on('messages.upsert', async ({ messages, type }) => {
+  if (type !== 'notify') return
+
+  const msg = messages[0]
+  if (!msg?.message) return
+
+  // ❌ IGNORAR MENSAJES ANTIGUOS
+  const now = Math.floor(Date.now() / 1000)
+  const msgTime = Number(msg.messageTimestamp || 0)
+  if (msgTime && msgTime < (now - 10)) return
 
     const id = msg.key.remoteJid
     if (!id || !id.endsWith('@g.us')) return
