@@ -144,6 +144,8 @@ async function startBot() {
   })
   
   global.client = clientt;
+  const client = clientt
+  client.public = true
   client.isInit = false
   client.ev.on("creds.update", saveCreds)
   if (opcion === "2" && !fs.existsSync("./Sessions/Owner/creds.json")) {
@@ -218,28 +220,21 @@ if (receivedPendingNotifications == "true") {
 }
   });
 
-  const startTime = Math.floor(Date.now() / 1000)
-
 let m
-client.ev.on("messages.upsert", async ({ messages, type }) => {
+client.ev.on("messages.upsert", async ({ messages }) => {
   try {
-    if (type !== "notify") return
-
     m = messages[0]
     if (!m?.message) return
     if (m.key && m.key.remoteJid === "status@broadcast") return
-
-    const msgTime = Number(m.messageTimestamp || 0)
-    if (msgTime && msgTime < startTime) return
 
     m.message = Object.keys(m.message)[0] === "ephemeralMessage"
       ? m.message.ephemeralMessage.message
       : m.message
 
-    if (!client.public && !m.key.fromMe) return
+    if (client.public === false && !m.key.fromMe) return
 
     m = await smsg(client, m)
-    main(client, m, messages)
+    await main(client, m, messages)
   } catch (err) {
     console.log(err)
   }
