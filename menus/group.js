@@ -1,12 +1,13 @@
 export default {
-command: ['groups', 'group', 'grupo'],  category: 'main',
+  command: ['group', 'grupomenu', 'menugroup'],
+  category: 'main',
 
-  run: async (client, m, args, usedPrefix, command, text) => {
+  run: async (client, m, args, usedPrefix) => {
     const currentPrefix = usedPrefix || '.'
     const pushname = m.pushName || 'Usuario'
 
     const textMenu = `> 𖧧 *Hola, ${pushname}*
-> Accediste al sistema de *grupos*
+> Accediste al sistema de *group*
 
 ╭┈ࠢ͜┅ࠦ͜͜╾݊͜─ׄ͜─ׄ֟፝͜─ׄ͜─ׄ͜╴ ⋱࣭ ᩴ ⋮֔ ᩴ ⋰ ╶͜─ׄ͜─ׄ֟፝͜─ׄ͜─ׄ݊͜͜╼┅ࠦ͜͜┈ࠢ͜╮
 │
@@ -23,170 +24,48 @@ command: ['groups', 'group', 'grupo'],  category: 'main',
 ╰┈ࠢ͜┅ࠦ͜͜╾݊͜─ׄ͜─ׄ֟፝͜─ׄ͜─ׄ͜╴ ⋱࣭ ᩴ ⋮֔ ᩴ ⋰ ╶͜─ׄ͜─ׄ֟፝͜─ׄ͜─ׄ݊͜͜╼┅ࠦ͜͜┈ࠢ͜╯
 
 ╭────────────〔 👥 GROUP SYSTEM 〕────────────╮
-│ ⟡ *TOTAL DISPONIBLE ::* 18 comandos
-│ ⎔ *MODO ::* Administración y control
+│ ⟡ *TOTAL DISPONIBLE ::* 30+ comandos
+│ ⎔ *MODO ::* Moderación y configuración
 ╰────────────────────────────────────────────╯
 
-╭────────〔 👑 PROMOTE 〕────────╮
-│ ✦ *Comando:* ${currentPrefix}promote
-│
-│ 📌 Da admin a un usuario
-│
-│ 🧾 Uso:
-│ ${currentPrefix}promote @usuario
+╭────────〔 ⚙️ BÁSICOS 〕────────╮
+│ ✦ ${currentPrefix}add — agregar usuario
+│ ✦ ${currentPrefix}kick — expulsar usuario
+│ ✦ ${currentPrefix}promote — dar admin
+│ ✦ ${currentPrefix}demote — quitar admin
+│ ✦ ${currentPrefix}link — ver enlace
+│ ✦ ${currentPrefix}setname — cambiar nombre
+│ ✦ ${currentPrefix}setdesc — cambiar descripción
+│ ✦ ${currentPrefix}setppgroup — cambiar foto
+╰──────────────────────────────╯
+
+╭────────〔 🔇 SISTEMA MUTE 〕────────╮
+│ ✦ ${currentPrefix}mute — silenciar grupo
+│ ✦ ${currentPrefix}mutelist — ver silenciados
+│ ✦ ${currentPrefix}mutetime — mute temporal
+│ ✦ ${currentPrefix}unmute — quitar silencio
 ╰────────────────────────────────╯
 
-╭────────〔 ⛔ DEMOTE 〕────────╮
-│ ✦ *Comando:* ${currentPrefix}demote
-│
-│ 📌 Quita admin
-│
-│ 🧾 Uso:
-│ ${currentPrefix}demote @usuario
+╭────────〔 ⚡ MODERACIÓN 〕────────╮
+│ ✦ ${currentPrefix}kickall — expulsar todos
+│ ✦ ${currentPrefix}hidetag — mencionar todos oculto
+│ ✦ ${currentPrefix}purge — borrar mensajes
+│ ✦ ${currentPrefix}purgeuser — borrar mensajes de usuario
+│ ✦ ${currentPrefix}revoke — reiniciar enlace
 ╰────────────────────────────────╯
 
-╭────────〔 🚪 KICK 〕────────╮
-│ ✦ *Comando:* ${currentPrefix}kick
-│
-│ 📌 Expulsa usuario
-│
-│ 🧾 Uso:
-│ ${currentPrefix}kick @usuario
+╭────────〔 ⚙️ CONFIGURACIÓN 〕────────╮
+│ ✦ ${currentPrefix}modconfig — configuración avanzada
 ╰────────────────────────────────╯
 
-╭────────〔 📩 ADD 〕────────╮
-│ ✦ *Comando:* ${currentPrefix}add
-│
-│ 📌 Agrega usuario
-│
-│ 🧾 Uso:
-│ ${currentPrefix}add numero
-╰────────────────────────────────╯
-
-╭────────〔 🔗 LINK 〕────────╮
-│ ✦ *Comando:* ${currentPrefix}link
-│
-│ 📌 Obtiene link del grupo
-│
-│ 🧾 Uso:
-│ ${currentPrefix}link
-╰────────────────────────────────╯
-
-╭────────〔 🔒 CLOSE 〕────────╮
-│ ✦ *Comando:* ${currentPrefix}close
-│
-│ 📌 Cierra el grupo
-│
-│ 🧾 Uso:
-│ ${currentPrefix}close
-╰────────────────────────────────╯
-
-╭────────〔 🔓 OPEN 〕────────╮
-│ ✦ *Comando:* ${currentPrefix}open
-│
-│ 📌 Abre el grupo
-│
-│ 🧾 Uso:
-│ ${currentPrefix}open
-╰────────────────────────────────╯
-
-╭────────〔 📝 SETDESC 〕────────╮
-│ ✦ *Comando:* ${currentPrefix}setdesc
-│
-│ 📌 Cambia descripción
-│
-│ 🧾 Uso:
-│ ${currentPrefix}setdesc texto
-╰────────────────────────────────╯
-
-╭────────〔 🖼️ SETPPGROUP 〕────────╮
-│ ✦ *Comando:* ${currentPrefix}setppgroup
-│
-│ 📌 Cambia foto del grupo
-│
-│ 🧾 Uso:
-│ ${currentPrefix}setppgroup
-╰────────────────────────────────╯
-
-╭────────〔 🏷️ SETNAME 〕────────╮
-│ ✦ *Comando:* ${currentPrefix}setname
-│
-│ 📌 Cambia nombre del grupo
-│
-│ 🧾 Uso:
-│ ${currentPrefix}setname texto
-╰────────────────────────────────╯
-
-╭────────〔 ⚠️ WARN 〕────────╮
-│ ✦ *Comando:* ${currentPrefix}warn
-│
-│ 📌 Advierte usuario
-│
-│ 🧾 Uso:
-│ ${currentPrefix}warn @usuario
-╰────────────────────────────────╯
-
-╭────────〔 🧹 DELETE 〕────────╮
-│ ✦ *Comando:* ${currentPrefix}delete
-│
-│ 📌 Borra mensaje
-│
-│ 🧾 Uso:
-│ ${currentPrefix}delete (responder)
-╰────────────────────────────────╯
-
-╭────────〔 🚫 ANTILINK 〕────────╮
-│ ✦ *Comando:* ${currentPrefix}antilink
-│
-│ 📌 Activa anti links
-│
-│ 🧾 Uso:
-│ ${currentPrefix}antilink on/off
-╰────────────────────────────────╯
-
-╭────────〔 🧹 ANTILINK SOFT 〕────────╮
-│ ✦ *Comando:* ${currentPrefix}antilinksoft
-│
-│ 📌 Elimina links sin expulsar
-│
-│ 🧾 Uso:
-│ ${currentPrefix}antilinksoft on/off
-╰────────────────────────────────╯
-
-╭────────〔 🤖 WELCOME 〕────────╮
-│ ✦ *Comando:* ${currentPrefix}welcome
-│
-│ 📌 Mensajes de bienvenida
-│
-│ 🧾 Uso:
-│ ${currentPrefix}welcome on/off
-╰────────────────────────────────╯
-
-╭────────〔 👋 GOODBYE 〕────────╮
-│ ✦ *Comando:* ${currentPrefix}goodbye
-│
-│ 📌 Mensajes de salida
-│
-│ 🧾 Uso:
-│ ${currentPrefix}goodbye on/off
-╰────────────────────────────────╯
-
-╭────────〔 🔔 ALERTS 〕────────╮
-│ ✦ *Comando:* ${currentPrefix}alerts
-│
-│ 📌 Alertas del grupo
-│
-│ 🧾 Uso:
-│ ${currentPrefix}alerts on/off
-╰────────────────────────────────╯
-
-╭────────〔 👮 ADMINONLY 〕────────╮
-│ ✦ *Comando:* ${currentPrefix}adminonly
-│
-│ 📌 Solo admins usan comandos
-│
-│ 🧾 Uso:
-│ ${currentPrefix}adminonly on/off
+╭────────〔 🛡️ ANTI SYSTEM 〕────────╮
+│ ✦ ${currentPrefix}antiestado — bloquear estados
+│ ✦ ${currentPrefix}antiflood — anti spam
+│ ✦ ${currentPrefix}antiimage — bloquear imágenes
+│ ✦ ${currentPrefix}antivideo — bloquear videos
+│ ✦ ${currentPrefix}antisticker — bloquear stickers
+│ ✦ ${currentPrefix}badwords — filtro de palabras
+│ ✦ ${currentPrefix}antinsfw — bloquear contenido nsfw
 ╰────────────────────────────────╯
 
 ╭──────────〔 🔙 RETURN 〕──────────╮

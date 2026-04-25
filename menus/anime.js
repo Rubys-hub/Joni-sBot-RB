@@ -1,173 +1,70 @@
 export default {
-  command: ['anime', 'random'],
+  command: ['anime'],
   category: 'main',
 
-  run: async (client, m, args, usedPrefix, command, text) => {
+  run: async (client, m, args, usedPrefix) => {
     const currentPrefix = usedPrefix || '.'
     const pushname = m.pushName || 'Usuario'
+    const botId = client.user.id.split(':')[0] + '@s.whatsapp.net'
+    const settings = global.db.data.settings?.[botId] || {}
 
     const textMenu = `> 𖧧 *Hola, ${pushname}*
-> Accediste al sistema de *anime / random*
+> Accediste al sistema de *anime*
 
-╭┈ࠢ͜┅ࠦ͜͜╾݊͜─ׄ͜─ׄ֟፝͜─ׄ͜─ׄ͜╴ ⋱࣭ ᩴ ⋮֔ ᩴ ⋰ ╶͜─ׄ͜─ׄ֟፝͜─ׄ͜─ׄ݊͜͜╼┅ࠦ͜͜┈ࠢ͜╮
-│
-│            ⟐ *A N I M E* ⟐
-│
-│               ⟡ OWNER :: RubyJX
-│           ⎔ TYPE :: FUN SYSTEM
-│        ⟣ VERSION :: ^3.0 - Latest
-│           ⌬ DEVICE :: ACTIVE
-│           ⟐ STATUS :: ONLINE
-│         ✦ CHANNEL :: https://whatsapp.com/channel/0029Vb7O3ugGZNCpbDTDhr3F
-│       ✦ COMMUNITY :: https://chat.whatsapp.com/KtXac3mqt1zFv3FAfDkJ23
-│  
-╰┈ࠢ͜┅ࠦ͜͜╾݊͜─ׄ͜─ׄ֟፝͜─ׄ͜─ׄ͜╴ ⋱࣭ ᩴ ⋮֔ ᩴ ⋰ ╶͜─ׄ͜─ׄ֟፝͜─ׄ͜─ׄ݊͜͜╼┅ࠦ͜͜┈ࠢ͜╯
-
-╭────────────〔 🎌 ANIME SYSTEM 〕────────────╮
-│ ⟡ *TOTAL DISPONIBLE ::* 15 comandos
-│ ⎔ *MODO ::* Reacciones y contenido anime
+╭────────────〔 🌌 ANIME SYSTEM 〕────────────╮
+│ ⟡ *TOTAL DISPONIBLE ::* 4 comandos
+│ ⎔ *MODO ::* Imágenes y contenido anime
 ╰────────────────────────────────────────────╯
 
-╭────────〔 😘 KISS 〕────────╮
-│ ✦ *Comando:* ${currentPrefix}kiss
-│
-│ 📌 Besa a alguien
-│
-│ 🧾 Uso:
-│ ${currentPrefix}kiss @usuario
-╰────────────────────────────╯
-
-╭────────〔 🤗 HUG 〕────────╮
-│ ✦ *Comando:* ${currentPrefix}hug
-│
-│ 📌 Abraza a alguien
-│
-│ 🧾 Uso:
-│ ${currentPrefix}hug @usuario
-╰────────────────────────────╯
-
-╭────────〔 😏 PAT 〕────────╮
-│ ✦ *Comando:* ${currentPrefix}pat
-│
-│ 📌 Da palmaditas
-│
-│ 🧾 Uso:
-│ ${currentPrefix}pat @usuario
-╰────────────────────────────╯
-
-╭────────〔 😂 LAUGH 〕────────╮
-│ ✦ *Comando:* ${currentPrefix}laugh
-│
-│ 📌 Reacción de risa
-│
-│ 🧾 Uso:
-│ ${currentPrefix}laugh
-╰────────────────────────────╯
-
-╭────────〔 😡 ANGRY 〕────────╮
-│ ✦ *Comando:* ${currentPrefix}angry
-│
-│ 📌 Reacción de enojo
-│
-│ 🧾 Uso:
-│ ${currentPrefix}angry
-╰────────────────────────────╯
-
-╭────────〔 😭 CRY 〕────────╮
-│ ✦ *Comando:* ${currentPrefix}cry
-│
-│ 📌 Reacción triste
-│
-│ 🧾 Uso:
-│ ${currentPrefix}cry
-╰────────────────────────────╯
-
-╭────────〔 😳 BLUSH 〕────────╮
-│ ✦ *Comando:* ${currentPrefix}blush
-│
-│ 📌 Reacción sonrojado
-│
-│ 🧾 Uso:
-│ ${currentPrefix}blush
-╰────────────────────────────╯
-
-╭────────〔 😴 SLEEP 〕────────╮
-│ ✦ *Comando:* ${currentPrefix}sleep
-│
-│ 📌 Reacción dormir
-│
-│ 🧾 Uso:
-│ ${currentPrefix}sleep
-╰────────────────────────────╯
-
 ╭────────〔 😍 WAIFU 〕────────╮
-│ ✦ *Comando:* ${currentPrefix}waifu
+│ ✦ *Comando principal:* ${currentPrefix}waifu
 │
-│ 📌 Waifu random
+│ 📌 *¿Qué hace?*
+│ Envía una imagen aleatoria de waifu.
 │
-│ 🧾 Uso:
+│ 🧾 *Uso:*
 │ ${currentPrefix}waifu
-╰────────────────────────────╯
+╰─────────────────────────────╯
 
 ╭────────〔 🐱 NEKO 〕────────╮
-│ ✦ *Comando:* ${currentPrefix}neko
+│ ✦ *Comando principal:* ${currentPrefix}neko
 │
-│ 📌 Neko random
+│ 📌 *¿Qué hace?*
+│ Envía una imagen aleatoria de neko.
 │
-│ 🧾 Uso:
+│ 🧾 *Uso:*
 │ ${currentPrefix}neko
 ╰────────────────────────────╯
 
-╭────────〔 🖼️ ANIMEPIC 〕────────╮
-│ ✦ *Comando:* ${currentPrefix}animepic
+╭────────〔 💞 PPCOUPLE 〕────────╮
+│ ✦ *Comando principal:* ${currentPrefix}ppcouple
+│ ✦ *Alias:* ${currentPrefix}ppcp
 │
-│ 📌 Imagen anime random
+│ 📌 *¿Qué hace?*
+│ Envía imágenes de pareja para foto de perfil.
 │
-│ 🧾 Uso:
-│ ${currentPrefix}animepic
-╰────────────────────────────╯
-
-╭────────〔 🎭 COSPLAY 〕────────╮
-│ ✦ *Comando:* ${currentPrefix}cosplay
-│
-│ 📌 Cosplay random
-│
-│ 🧾 Uso:
-│ ${currentPrefix}cosplay
-╰────────────────────────────╯
-
-╭────────〔 🎲 RANDOM 〕────────╮
-│ ✦ *Comando:* ${currentPrefix}random
-│
-│ 📌 Contenido random
-│
-│ 🧾 Uso:
-│ ${currentPrefix}random
-╰────────────────────────────╯
-
-╭────────〔 🎌 OTAKU 〕────────╮
-│ ✦ *Comando:* ${currentPrefix}otaku
-│
-│ 📌 Contenido otaku
-│
-│ 🧾 Uso:
-│ ${currentPrefix}otaku
-╰────────────────────────────╯
-
-╭────────〔 🎥 ANIMEVIDEO 〕────────╮
-│ ✦ *Comando:* ${currentPrefix}animevideo
-│
-│ 📌 Video anime
-│
-│ 🧾 Uso:
-│ ${currentPrefix}animevideo
-╰────────────────────────────╯
+│ 🧾 *Uso:*
+│ ${currentPrefix}ppcouple
+╰───────────────────────────────╯
 
 ╭──────────〔 🔙 RETURN 〕──────────╮
 │ ⟐ ${currentPrefix}menu
 │ ⟡ ${currentPrefix}menutotal
 ╰──────────────────────────────────╯`
 
-    await client.sendMessage(m.chat, { text: textMenu }, { quoted: m })
+    await client.sendMessage(m.chat, {
+      text: textMenu,
+      contextInfo: {
+        externalAdReply: {
+          title: settings.nameid || 'RubyJX Bot',
+          body: 'Ver canal oficial',
+          thumbnailUrl: settings.icon || settings.banner || undefined,
+          sourceUrl: settings.link || 'https://whatsapp.com/channel/0029Vb7O3ugGZNCpbDTDhr3F',
+          mediaType: 1,
+          renderLargerThumbnail: true,
+          showAdAttribution: false
+        }
+      }
+    }, { quoted: m })
   }
 }

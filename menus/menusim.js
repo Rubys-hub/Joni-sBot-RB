@@ -18,26 +18,41 @@ export default {
       '8': 'group',
       '9': 'nsfw',
       '10': 'anime',
+      '11': 'interacciones',
 
       economia: 'economia',
       economy: 'economia',
+
       gacha: 'gacha',
+
       downloads: 'downloads',
       download: 'downloads',
+
       profile: 'profile',
       profiles: 'profile',
+      perfil: 'profile',
+
       sockets: 'sockets',
       socket: 'sockets',
+
       stickers: 'stickers',
-      stickermenu: 'stickers',
+      sticker: 'stickers',
+
       utilities: 'utilities',
       utility: 'utilities',
       utils: 'utilities',
+      tools: 'utilities',
+
       grupo: 'group',
       groups: 'group',
       group: 'group',
+
       nsfw: 'nsfw',
-      anime: 'anime'
+
+      anime: 'anime',
+
+      interacciones: 'interacciones',
+      interactions: 'interacciones'
     }
 
     const selected = map[query]
@@ -50,7 +65,6 @@ export default {
       if (plugin?.run) {
         return plugin.run(client, m, [], currentPrefix, cmdName, '')
       }
-      return null
     }
 
     if (selected === 'economia') return await openMenu('economia', 'economia')
@@ -63,11 +77,12 @@ export default {
     if (selected === 'group') return await openMenu('group', 'group')
     if (selected === 'nsfw') return await openMenu('nsfw', 'nsfw')
     if (selected === 'anime') return await openMenu('anime', 'anime')
+    if (selected === 'interacciones') return await openMenu('interacciones', 'interacciones')
 
     const textMenu = `> 𖧧 *Hola, ${pushname}*
 > Aquí tienes el panel de *menús disponibles*
 
-╭┈ࠢ͜┅ࠦ͜͜╾݊͜─ׄ͜─ׄ֟፝͜─ׄ͜─ׄ͜╴ ⋱࣭ ᩴ ⋮֔ ᩴ ⋰╶͜─ׄ͜─ׄ֟፝͜─ׄ͜─ׄ݊͜͜╼┅ࠦ͜͜┈ࠢ͜╮
+╭┈ࠢ͜┅ࠦ͜͜╾݊͜─ׄ͜─ׄ֟፝͜─ׄ͜─ׄ͜╴ 〔 MAIN MENU 〕 ╶͜─ׄ͜─ׄ֟፝͜─ׄ͜─ׄ݊͜͜╼┅ࠦ͜͜┈ࠢ͜╮
 │⟐ *OWNER ::* RubyJX
 │⟡ *TYPE ::* SYSTEM
 │⎔ *VERSION ::* ^3.0 - Latest
@@ -75,41 +90,46 @@ export default {
 │⌬ *STATUS ::* ONLINE
 ╰┈ࠢ͜┅ࠦ͜͜╾݊͜─ׄ͜─ׄ֟፝͜─ׄ͜─ׄ͜╴ ⋱࣭ ᩴ ⋮֔ ᩴ ⋰╶͜─ׄ͜─ׄ֟፝͜─ׄ͜─ׄ݊͜͜╼┅ࠦ͜͜┈ࠢ͜╯
 
-*1.* 💰 *ECONOMY* (26)
+*1.* 💰 *ECONOMIA* (17)
 > ${currentPrefix}menu economia o ${currentPrefix}menu 1
 
-*2.* 🎴 *GACHA* (21)
+*2.* 🎴 *GACHA* (25)
 > ${currentPrefix}menu gacha o ${currentPrefix}menu 2
 
-*3.* ⬇️ *DOWNLOAD* (12)
+*3.* ⬇️ *DOWNLOADS* (12)
 > ${currentPrefix}menu downloads o ${currentPrefix}menu 3
 
-*4.* 👤 *PROFILES* (15)
+*4.* 👤 *PROFILE* (14)
 > ${currentPrefix}menu profile o ${currentPrefix}menu 4
 
 *5.* 🔐 *SOCKETS* (18)
 > ${currentPrefix}menu sockets o ${currentPrefix}menu 5
 
-*6.* 🧩 *STICKERS* (15)
+*6.* 🎨 *STICKERS* (17)
 > ${currentPrefix}menu stickers o ${currentPrefix}menu 6
 
-*7.* 🛠️ *UTILITIES* (18)
+*7.* 🛠️ *UTILITIES* (13)
 > ${currentPrefix}menu utilities o ${currentPrefix}menu 7
 
-*8.* 👥 *GROUPS* (30)
+*8.* 👥 *GROUP* (30+)
 > ${currentPrefix}menu group o ${currentPrefix}menu 8
 
-*9.* 🔞 *NSFW* (38)
+*9.* 🔞 *NSFW* (12)
 > ${currentPrefix}menu nsfw o ${currentPrefix}menu 9
 
-*10.* 🌌 *ANIME* (69)
+*10.* 🌌 *ANIME* (3)
 > ${currentPrefix}menu anime o ${currentPrefix}menu 10
+
+*11.* ❤️ *INTERACCIONES* (60+)
+> ${currentPrefix}menu interacciones o ${currentPrefix}menu 11
 
 ╭┈ࠢ͜┅ࠦ͜͜╾݊͜─ׄ͜─ׄ֟፝͜─ׄ͜─ׄ͜╴ 〔 ACCESS 〕 ╶͜─ׄ͜─ׄ֟፝͜─ׄ͜─ׄ݊͜͜╼┅ࠦ͜͜┈ࠢ͜╮
 │⟐ *Ver categoría*
 │   ${currentPrefix}menu <nombre>
+│
 │⟡ *Ejemplo*
-│   ${currentPrefix}menu anime
+│   ${currentPrefix}menu interacciones
+│
 │⎔ *Menú completo*
 │   ${currentPrefix}menutotal
 ╰┈ࠢ͜┅ࠦ͜͜╾݊͜─ׄ͜─ׄ֟፝͜─ׄ͜─ׄ͜╴ ⋱࣭ ᩴ ⋮֔ ᩴ ⋰╶͜─ׄ͜─ׄ֟፝͜─ׄ͜─ׄ݊͜͜╼┅ࠦ͜͜┈ࠢ͜╯`

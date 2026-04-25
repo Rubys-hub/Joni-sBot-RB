@@ -1,12 +1,14 @@
 export default {
-  command: ['gacha'],
+  command: ['gacha', 'menugacha'],
   category: 'main',
 
-  run: async (client, m, args, usedPrefix, command, text) => {
-    const currentPrefix = usedPrefix || '.'
-    const pushname = m.pushName || 'Usuario'
+  run: async (client, m, args, usedPrefix) => {
+    const p = usedPrefix || '.'
+    const name = m.pushName || 'Usuario'
+    const botId = client.user.id.split(':')[0] + '@s.whatsapp.net'
+    const settings = global.db.data.settings?.[botId] || {}
 
-    const textMenu = `> 𖧧 *Hola, ${pushname}*
+    const text = `> 𖧧 *Hola, ${name}*
 > Accediste al sistema de *gacha*
 
 ╭┈ࠢ͜┅ࠦ͜͜╾݊͜─ׄ͜─ׄ֟፝͜─ׄ͜─ׄ͜╴ ⋱࣭ ᩴ ⋮֔ ᩴ ⋰ ╶͜─ׄ͜─ׄ֟፝͜─ׄ͜─ׄ݊͜͜╼┅ࠦ͜͜┈ࠢ͜╮
@@ -24,258 +26,78 @@ export default {
 ╰┈ࠢ͜┅ࠦ͜͜╾݊͜─ׄ͜─ׄ֟፝͜─ׄ͜─ׄ͜╴ ⋱࣭ ᩴ ⋮֔ ᩴ ⋰ ╶͜─ׄ͜─ׄ֟፝͜─ׄ͜─ׄ݊͜͜╼┅ࠦ͜͜┈ࠢ͜╯
 
 ╭────────────〔 🎴 GACHA SYSTEM 〕────────────╮
-│ ⟡ *TOTAL DISPONIBLE ::* 21 comandos
-│ ⎔ *MODO ::* Reclamos, intercambios y personajes
+│ ⟡ *TOTAL DISPONIBLE ::* 25 comandos
+│ ⎔ *MODO ::* Waifus, colección y sistema RPG
 ╰────────────────────────────────────────────╯
 
-╭────────〔 🛒 BUYCHARACTER / COMPRAR 〕────────╮
-│ ✦ *Comando principal:* ${currentPrefix}buycharacter
-│ ✦ *Aliases:* ${currentPrefix}buychar • ${currentPrefix}buyc
-│
-│ 📌 *¿Qué hace?*
-│ Compra un personaje que esté en venta.
-│
-│ 🧾 *Uso:*
-│ ${currentPrefix}buycharacter <waifu>
-╰──────────────────────────────────────────────╯
+╭────────〔 🎲 BÁSICOS 〕────────╮
+│ ${p}gacha — invocar personaje
+│ ${p}waifu — obtener waifu
+│ ${p}husbando — obtener husbando
+│ ${p}random — personaje aleatorio
+╰──────────────────────────────╯
 
-╭────────〔 🖼️ CHARIMAGE / IMAGEN 〕────────╮
-│ ✦ *Comando principal:* ${currentPrefix}charimage
-│ ✦ *Aliases:* ${currentPrefix}waifuimage • ${currentPrefix}cimage • ${currentPrefix}wimage
-│
-│ 📌 *¿Qué hace?*
-│ Muestra una imagen aleatoria del personaje.
-│
-│ 🧾 *Uso:*
-│ ${currentPrefix}charimage <waifu>
-╰──────────────────────────────────────────────╯
+╭────────〔 📚 COLECCIÓN 〕────────╮
+│ ${p}inv — ver inventario
+│ ${p}collection — colección completa
+│ ${p}claim — reclamar personaje
+│ ${p}release — liberar personaje
+│ ${p}favorite — marcar favorito
+│ ${p}deletefav — eliminar favorito
+╰────────────────────────────────╯
 
-╭────────〔 📄 CHARINFO / INFO 〕────────╮
-│ ✦ *Comando principal:* ${currentPrefix}charinfo
-│ ✦ *Aliases:* ${currentPrefix}winfo • ${currentPrefix}waifuinfo
-│
-│ 📌 *¿Qué hace?*
-│ Muestra la información del personaje.
-│
-│ 🧾 *Uso:*
-│ ${currentPrefix}charinfo <waifu>
-╰──────────────────────────────────────────────╯
+╭────────〔 💱 INTERACCIÓN 〕────────╮
+│ ${p}trade — intercambiar personajes
+│ ${p}accept — aceptar intercambio
+│ ${p}aceptar — aceptar acción
+│ ${p}gift — regalar personaje
+│ ${p}robwaifu — robar personaje
+╰────────────────────────────────╯
 
-╭────────〔 🎯 CLAIM / RECLAMAR 〕────────╮
-│ ✦ *Comando principal:* ${currentPrefix}claim
-│ ✦ *Aliases:* ${currentPrefix}c • ${currentPrefix}reclamar
-│
-│ 📌 *¿Qué hace?*
-│ Reclama un personaje disponible.
-│
-│ 🧾 *Uso:*
-│ ${currentPrefix}claim <cite / waifu>
-╰──────────────────────────────────────────────╯
+╭────────〔 📊 INFO 〕────────╮
+│ ${p}charinfo — info personaje
+│ ${p}topwaifu — ranking
+│ ${p}searchwaifu — buscar personaje
+╰───────────────────────────╯
 
-╭────────〔 🗑️ DELCLAIMMSG 〕────────╮
-│ ✦ *Comando principal:* ${currentPrefix}delclaimmsg
-│
-│ 📌 *¿Qué hace?*
-│ Restablece el mensaje de reclamo.
-│
-│ 🧾 *Uso:*
-│ ${currentPrefix}delclaimmsg
-╰──────────────────────────────────────────────╯
+╭────────〔 🎬 MULTIMEDIA 〕────────╮
+│ ${p}charimage — imagen personaje
+│ ${p}charvideo — video personaje
+╰──────────────────────────────╯
 
-╭────────〔 ❌ DELETEWAIFU / ELIMINAR 〕────────╮
-│ ✦ *Comando principal:* ${currentPrefix}deletewaifu
-│ ✦ *Aliases:* ${currentPrefix}delwaifu • ${currentPrefix}delchar
-│
-│ 📌 *¿Qué hace?*
-│ Elimina un personaje reclamado.
-│
-│ 🧾 *Uso:*
-│ ${currentPrefix}deletewaifu <waifu>
-╰──────────────────────────────────────────────╯
+╭────────〔 ⚙️ SISTEMA 〕────────╮
+│ ${p}daily — recompensa diaria
+│ ${p}cooldown — ver tiempos
+│ ${p}resetgacha — reiniciar progreso
+╰──────────────────────────────╯
 
-╭────────〔 🏆 FAVTOP / TOP FAVORITOS 〕────────╮
-│ ✦ *Comando principal:* ${currentPrefix}favoritetop
-│ ✦ *Alias:* ${currentPrefix}favtop
-│
-│ 📌 *¿Qué hace?*
-│ Muestra el top de personajes favoritos.
-│
-│ 🧾 *Uso:*
-│ ${currentPrefix}favoritetop
-╰──────────────────────────────────────────────╯
-
-╭────────〔 📊 GACHAINFO / GINFO 〕────────╮
-│ ✦ *Comando principal:* ${currentPrefix}gachainfo
-│ ✦ *Aliases:* ${currentPrefix}ginfo • ${currentPrefix}infogacha
-│
-│ 📌 *¿Qué hace?*
-│ Muestra tu información de gacha.
-│
-│ 🧾 *Uso:*
-│ ${currentPrefix}gachainfo
-╰──────────────────────────────────────────────╯
-
-╭────────〔 🎁 GIVEALLHAREM 〕────────╮
-│ ✦ *Comando principal:* ${currentPrefix}giveallharem
-│
-│ 📌 *¿Qué hace?*
-│ Regala todos tus personajes a otro usuario.
-│
-│ 🧾 *Uso:*
-│ ${currentPrefix}giveallharem @usuario
-╰──────────────────────────────────────────────╯
-
-╭────────〔 🤝 GIVECHAR / REGALAR 〕────────╮
-│ ✦ *Comando principal:* ${currentPrefix}givechar
-│ ✦ *Aliases:* ${currentPrefix}givewaifu • ${currentPrefix}regalar
-│
-│ 📌 *¿Qué hace?*
-│ Regala un personaje a otro usuario.
-│
-│ 🧾 *Uso:*
-│ ${currentPrefix}givechar <waifu> @usuario
-╰──────────────────────────────────────────────╯
-
-╭────────〔 🗂️ HAREM / WAIFUS 〕────────╮
-│ ✦ *Comando principal:* ${currentPrefix}harem
-│ ✦ *Aliases:* ${currentPrefix}waifus • ${currentPrefix}claims
-│
-│ 📌 *¿Qué hace?*
-│ Muestra tus personajes reclamados.
-│
-│ 🧾 *Uso:*
-│ ${currentPrefix}harem
-│ ${currentPrefix}harem @usuario
-╰──────────────────────────────────────────────╯
-
-╭────────〔 🏪 HAREMSHOP / TIENDA 〕────────╮
-│ ✦ *Comando principal:* ${currentPrefix}haremshop
-│ ✦ *Aliases:* ${currentPrefix}tiendawaifus • ${currentPrefix}wshop
-│
-│ 📌 *¿Qué hace?*
-│ Muestra los personajes en venta.
-│
-│ 🧾 *Uso:*
-│ ${currentPrefix}haremshop
-│ ${currentPrefix}haremshop 2
-╰──────────────────────────────────────────────╯
-
-╭────────〔 🚫 REMOVESALE 〕────────╮
-│ ✦ *Comando principal:* ${currentPrefix}removesale
-│ ✦ *Alias:* ${currentPrefix}removerventa
-│
-│ 📌 *¿Qué hace?*
-│ Quita un personaje de la venta.
-│
-│ 🧾 *Uso:*
-│ ${currentPrefix}removesale <waifu>
-╰──────────────────────────────────────────────╯
-
-╭────────〔 🎲 ROLLWAIFU / RW 〕────────╮
-│ ✦ *Comando principal:* ${currentPrefix}rollwaifu
-│ ✦ *Aliases:* ${currentPrefix}rw • ${currentPrefix}roll
-│
-│ 📌 *¿Qué hace?*
-│ Obtiene una waifu o husbando aleatorio.
-│
-│ 🧾 *Uso:*
-│ ${currentPrefix}rollwaifu
-╰──────────────────────────────────────────────╯
-
-╭────────〔 💸 SELL / VENDER 〕────────╮
-│ ✦ *Comando principal:* ${currentPrefix}sell
-│ ✦ *Alias:* ${currentPrefix}vender
-│
-│ 📌 *¿Qué hace?*
-│ Pone un personaje a la venta.
-│
-│ 🧾 *Uso:*
-│ ${currentPrefix}sell <valor> <waifu>
-╰──────────────────────────────────────────────╯
-
-╭────────〔 📚 SERIEINFO / ANIMEINFO 〕────────╮
-│ ✦ *Comando principal:* ${currentPrefix}serieinfo
-│ ✦ *Aliases:* ${currentPrefix}ainfo • ${currentPrefix}animeinfo
-│
-│ 📌 *¿Qué hace?*
-│ Muestra información de un anime.
-│
-│ 🧾 *Uso:*
-│ ${currentPrefix}serieinfo <nombre>
-╰──────────────────────────────────────────────╯
-
-╭────────〔 📜 SERIELIST / ANIMELIST 〕────────╮
-│ ✦ *Comando principal:* ${currentPrefix}serielist
-│ ✦ *Aliases:* ${currentPrefix}slist • ${currentPrefix}animelist
-│
-│ 📌 *¿Qué hace?*
-│ Lista las series disponibles.
-│
-│ 🧾 *Uso:*
-│ ${currentPrefix}serielist
-╰──────────────────────────────────────────────╯
-
-╭────────〔 ✏️ SETCLAIMMSG 〕────────╮
-│ ✦ *Comando principal:* ${currentPrefix}setclaimmsg
-│ ✦ *Alias:* ${currentPrefix}setclaim
-│
-│ 📌 *¿Qué hace?*
-│ Cambia el mensaje al reclamar personajes.
-│
-│ 🧾 *Uso:*
-│ ${currentPrefix}setclaimmsg <texto>
-╰──────────────────────────────────────────────╯
-
-╭────────〔 ⭐ SETFAVOURITE / SETFAV 〕────────╮
-│ ✦ *Comando principal:* ${currentPrefix}setfavourite
-│ ✦ *Alias:* ${currentPrefix}setfav
-│
-│ 📌 *¿Qué hace?*
-│ Establece tu personaje favorito.
-│
-│ 🧾 *Uso:*
-│ ${currentPrefix}setfavourite <waifu>
-╰──────────────────────────────────────────────╯
-
-╭────────〔 🔄 TRADE / INTERCAMBIAR 〕────────╮
-│ ✦ *Comando principal:* ${currentPrefix}trade
-│ ✦ *Alias:* ${currentPrefix}intercambiar
-│
-│ 📌 *¿Qué hace?*
-│ Intercambia personajes con otro usuario.
-│
-│ 🧾 *Uso:*
-│ ${currentPrefix}trade <tu personaje / personaje 2>
-╰──────────────────────────────────────────────╯
-
-╭────────〔 🗳️ VOTE / VOTAR 〕────────╮
-│ ✦ *Comando principal:* ${currentPrefix}vote
-│ ✦ *Alias:* ${currentPrefix}votar
-│
-│ 📌 *¿Qué hace?*
-│ Vota por un personaje para subir su valor.
-│
-│ 🧾 *Uso:*
-│ ${currentPrefix}vote <waifu>
-╰──────────────────────────────────────────────╯
-
-╭────────〔 🥇 WAIFUSBOARD / TOP 〕────────╮
-│ ✦ *Comando principal:* ${currentPrefix}waifusboard
-│ ✦ *Aliases:* ${currentPrefix}waifustop • ${currentPrefix}topwaifus • ${currentPrefix}wtop
-│
-│ 📌 *¿Qué hace?*
-│ Muestra el top de personajes con mayor valor.
-│
-│ 🧾 *Uso:*
-│ ${currentPrefix}waifusboard
-│ ${currentPrefix}waifusboard 2
-╰──────────────────────────────────────────────╯
+╭────────〔 🎯 EXTRA 〕────────╮
+│ ${p}waifuvideo — video alternativo
+│ ${p}cvideo — alias video
+│ ${p}wvideo — alias video
+╰────────────────────────────╯
 
 ╭──────────〔 🔙 RETURN 〕──────────╮
-│ ⟐ ${currentPrefix}menu
-│ ⟡ ${currentPrefix}menutotal
+│ ⟐ ${p}menu
+│ ⟡ ${p}menutotal
 ╰──────────────────────────────────╯`
 
-    await client.sendMessage(m.chat, { text: textMenu }, { quoted: m })
+    await client.sendMessage(
+      m.chat,
+      {
+        text,
+        contextInfo: {
+          externalAdReply: {
+            title: settings.nameid || 'RubyJX Bot',
+            body: 'Ver canal oficial',
+            thumbnailUrl: settings.icon || settings.banner || undefined,
+            sourceUrl: settings.link || 'https://whatsapp.com/channel/0029Vb7O3ugGZNCpbDTDhr3F',
+            mediaType: 1,
+            renderLargerThumbnail: true
+          }
+        }
+      },
+      { quoted: m }
+    )
   }
 }

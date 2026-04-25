@@ -1,13 +1,15 @@
 export default {
-  command: ['downloads', 'download'],
+  command: ['downloads', 'menudownloads'],
   category: 'main',
 
-  run: async (client, m, args, usedPrefix, command, text) => {
+  run: async (client, m, args, usedPrefix) => {
     const currentPrefix = usedPrefix || '.'
     const pushname = m.pushName || 'Usuario'
+    const botId = client.user.id.split(':')[0] + '@s.whatsapp.net'
+    const settings = global.db.data.settings?.[botId] || {}
 
     const textMenu = `> 𖧧 *Hola, ${pushname}*
-> Accediste al sistema de *descargas*
+> Accediste al sistema de *downloads*
 
 ╭┈ࠢ͜┅ࠦ͜͜╾݊͜─ׄ͜─ׄ֟፝͜─ׄ͜─ׄ͜╴ ⋱࣭ ᩴ ⋮֔ ᩴ ⋰ ╶͜─ׄ͜─ׄ֟፝͜─ׄ͜─ׄ݊͜͜╼┅ࠦ͜͜┈ࠢ͜╮
 │
@@ -25,115 +27,31 @@ export default {
 
 ╭────────────〔 ⬇️ DOWNLOAD SYSTEM 〕────────────╮
 │ ⟡ *TOTAL DISPONIBLE ::* 12 comandos
-│ ⎔ *MODO ::* Videos, música y redes sociales
-╰──────────────────────────────────────────────╯
+│ ⎔ *MODO ::* Descarga de contenido multimedia
+╰───────────────────────────────────────────────╯
 
-╭────────〔 🎵 PLAY / MÚSICA 〕────────╮
-│ ✦ *Comando:* ${currentPrefix}play
-│
-│ 📌 Descarga música desde YouTube
-│
-│ 🧾 Uso:
-│ ${currentPrefix}play nombre
-╰──────────────────────────────────────╯
-
-╭────────〔 🎥 PLAY2 / VIDEO 〕────────╮
-│ ✦ *Comando:* ${currentPrefix}play2
-│
-│ 📌 Descarga video de YouTube
-│
-│ 🧾 Uso:
-│ ${currentPrefix}play2 nombre
-╰──────────────────────────────────────╯
-
-╭────────〔 📺 YTMP3 〕────────╮
-│ ✦ *Comando:* ${currentPrefix}ytmp3
-│
-│ 📌 Convierte YouTube a audio
-│
-│ 🧾 Uso:
-│ ${currentPrefix}ytmp3 link
+╭────────〔 🎵 YOUTUBE 〕────────╮
+│ ✦ ${currentPrefix}play — buscar y descargar
+│ ✦ ${currentPrefix}play2 — segunda opción
+│ ✦ ${currentPrefix}ytmp3 — descargar audio
+│ ✦ ${currentPrefix}ytmp4 — descargar video
 ╰──────────────────────────────╯
 
-╭────────〔 🎬 YTMP4 〕────────╮
-│ ✦ *Comando:* ${currentPrefix}ytmp4
-│
-│ 📌 Descarga video de YouTube
-│
-│ 🧾 Uso:
-│ ${currentPrefix}ytmp4 link
+╭────────〔 🎶 MÚSICA 〕────────╮
+│ ✦ ${currentPrefix}spotify — descargar spotify
+│ ✦ ${currentPrefix}audio — convertir a mp3
+│ ✦ ${currentPrefix}video — convertir a mp4
 ╰──────────────────────────────╯
 
-╭────────〔 🎧 SPOTIFY 〕────────╮
-│ ✦ *Comando:* ${currentPrefix}spotify
-│
-│ 📌 Descarga música de Spotify
-│
-│ 🧾 Uso:
-│ ${currentPrefix}spotify link
+╭────────〔 📱 REDES 〕────────╮
+│ ✦ ${currentPrefix}tiktok — descargar tiktok
+│ ✦ ${currentPrefix}facebook — descargar facebook
+│ ✦ ${currentPrefix}instagram — descargar instagram
+│ ✦ ${currentPrefix}twitter — descargar twitter
 ╰──────────────────────────────╯
 
-╭────────〔 📱 TIKTOK 〕────────╮
-│ ✦ *Comando:* ${currentPrefix}tiktok
-│
-│ 📌 Descarga videos de TikTok
-│
-│ 🧾 Uso:
-│ ${currentPrefix}tiktok link
-╰──────────────────────────────╯
-
-╭────────〔 📘 FACEBOOK 〕────────╮
-│ ✦ *Comando:* ${currentPrefix}facebook
-│
-│ 📌 Descarga videos de Facebook
-│
-│ 🧾 Uso:
-│ ${currentPrefix}facebook link
-╰──────────────────────────────╯
-
-╭────────〔 📸 INSTAGRAM 〕────────╮
-│ ✦ *Comando:* ${currentPrefix}instagram
-│
-│ 📌 Descarga contenido de Instagram
-│
-│ 🧾 Uso:
-│ ${currentPrefix}instagram link
-╰──────────────────────────────╯
-
-╭────────〔 🐦 TWITTER 〕────────╮
-│ ✦ *Comando:* ${currentPrefix}twitter
-│
-│ 📌 Descarga videos de Twitter
-│
-│ 🧾 Uso:
-│ ${currentPrefix}twitter link
-╰──────────────────────────────╯
-
-╭────────〔 🌐 MEDIAFIRE 〕────────╮
-│ ✦ *Comando:* ${currentPrefix}mediafire
-│
-│ 📌 Descarga archivos de Mediafire
-│
-│ 🧾 Uso:
-│ ${currentPrefix}mediafire link
-╰──────────────────────────────╯
-
-╭────────〔 🔊 AUDIO 〕────────╮
-│ ✦ *Comando:* ${currentPrefix}audio
-│
-│ 📌 Convierte video a audio
-│
-│ 🧾 Uso:
-│ ${currentPrefix}audio link
-╰──────────────────────────────╯
-
-╭────────〔 🎥 VIDEO 〕────────╮
-│ ✦ *Comando:* ${currentPrefix}video
-│
-│ 📌 Convierte link a video
-│
-│ 🧾 Uso:
-│ ${currentPrefix}video link
+╭────────〔 📦 ARCHIVOS 〕────────╮
+│ ✦ ${currentPrefix}mediafire — descargar archivos
 ╰──────────────────────────────╯
 
 ╭──────────〔 🔙 RETURN 〕──────────╮
@@ -141,6 +59,18 @@ export default {
 │ ⟡ ${currentPrefix}menutotal
 ╰──────────────────────────────────╯`
 
-    await client.sendMessage(m.chat, { text: textMenu }, { quoted: m })
+    await client.sendMessage(m.chat, {
+      text: textMenu,
+      contextInfo: {
+        externalAdReply: {
+          title: settings.nameid || 'RubyJX Bot',
+          body: 'Ver canal oficial',
+          thumbnailUrl: settings.icon || settings.banner || undefined,
+          sourceUrl: settings.link || 'https://whatsapp.com/channel/0029Vb7O3ugGZNCpbDTDhr3F',
+          mediaType: 1,
+          renderLargerThumbnail: true
+        }
+      }
+    }, { quoted: m })
   }
 }
