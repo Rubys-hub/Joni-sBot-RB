@@ -32,6 +32,10 @@ function initDB(m, client) {
   user.metadatos2 ??= null
 
   const chat = global.db.data.chats[m.chat] ||= {}
+
+  chat.messageLog ||= []
+chat.userMessageLog ||= {}
+
   chat.users ||= {}
   chat.isBanned ??= false
   chat.welcome ??= false
@@ -45,6 +49,7 @@ function initDB(m, client) {
   chat.adminonly ??= false
   chat.primaryBot ??= null
   chat.antilinks ??= true
+  chat.autoAdmin ??= false
 
   chat.users[m.sender] ||= {}
   chat.users[m.sender].stats ||= {}

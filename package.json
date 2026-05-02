@@ -36,6 +36,7 @@
     "human-readable": "^0.2.1",
     "jimp": "^0.22.6",
     "lodash": "latest",
+    "mathjs": "^15.2.0",
     "moment": "^2.29.4",
     "moment-timezone": "^0.5.37",
     "node-cache": "latest",

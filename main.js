@@ -190,16 +190,49 @@ return m.reply(`ʀᴜʙʏᴊx ʙᴏᴛ  •  ᴄᴏᴍᴀɴᴅᴏ ɴᴏ ᴇɴᴄ
   if (cmdData.isAdmin && !isAdmins) return client.reply(m.chat, mess.admin, m);
   if (cmdData.botAdmin && !isBotAdmins) return client.reply(m.chat, mess.botAdmin, m);
   try {
-    await client.readMessages([m.key]);
-    user.usedcmds = (user.usedcmds || 0) + 1;
-    settings.cmdsejecut = (settings.cmdsejecut || 0) + 1;
-    users.usedTime = new Date();
-    users.lastCmd = Date.now();
-    user.exp = (user.exp || 0) + Math.floor(Math.random() * 100);
-    user.name = m.pushName;
-    users.stats[today].cmds++;
-    await cmdData.run(client, m, args, usedPrefix, command, text);
-  } catch (error) {
+  await client.readMessages([m.key]);
+  user.usedcmds = (user.usedcmds || 0) + 1;
+  settings.cmdsejecut = (settings.cmdsejecut || 0) + 1;
+  users.usedTime = new Date();
+  users.lastCmd = Date.now();
+  user.exp = (user.exp || 0) + Math.floor(Math.random() * 100);
+  user.name = m.pushName;
+  users.stats[today].cmds++;
+
+  if (m.isGroup) {
+    const chatLog = global.db.data.chats[m.chat] ||= {}
+
+    chatLog.commandHistory ||= []
+    chatLog.commandStats ||= {}
+    chatLog.botLogs ||= []
+
+    chatLog.commandHistory.unshift({
+
+      command,
+      sender: m.sender,
+      time: Date.now()
+    })
+
+    const adminCommands = ['ban', 'kick', 'warn', 'add', 'mute', 'promote', 'demote']
+
+if (adminCommands.includes(command)) {
+  chatLog.botLogs.unshift({
+    action: `Se usó .${command}`,
+    by: m.sender,
+    time: Date.now()
+  })
+
+  chatLog.botLogs = chatLog.botLogs.slice(0, 50)
+}
+
+    chatLog.commandHistory = chatLog.commandHistory.slice(0, 50)
+    chatLog.commandStats[command] = (chatLog.commandStats[command] || 0) + 1
+  }
+
+  await cmdData.run(client, m, args, usedPrefix, command, text);
+}
+
+ catch (error) {
     await client.sendMessage(m.chat, { text: `ʀᴜʙʏᴊx ʙᴏᴛ  •  ᴇʀʀᴏʀ ᴀʟ ᴇᴊᴇᴄᴜᴛᴀʀ\n${error}` }, { quoted: m });
   }
   level(m);

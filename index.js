@@ -1,6 +1,7 @@
 import "./settings.js"
 import main from './main.js'
 import events from './cmds/events.js'
+import { groupParticipantsUpdate } from './cmds/events.js'
 import { Browsers, makeWASocket, makeCacheableSignalKeyStore, useMultiFileAuthState, fetchLatestBaileysVersion, jidDecode, DisconnectReason, jidNormalizedUser, } from "@whiskeysockets/baileys";
 import cfonts from 'cfonts';
 import pino from "pino";
@@ -161,6 +162,9 @@ async function startBot() {
     }
   }, 3000)
 }
+client.ev.on('group-participants.update', async (update) => {
+  await groupParticipantsUpdate(client, update)
+})
 
   client.sendText = (jid, text, quoted = "", options) =>
   client.sendMessage(jid, { text: text, ...options }, { quoted })
@@ -173,6 +177,8 @@ async function startBot() {
 
 qrcode.generate(qr, { small: true });
     }}
+
+
 
     if (connection === "close") {
       const reason = lastDisconnect?.error?.output?.statusCode || 0;

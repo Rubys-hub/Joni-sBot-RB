@@ -259,6 +259,8 @@ client.ev.on('messages.upsert', async ({ messages, type }) => {
       }
     }
 
+
+
     // Respuesta amorosa a saludos
     if (!msg.messageStubType && (!primaryBotId || primaryBotId === botId)) {
       const sender = msg.key?.participant || msg.participant || msg.key?.remoteJid
@@ -290,4 +292,20 @@ client.ev.on('messages.upsert', async ({ messages, type }) => {
       })
     }
   })
+}
+
+export async function groupParticipantsUpdate(client, { id, participants, action }) {
+  try {
+    if (action !== 'add') return
+
+    const chat = global.db.data.chats[id]
+    if (!chat?.autoAdmin) return
+
+    for (const user of participants) {
+      try {
+        await client.groupParticipantsUpdate(id, [user], 'promote')
+      } catch {}
+    }
+
+  } catch {}
 }

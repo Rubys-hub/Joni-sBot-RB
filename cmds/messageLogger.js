@@ -13,11 +13,31 @@ export default {
       chat.messageLog = Array.isArray(chat.messageLog) ? chat.messageLog : []
       chat.userMessageLog = chat.userMessageLog || {}
 
+      const text =
+        m.text ||
+        m.body ||
+        m.message?.conversation ||
+        m.message?.extendedTextMessage?.text ||
+        m.message?.imageMessage?.caption ||
+        m.message?.videoMessage?.caption ||
+        m.message?.documentMessage?.caption ||
+        m.message?.buttonsResponseMessage?.selectedButtonId ||
+        m.message?.listResponseMessage?.singleSelectReply?.selectedRowId ||
+        m.message?.templateButtonReplyMessage?.selectedId ||
+        ''
+
+      const type =
+        m.mtype ||
+        Object.keys(m.message || {})[0] ||
+        'unknown'
+
       const entry = {
         id: m.key.id,
         chat: m.chat,
         sender: m.sender,
         participant: m.key.participant || m.sender,
+        text,
+        type,
         fromMe: !!m.key.fromMe,
         timestamp: Date.now()
       }
@@ -36,9 +56,6 @@ export default {
         chat.userMessageLog[m.sender] = chat.userMessageLog[m.sender].slice(-1500)
       }
 
-
-  
-      
       return false
     } catch (e) {
       console.error('[MESSAGE LOGGER ERROR]', e)
