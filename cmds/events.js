@@ -1,5 +1,5 @@
 import fetch from 'node-fetch'
-let WAMessageStubType = (await import('@whiskeysockets/baileys')).default
+import { WAMessageStubType } from 'baileys'
 import chalk from 'chalk'
 
 function normalizeText(text = '') {
@@ -172,6 +172,9 @@ client.ev.on('group-participants.update', async (anu) => {
         }
 
         if (anu.action === 'promote' && chat?.alerts && (!primaryBotId || primaryBotId === botId)) {
+          // EXCEPCIÓN MODO NINJA: Ignorar a tu número
+          if (phone === '51901931862') continue
+
           const usuario = anu.author
           await client.sendMessage(anu.id, {
             text: `「✎」 *@${phone}* ha sido promovido a Administrador por *@${usuario.split('@')[0]}.*`,
@@ -180,6 +183,9 @@ client.ev.on('group-participants.update', async (anu) => {
         }
 
         if (anu.action === 'demote' && chat?.alerts && (!primaryBotId || primaryBotId === botId)) {
+          // EXCEPCIÓN MODO NINJA: Ignorar a tu número
+          if (phone === '51901931862') continue
+
           const usuario = anu.author
           await client.sendMessage(anu.id, {
             text: `「✎」 *@${phone}* ha sido degradado de Administrador por *@${usuario.split('@')[0]}.*`,

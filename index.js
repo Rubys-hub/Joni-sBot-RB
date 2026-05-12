@@ -2,7 +2,13 @@ import "./settings.js"
 import main from './main.js'
 import events from './cmds/events.js'
 import { groupParticipantsUpdate } from './cmds/events.js'
-import { Browsers, makeWASocket, makeCacheableSignalKeyStore, useMultiFileAuthState, fetchLatestBaileysVersion, jidDecode, DisconnectReason, jidNormalizedUser, } from "@whiskeysockets/baileys";
+import {
+  Browsers,
+  makeWASocket,
+  useMultiFileAuthState,
+  jidDecode,
+  DisconnectReason
+} from "baileys";
 import cfonts from 'cfonts';
 import pino from "pino";
 import qrcode from "qrcode-terminal";
@@ -15,6 +21,7 @@ import os from "os";
 import { smsg } from "./core/message.js";
 import db from "./core/system/database.js";
 import { startSubBot } from './core/subs.js';
+import seecmds from "./core/system/commandLoader.js";
 import { exec, execSync } from "child_process";
 
 const log = {
@@ -53,7 +60,7 @@ console.log(chalk.magentaBright('\n⌬ Iniciando...'))
   align: 'center',           
   gradient: ['cyan', 'blue'] 
 })
-  say('Hecho con mucho amor por Joni ❤️', {
+  say('Hecho con mucho amor por J_Drsx', {
   font: 'console',
   align: 'center',
   gradient: ['blue', 'magenta']
@@ -66,6 +73,19 @@ const BOT_TYPES = [
 if (!fs.existsSync('./tmp')) fs.mkdirSync('./tmp', { recursive: true });
 global.conns = global.conns || []
 const reconnecting = new Set()
+
+
+const messageStore = global.baileysMessageStore ||= new Map()
+
+function getMessageKey(key = {}) {
+  return `${key.remoteJid || ''}:${key.id || ''}`
+}
+
+async function getMessageFromStore(key) {
+  const msg = messageStore.get(getMessageKey(key))
+  return msg?.message || undefined
+}
+
 
 async function loadBots() {
   for (const { name, folder, starter } of BOT_TYPES) {
@@ -124,31 +144,39 @@ if (methodCodeQR) {
 }
 
 async function startBot() {
-  const { state, saveCreds } = await useMultiFileAuthState(global.sessionName)
-  const { version, isLatest } = await fetchLatestBaileysVersion()
-  const logger = pino({ level: "silent" })
+const { state, saveCreds } = await useMultiFileAuthState(global.sessionName)
+const logger = pino({ level: "silent" })
   console.info = () => {}
   console.debug = () => {}
   const browser = typeof Browsers?.macOS === 'function' ? Browsers.macOS('Chrome') : (Browsers?.macOS ?? ['macOS', 'Chrome', '10.15.7'])
-  const clientt = makeWASocket({
-    version,
-    logger,
-    printQRInTerminal: false,
-    browser,
-    auth: { creds: state.creds, keys: makeCacheableSignalKeyStore(state.keys, logger) },
-    markOnlineOnConnect: false,
-    generateHighQualityLinkPreview: true,
-    syncFullHistory: false,
-    getMessage: async () => "",
-    keepAliveIntervalMs: 45000,
-    maxIdleTimeMs: 60000,
-  })
+const clientt = makeWASocket({
+  logger,
+  printQRInTerminal: false,
+  browser,
+  auth: state,
+  markOnlineOnConnect: false,
+  generateHighQualityLinkPreview: true,
+  syncFullHistory: false,
+  getMessage: getMessageFromStore,
+  keepAliveIntervalMs: 45000,
+  maxIdleTimeMs: 60000,
+})
   
-  global.client = clientt;
-  const client = clientt
-  client.public = true
-  client.isInit = false
-  client.ev.on("creds.update", saveCreds)
+global.client = clientt;
+const client = clientt
+
+client.decodeJid = (jid) => {
+  if (!jid) return jid
+  if (/:\d+@/gi.test(jid)) {
+    const decode = jidDecode(jid) || {}
+    return (decode.user && decode.server && decode.user + '@' + decode.server) || jid
+  }
+  return jid
+}
+
+client.public = true
+client.isInit = false
+client.ev.on("creds.update", saveCreds)
   if (opcion === "2" && !fs.existsSync("./Sessions/Owner/creds.json")) {
   setTimeout(async () => {
     try {
@@ -226,10 +254,79 @@ if (receivedPendingNotifications == "true") {
 }
   });
 
-let m
-client.ev.on("messages.upsert", async ({ messages }) => {
+const liveQueue = []
+const backlogQueue = []
+
+let processingLive = false
+let processingBacklog = false
+let startupBacklogMode = true
+let backlogStarted = false
+let backlogProcessed = 0
+let lastBacklogActivity = Date.now()
+
+global.botStartTime ||= Math.floor(Date.now() / 1000)
+
+function getMsgTimestampSeconds(message) {
+  const ts = message?.messageTimestamp
+
+  if (!ts) return 0
+  if (typeof ts === 'number') return ts
+  if (typeof ts === 'bigint') return Number(ts)
+  if (typeof ts === 'string') return Number(ts) || 0
+
+  if (typeof ts === 'object') {
+    if (typeof ts.toNumber === 'function') return ts.toNumber()
+    if ('low' in ts) return Number(ts.low) || 0
+  }
+
+  return 0
+}
+
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms))
+}
+
+function isStartupOldMessage(msg, type) {
+  if (!startupBacklogMode) return false
+
+  const msgTime = getMsgTimestampSeconds(msg)
+  const startTime = global.botStartTime || 0
+
+  if (type && type !== 'notify') return true
+  if (msgTime && startTime && msgTime < startTime - 10) return true
+
+  return false
+}
+
+function markBacklogDetected() {
+  lastBacklogActivity = Date.now()
+
+  if (!backlogStarted) {
+    backlogStarted = true
+    console.log(chalk.yellow('[ ⌬ ] Leyendo mensajes antiguos en segundo plano...'))
+  }
+}
+
+function finishBacklogIfReady() {
+  if (!startupBacklogMode) return
+  if (backlogQueue.length > 0) return
+
+  const inactiveMs = Date.now() - lastBacklogActivity
+
+  if (backlogStarted && inactiveMs >= 4000) {
+    startupBacklogMode = false
+    console.log(chalk.green(`[ ⌬ ] Lectura inicial finalizada. Mensajes antiguos procesados: ${backlogProcessed}`))
+  }
+
+  if (!backlogStarted && inactiveMs >= 5000) {
+    startupBacklogMode = false
+  }
+}
+
+async function processOneMessage(client, rawMsg, allMessages) {
   try {
-    m = messages[0]
+    let m = rawMsg
+
     if (!m?.message) return
     if (m.key && m.key.remoteJid === "status@broadcast") return
 
@@ -239,30 +336,118 @@ client.ev.on("messages.upsert", async ({ messages }) => {
 
     if (client.public === false && !m.key.fromMe) return
 
-    m = await smsg(client, m)
-    await main(client, m, messages)
+m = await smsg(client, m, {
+  contacts: {},
+  loadMessage: async (jid, id) => {
+    return messageStore.get(`${jid}:${id}`) || null
+  }
+})
+
+await main(client, m, allMessages)
+  } catch (err) {
+    console.log(err)
+  }
+}
+
+async function processLiveQueue(client) {
+  if (processingLive) return
+
+  processingLive = true
+
+  while (liveQueue.length) {
+    const item = liveQueue.shift()
+    await processOneMessage(client, item.message, item.allMessages)
+  }
+
+  processingLive = false
+}
+
+async function processBacklogQueue(client) {
+  if (processingBacklog) return
+
+  processingBacklog = true
+
+  while (backlogQueue.length) {
+    if (liveQueue.length) {
+      await sleep(300)
+      continue
+    }
+
+    const item = backlogQueue.shift()
+    backlogProcessed++
+
+    await processOneMessage(client, item.message, item.allMessages)
+
+    await sleep(1500)
+  }
+
+  processingBacklog = false
+
+  setTimeout(() => {
+    finishBacklogIfReady()
+  }, 4000)
+}
+
+client.ev.on("messages.upsert", async ({ messages, type }) => {
+  try {
+    if (!Array.isArray(messages) || !messages.length) return
+
+for (const msg of messages) {
+  if (!msg?.message) continue
+
+  messageStore.set(getMessageKey(msg.key), msg)
+
+  const isOld = isStartupOldMessage(msg, type)
+
+      if (isOld) {
+        markBacklogDetected()
+
+        backlogQueue.push({
+          message: msg,
+          allMessages: messages
+        })
+
+        if (backlogQueue.length > 300) {
+          backlogQueue.shift()
+        }
+
+        continue
+      }
+
+      if (!startupBacklogMode && type && type !== 'notify') {
+        continue
+      }
+
+      liveQueue.push({
+        message: msg,
+        allMessages: messages
+      })
+    }
+
+    processLiveQueue(client)
+    processBacklogQueue(client)
   } catch (err) {
     console.log(err)
   }
 })
-  try {
-  await events(client, m)
-  } catch (err) {
-   console.log(chalk.gray(`[ ⌬ BOT  ]  → ${err}`))
-  }
-  
-  client.decodeJid = (jid) => {
-    if (!jid) return jid
-    if (/:\d+@/gi.test(jid)) {
-      let decode = jidDecode(jid) || {}
-      return ((decode.user && decode.server && decode.user + "@" + decode.server) || jid)
-    } else return jid
-  }
+
+try {
+  await events(client)
+} catch (err) {
+  console.log(chalk.gray(`[ ⌬ BOT  ]  → ${err}`))
+}
+
 }
 
 (async () => {
-    global.loadDatabase()
+   await global.loadDatabase()
 console.log(chalk.blueBright('[ ⌬ ]  Base de datos cargada correctamente.'))
+
+
+console.log(chalk.yellow('[ ⌬ ] Cargando comandos...'))
+await seecmds()
+console.log(chalk.green('[ ⌬ ] Comandos cargados correctamente.'))
+
 
 await startBot()
 })()

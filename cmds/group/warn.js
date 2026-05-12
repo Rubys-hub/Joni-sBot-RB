@@ -27,7 +27,7 @@ if (!isOwnerBot && !m.isAdmin) {
       if (!user.warnings) user.warnings = []
       const now = new Date()
       const timestamp = now.toLocaleString('es-CO', {
-        timeZone: 'America/Bogota',
+        timeZone: 'America/Lima',
         day: 'numeric',
         month: 'long',
         year: 'numeric',

@@ -1,0 +1,176 @@
+import fs from 'fs'
+import path from 'path'
+import { resolveLidToRealJid } from '../../core/utils.js'
+
+const DB_PATH = './cmds/reacts/database/reactions.json'
+
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms))
+}
+
+function defaultDB() {
+  return {
+    config: {
+      waitBeforeReact: 2000,
+      internalCooldown: 2000,
+      ignoreCommands: true
+    },
+    shop: {},
+    users: {}
+  }
+}
+
+function ensureDB() {
+  const dir = path.dirname(DB_PATH)
+
+  if (!fs.existsSync(dir)) {
+    fs.mkdirSync(dir, { recursive: true })
+  }
+
+  if (!fs.existsSync(DB_PATH)) {
+    fs.writeFileSync(DB_PATH, JSON.stringify(defaultDB(), null, 2))
+  }
+
+  let db
+
+  try {
+    db = JSON.parse(fs.readFileSync(DB_PATH, 'utf8'))
+  } catch {
+    db = defaultDB()
+    fs.writeFileSync(DB_PATH, JSON.stringify(db, null, 2))
+  }
+
+  db.config ||= defaultDB().config
+  db.shop ||= {}
+  db.users ||= {}
+
+  return db
+}
+
+function saveDB(db) {
+  fs.writeFileSync(DB_PATH, JSON.stringify(db, null, 2))
+}
+
+function isCommandMessage(text = '') {
+  const clean = String(text || '').trim()
+  return clean.startsWith('.') || clean.startsWith('/') || clean.startsWith('#') || clean.startsWith('!')
+}
+
+function getMessageText(m) {
+  return (
+    m.text ||
+    m.body ||
+    m.message?.conversation ||
+    m.message?.extendedTextMessage?.text ||
+    m.message?.imageMessage?.caption ||
+    m.message?.videoMessage?.caption ||
+    ''
+  )
+}
+
+function normalizeJid(jid = '') {
+  if (!jid) return ''
+  return String(jid).split(':')[0]
+}
+
+function getPossibleSenders(m) {
+  const list = [
+    m.sender,
+    m.key?.participant,
+    m.participant,
+    m.key?.remoteJid
+  ]
+
+  return [...new Set(list.filter(Boolean).map(normalizeJid))]
+}
+
+function findReactUser(db, possibleSenders = []) {
+  for (const jid of possibleSenders) {
+    if (db.users?.[jid]) {
+      return {
+        jid,
+        data: db.users[jid]
+      }
+    }
+  }
+
+  return {
+    jid: null,
+    data: null
+  }
+}
+
+export default {
+  name: 'customAutoReact',
+
+  async all(m, { client }) {
+    try {
+      if (!m?.key) return false
+
+      const chat = m.chat || m.key?.remoteJid || ''
+      if (!chat) return false
+
+      // Evita reaccionar a mensajes enviados por el mismo bot.
+      if (m.key?.fromMe) return false
+
+      const db = ensureDB()
+      const config = db.config || {}
+
+      const text = getMessageText(m)
+
+      // No reaccionar a comandos.
+      if (config.ignoreCommands !== false && isCommandMessage(text)) {
+        return false
+      }
+
+      let possibleSenders = getPossibleSenders(m)
+
+      // Si está en grupo, intenta convertir LID a JID real.
+      if (chat.endsWith('@g.us')) {
+        for (const sender of [...possibleSenders]) {
+          const realJid = await resolveLidToRealJid(sender, client, chat).catch(() => sender)
+          if (realJid) possibleSenders.push(normalizeJid(realJid))
+        }
+      }
+
+      possibleSenders = [...new Set(possibleSenders.filter(Boolean))]
+
+      const found = findReactUser(db, possibleSenders)
+      const reactUser = found.data
+
+      if (!reactUser) return false
+
+      const active = reactUser.active
+      if (!active) return false
+
+      const item = db.shop?.[active]
+      if (!item || item.enabled === false) return false
+
+      const now = Date.now()
+      const last = Number(reactUser.lastReact || 0)
+      const internalCooldown = Number(config.internalCooldown || 2000)
+
+      // Cooldown silencioso.
+      if (now - last < internalCooldown) return false
+
+      reactUser.lastReact = now
+      saveDB(db)
+
+      const waitBeforeReact = Number(config.waitBeforeReact || 2000)
+
+      await sleep(waitBeforeReact)
+
+      await client.sendMessage(chat, {
+        react: {
+          text: active,
+          key: m.key
+        }
+      })
+
+      return false
+    } catch (e) {
+      console.error('AUTO REACT ERROR:', e)
+      return false
+    }
+  }
+}

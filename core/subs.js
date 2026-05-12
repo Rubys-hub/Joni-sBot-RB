@@ -1,4 +1,10 @@
-import { Browsers, makeWASocket, useMultiFileAuthState, fetchLatestBaileysVersion, makeCacheableSignalKeyStore, DisconnectReason, jidDecode, } from '@whiskeysockets/baileys';
+import {
+  Browsers,
+  makeWASocket,
+  useMultiFileAuthState,
+  DisconnectReason,
+  jidDecode
+} from 'baileys'
 import qrcode from "qrcode"
 import NodeCache from 'node-cache';
 import main from '../main.js'
@@ -16,13 +22,26 @@ const groupCache = new NodeCache({ stdTTL: 3600, checkperiod: 300 });
 let reintentos = {}
 const cleanJid = (jid = '') => jid.replace(/:\d+/, '').split('@')[0]
 
+
+const messageStore = global.baileysMessageStore ||= new Map()
+
+function getMessageKey(key = {}) {
+  return `${key.remoteJid || ''}:${key.id || ''}`
+}
+
+async function getMessageFromStore(key) {
+  const msg = messageStore.get(getMessageKey(key))
+  return msg?.message || undefined
+}
+
+
 export async function startSubBot(m, client, caption = '', isCode = false, phone = '', chatId = '', commandFlags = {}, isCommand = false) {
   const id = phone || (m?.sender || '').split('@')[0]
   const sessionFolder = `./Sessions/Subs/${id}`
   const senderId = m?.sender
 
   const { state, saveCreds } = await useMultiFileAuthState(sessionFolder)
-  const { version } = await fetchLatestBaileysVersion()
+   
 
 console.info = () => {} 
 const sock = makeWASocket({
@@ -30,17 +49,16 @@ const sock = makeWASocket({
   printQRInTerminal: false,
   browser: Browsers.macOS('Chrome'),
   auth: state,
-  markOnlineOnConnect: true,
+  markOnlineOnConnect: false,
   generateHighQualityLinkPreview: true,
   syncFullHistory: false,
-  getMessage: async () => '',
+  getMessage: getMessageFromStore,
   msgRetryCounterCache,
   userDevicesCache,
   cachedGroupMetadata: async (jid) => groupCache.get(jid),
-  version,
   keepAliveIntervalMs: 60_000,
-  maxIdleTimeMs: 120_000,
-  })
+  maxIdleTimeMs: 120_000
+})
 
   sock.isInit = false
   sock.ev.on('creds.update', saveCreds)
@@ -109,7 +127,7 @@ const sock = makeWASocket({
     
     if (qr && isCode && phone && client && chatId && commandFlags[senderId]) {
     try {
-    let codeGen = await sock.requestPairingCode(phone, 'ABCD1234');
+     let codeGen = await sock.requestPairingCode(phone)
     codeGen = codeGen.match(/.{1,4}/g)?.join("-") || codeGen;
     const msg = await m.reply(caption)
     const msgCode = await m.reply(codeGen);
@@ -137,18 +155,28 @@ const sock = makeWASocket({
     }}
   });
 
-  sock.ev.on('messages.upsert', async ({ messages, type }) => {
-    if (type !== 'notify') return
-    for (let raw of messages) {
-      if (!raw.message) continue
-      let msg = await smsg(sock, raw)
-      try {
-        main(sock, msg, messages)
-      } catch (err) {
-        console.log(chalk.gray(`[ ✿  ]  Sub » ${err}`))
-      }
+sock.ev.on('messages.upsert', async ({ messages, type }) => {
+  if (type !== 'notify') return
+
+  for (const raw of messages) {
+    if (!raw.message) continue
+
+    messageStore.set(getMessageKey(raw.key), raw)
+
+const msg = await smsg(sock, raw, {
+  contacts: {},
+  loadMessage: async (jid, id) => {
+    return messageStore.get(`${jid}:${id}`) || null
+  }
+})
+
+    try {
+      main(sock, msg, messages)
+    } catch (err) {
+      console.log(chalk.gray(`[ ✿  ]  Sub » ${err}`))
     }
-  })
+  }
+})
  
   try {
   await events(sock, m)

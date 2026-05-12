@@ -73,8 +73,8 @@ export default {
           m.chat,
           {
             text:
-`> _Procesando operación..._
-> *${inputRaw}*`
+` *_Procesando operación..._*
+ *${inputRaw}*`
           },
           { quoted: m }
         )

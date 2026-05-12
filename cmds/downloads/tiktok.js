@@ -3,24 +3,40 @@ import fetch from 'node-fetch'
 export default {
   command: ['tiktok', 'tt', 'tiktoksearch', 'ttsearch', 'tts'],
   category: 'downloader',
+
   run: async (client, m, args, usedPrefix, command) => {
     if (!args.length) {
-      return m.reply('《✧》 Por favor, ingresa un término de búsqueda o enlace de TikTok.')
+      return m.reply(`╭━━━〔 🎶 *TIKTOK* 〕━━━╮
+┃
+┃ Ingresa un enlace o búsqueda.
+┃
+┃ 📌 *Ejemplos:*
+┃ ➤ *${usedPrefix + command} https://vm.tiktok.com/...*
+┃ ➤ *${usedPrefix + command} gatitos graciosos*
+┃
+╰━━━━━━━━━━━━━━━━━━━━━━╯`)
     }
 
     const text = args.join(' ').trim()
     const isUrl = /(?:https?:\/\/)?(?:www\.)?(?:vm|vt|t)?\.?tiktok\.com\/([^\s&]+)/i.test(text)
 
+    const botId = client.user.id.split(':')[0] + '@s.whatsapp.net'
+    const botSettings = global.db.data.settings?.[botId] || {}
+    const brandName = botSettings.namebot || botSettings.botname || 'RubyJX'
+
     try {
+      await m.react?.('🕒')
+
       const json = await getTikTokDataSafe(text, isUrl)
 
       if (!json) {
-        return m.reply('《✧》 No se pudo obtener contenido de TikTok. La API puede estar limitada temporalmente.')
+        await m.react?.('❌')
+        return m.reply('《✧》 No se pudo obtener contenido de TikTok. Intenta nuevamente.')
       }
 
       if (isUrl) {
         const data = json.data || json.result || {}
-        const dl = data.dl || data.url || data.play || data.hdplay || data.download
+
         const title = data.title || 'Sin título'
         const duration = data.duration || 'N/A'
         const author = data.author || {}
@@ -28,104 +44,126 @@ export default {
         const created_at = data.created_at || data.date || 'N/A'
         const type = data.type || 'video'
 
-        if (!dl || (Array.isArray(dl) && dl.length === 0)) {
-          return m.reply('《✧》 Enlace inválido o sin contenido descargable.')
-        }
+        const caption = `> 𖧧 *${brandName}* 🎶
+> TikTok descargado correctamente ✨
 
-        const caption = `ㅤ۟∩　ׅ　★ ໌　ׅ　🅣𝗂𝗄𝖳𝗈𝗄 🅓ownload　ׄᰙ
+╭━━━〔 🎬 *TIKTOK DOWNLOAD* 〕━━━╮
+┃ 🎵 *Título:* ${title}
+┃ 👤 *Autor:* ${author?.nickname || author?.unique_id || author?.name || 'Desconocido'}
+┃ ⏱️ *Duración:* ${duration}
+┃ ❤️ *Likes:* ${(stats?.likes || stats?.digg_count || 0).toLocaleString()}
+┃ 👁️ *Vistas:* ${(stats?.views || stats?.plays || stats?.play_count || 0).toLocaleString()}
+╰━━━━━━━━━━━━━━━━━━━━━━╯
 
-𖣣ֶㅤ֯⌗ ✎  ׄ ⬭ *Título:* ${title}
-𖣣ֶㅤ֯⌗ ⌬  ׄ ⬭ *Autor:* ${author?.nickname || author?.unique_id || 'Desconocido'}
-𖣣ֶㅤ֯⌗ ⴵ  ׄ ⬭ *Duración:* ${duration}
-𖣣ֶㅤ֯⌗ ❖  ׄ ⬭ *Likes:* ${(stats?.likes || stats?.digg_count || 0).toLocaleString()}
-𖣣ֶㅤ֯⌗ ❀  ׄ ⬭ *Comentarios:* ${(stats?.comments || stats?.comment_count || 0).toLocaleString()}
-𖣣ֶㅤ֯⌗ ✿  ׄ ⬭ *Vistas:* ${(stats?.views || stats?.plays || stats?.play_count || 0).toLocaleString()}
-𖣣ֶㅤ֯⌗ ☆  ׄ ⬭ *Compartidos:* ${(stats?.shares || stats?.share_count || 0).toLocaleString()}
-𖣣ֶㅤ֯⌗ ☁︎  ׄ ⬭ *Fecha:* ${created_at}`.trim()
+⚡ *Powered by ${brandName}*`.trim()
 
-        if (type === 'image' && Array.isArray(dl)) {
-          const medias = dl
-            .filter(url => typeof url === 'string' && url.startsWith('http'))
-            .map(url => ({ type: 'image', data: { url }, caption }))
+        if (type === 'image') {
+          const imageUrls = normalizeImageUrls(data)
 
-          if (!medias.length) return m.reply('《✧》 No se encontraron imágenes válidas.')
+          if (!imageUrls.length) {
+            await m.react?.('❌')
+            return m.reply('《✧》 No se encontraron imágenes válidas.')
+          }
+
+          const medias = imageUrls.map(url => ({
+            type: 'image',
+            data: { url },
+            caption
+          }))
 
           await client.sendAlbumMessage(m.chat, medias, { quoted: m })
+          await m.react?.('✅')
           return
         }
 
-        const videoUrl = Array.isArray(dl) ? dl[0] : dl
-        await client.sendMessage(
-          m.chat,
-          { video: { url: videoUrl }, caption, mimetype: 'video/mp4', fileName: 'tiktok.mp4' },
-          { quoted: m }
-        )
-        return
-      }
+        const videoCandidates = getVideoCandidates(data)
 
-      const list = json.data || json.result || json.results || []
-      const validResults = list.filter(v => {
-        const url =
-          v?.dl ||
-          v?.url ||
-          v?.play ||
-          v?.video ||
-          v?.media
-
-        return typeof url === 'string' && url.startsWith('http')
-      })
-
-      if (!validResults.length) {
-        return m.reply('《✧》 No se encontraron resultados válidos.')
-      }
-
-      const medias = validResults.slice(0, 10).map(v => {
-        const mediaUrl =
-          v?.dl ||
-          v?.url ||
-          v?.play ||
-          v?.video ||
-          v?.media
-
-        const caption = `ㅤ۟∩　ׅ　★ ໌　ׅ　🅣𝗂𝗄𝖳𝗈𝗄 🅓ownload　ׄᰙ
-
-𖣣ֶㅤ֯⌗ ✎  ׄ ⬭ *Título:* ${v.title || 'Sin título'}
-𖣣ֶㅤ֯⌗ ⌬  ׄ ⬭ *Autor:* ${v.author?.nickname || 'Desconocido'} ${v.author?.unique_id ? `@${v.author.unique_id}` : ''}
-𖣣ֶㅤ֯⌗ ⴵ  ׄ ⬭ *Duración:* ${v.duration || 'N/A'}
-𖣣ֶㅤ֯⌗ ❖  ׄ ⬭ *Likes:* ${(v.stats?.likes || 0).toLocaleString()}
-𖣣ֶㅤ֯⌗ ❀  ׄ ⬭ *Comentarios:* ${(v.stats?.comments || 0).toLocaleString()}
-𖣣ֶㅤ֯⌗ ✿  ׄ ⬭ *Vistas:* ${(v.stats?.views || 0).toLocaleString()}
-𖣣ֶㅤ֯⌗ ☆  ׄ ⬭ *Compartidos:* ${(v.stats?.shares || 0).toLocaleString()}
-𖣣ֶㅤ֯⌗ ❒  ׄ ⬭ *Audio:* ${v.music?.title || `[${v.author?.nickname || 'No disponible'}] original sound - ${v.author?.unique_id || 'unknown'}`}`.trim()
-
-        return {
-          type: 'video',
-          data: { url: mediaUrl },
-          caption
+        if (!videoCandidates.length) {
+          await m.react?.('❌')
+          return m.reply('《✧》 Enlace inválido o sin video descargable.')
         }
-      }).filter(x => typeof x?.data?.url === 'string' && x.data.url.startsWith('http'))
 
-      if (!medias.length) {
-        return m.reply('《✧》 La API respondió, pero sin videos válidos.')
-      }
+        const video = await getFirstValidVideoBuffer(videoCandidates)
 
-      if (medias.length === 1) {
+        if (!video?.buffer) {
+          await m.react?.('❌')
+          return m.reply(`╭━━━〔 ❌ *VIDEO NO DISPONIBLE* 〕━━━╮
+┃
+┃ La API devolvió enlaces, pero ninguno
+┃ pudo descargarse como video válido.
+┃
+┃ 📌 Intenta nuevamente o usa otro enlace.
+┃
+╰━━━━━━━━━━━━━━━━━━━━━━╯`)
+        }
+
         await client.sendMessage(
           m.chat,
           {
-            video: { url: medias[0].data.url },
-            caption: medias[0].caption,
+            video: video.buffer,
+            caption,
             mimetype: 'video/mp4',
             fileName: 'tiktok.mp4'
           },
           { quoted: m }
         )
+
+        await m.react?.('✅')
         return
       }
 
-      await client.sendAlbumMessage(m.chat, medias, { quoted: m })
+      const list = json.data || json.result || json.results || []
+
+      const validResults = list
+        .map(v => ({
+          raw: v,
+          url: pickSearchVideoUrl(v)
+        }))
+        .filter(v => typeof v.url === 'string' && v.url.startsWith('http'))
+
+      if (!validResults.length) {
+        await m.react?.('❌')
+        return m.reply('《✧》 No se encontraron resultados válidos.')
+      }
+
+      const first = validResults[0]
+      const v = first.raw
+
+      const caption = `> 𖧧 *${brandName}* 🔎
+> Resultado encontrado en TikTok ✨
+
+╭━━━〔 🎬 *TIKTOK SEARCH* 〕━━━╮
+┃ 🎵 *Título:* ${v.title || 'Sin título'}
+┃ 👤 *Autor:* ${v.author?.nickname || 'Desconocido'} ${v.author?.unique_id ? `@${v.author.unique_id}` : ''}
+┃ ⏱️ *Duración:* ${v.duration || 'N/A'}
+┃ ❤️ *Likes:* ${(v.stats?.likes || 0).toLocaleString()}
+┃ 👁️ *Vistas:* ${(v.stats?.views || 0).toLocaleString()}
+╰━━━━━━━━━━━━━━━━━━━━━━╯
+
+⚡ *Powered by ${brandName}*`.trim()
+
+      const video = await getFirstValidVideoBuffer([first.url])
+
+      if (!video?.buffer) {
+        await m.react?.('❌')
+        return m.reply('《✧》 Encontré resultados, pero el video no pudo descargarse correctamente.')
+      }
+
+      await client.sendMessage(
+        m.chat,
+        {
+          video: video.buffer,
+          caption,
+          mimetype: 'video/mp4',
+          fileName: 'tiktok.mp4'
+        },
+        { quoted: m }
+      )
+
+      await m.react?.('✅')
 
     } catch (e) {
+      await m.react?.('❌')
       await m.reply(
         `> Error en *${usedPrefix + command}*\n` +
         `> [${e.message}]`
@@ -134,16 +172,154 @@ export default {
   }
 }
 
+function normalizeTikwmUrl(url = '') {
+  if (!url || typeof url !== 'string') return null
+
+  const clean = url.trim()
+
+  if (!clean) return null
+  if (clean.startsWith('//')) return `https:${clean}`
+  if (clean.startsWith('/')) return `https://www.tikwm.com${clean}`
+  if (clean.startsWith('http')) return clean
+
+  return null
+}
+
+function getVideoCandidates(data = {}) {
+  const raw = [
+    data.hdplay,
+    data.play,
+    data.wmplay,
+    data.download,
+    data.dl,
+    data.url,
+    data.video,
+    data.media,
+    data.nowm,
+    data.no_watermark,
+    data.noWatermark,
+    data.withoutWatermark
+  ]
+
+  if (Array.isArray(data.dl)) raw.push(...data.dl)
+  if (Array.isArray(data.url)) raw.push(...data.url)
+  if (Array.isArray(data.video)) raw.push(...data.video)
+
+  return raw
+    .map(normalizeTikwmUrl)
+    .filter(Boolean)
+    .filter((url, index, arr) => arr.indexOf(url) === index)
+}
+
+function normalizeImageUrls(data = {}) {
+  const raw = []
+
+  if (Array.isArray(data.images)) raw.push(...data.images)
+  if (Array.isArray(data.image)) raw.push(...data.image)
+  if (Array.isArray(data.dl)) raw.push(...data.dl)
+  if (Array.isArray(data.url)) raw.push(...data.url)
+
+  return raw
+    .map(normalizeTikwmUrl)
+    .filter(Boolean)
+    .filter((url, index, arr) => arr.indexOf(url) === index)
+}
+
+function pickSearchVideoUrl(v = {}) {
+  return normalizeTikwmUrl(
+    v.dl ||
+    v.url ||
+    v.play ||
+    v.video ||
+    v.media ||
+    v.nowm ||
+    v.no_watermark ||
+    v.noWatermark ||
+    v.withoutWatermark
+  )
+}
+
+async function getFirstValidVideoBuffer(urls = []) {
+  for (const url of urls) {
+    try {
+      const media = await fetchVideoBuffer(url)
+
+      if (media?.buffer && media.buffer.length > 50 * 1024) {
+        return media
+      }
+    } catch (e) {
+      console.log('TIKTOK VIDEO SKIP:', url, e.message)
+    }
+  }
+
+  return null
+}
+
+async function fetchVideoBuffer(url) {
+  const res = await fetch(url, {
+    redirect: 'follow',
+    headers: {
+      'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120 Safari/537.36',
+      'accept': 'video/mp4,video/*,*/*',
+      'referer': 'https://www.tiktok.com/'
+    }
+  })
+
+  if (!res.ok) {
+    throw new Error(`HTTP ${res.status}`)
+  }
+
+  const contentType = res.headers.get('content-type') || ''
+  const arrayBuffer = await res.arrayBuffer()
+  const buffer = Buffer.from(arrayBuffer)
+
+  if (!buffer || buffer.length < 50 * 1024) {
+    throw new Error('Video vacío o demasiado pequeño')
+  }
+
+  const looksLikeMp4 =
+    buffer.slice(4, 8).toString() === 'ftyp' ||
+    contentType.includes('video') ||
+    contentType.includes('octet-stream')
+
+  if (!looksLikeMp4) {
+    throw new Error(`Respuesta no parece video: ${contentType || 'sin content-type'}`)
+  }
+
+  return {
+    buffer,
+    contentType
+  }
+}
+
+function getStellarTikTokDlEndpoint(text) {
+  const url = global.APIs?.stellar?.url
+  const key = global.APIs?.stellar?.key
+
+  if (!url || !key) return null
+
+  return `${url}/dl/tiktok?url=${encodeURIComponent(text)}&key=${key}`
+}
+
+function getStellarTikTokSearchEndpoint(text) {
+  const url = global.APIs?.stellar?.url
+  const key = global.APIs?.stellar?.key
+
+  if (!url || !key) return null
+
+  return `${url}/search/tiktok?query=${encodeURIComponent(text)}&key=${key}`
+}
+
 async function getTikTokDataSafe(text, isUrl) {
   const endpoints = isUrl
     ? [
         `https://www.tikwm.com/api/?url=${encodeURIComponent(text)}&hd=1`,
-        `${global.APIs.stellar.url}/dl/tiktok?url=${encodeURIComponent(text)}&key=${global.APIs.stellar.key}`
-      ]
+        getStellarTikTokDlEndpoint(text)
+      ].filter(Boolean)
     : [
         `https://delirius-apiofc.vercel.app/search/tiktok?query=${encodeURIComponent(text)}`,
-        `${global.APIs.stellar.url}/search/tiktok?query=${encodeURIComponent(text)}&key=${global.APIs.stellar.key}`
-      ]
+        getStellarTikTokSearchEndpoint(text)
+      ].filter(Boolean)
 
   for (const endpoint of endpoints) {
     try {
@@ -162,7 +338,15 @@ async function getTikTokDataSafe(text, isUrl) {
 
       if (isUrl) {
         if (endpoint.includes('tikwm')) {
-          if (json?.data?.play || json?.data?.hdplay) {
+          const imageList =
+            json?.data?.images ||
+            json?.data?.image ||
+            []
+
+          const hasImages = Array.isArray(imageList) && imageList.length
+          const hasVideo = json?.data?.play || json?.data?.hdplay || json?.data?.wmplay
+
+          if (hasVideo || hasImages) {
             return {
               data: {
                 title: json.data.title || 'Sin título',
@@ -175,14 +359,20 @@ async function getTikTokDataSafe(text, isUrl) {
                   views: json.data.play_count || 0
                 },
                 created_at: json.data.create_time || 'N/A',
-                type: 'video',
-                dl: json.data.hdplay || json.data.play
+                type: hasImages ? 'image' : 'video',
+                hdplay: normalizeTikwmUrl(json.data.hdplay),
+                play: normalizeTikwmUrl(json.data.play),
+                wmplay: normalizeTikwmUrl(json.data.wmplay),
+                images: hasImages
+                  ? imageList.map(normalizeTikwmUrl).filter(Boolean)
+                  : []
               }
             }
           }
-        } else if (json?.status && json?.data) {
-          return json
         }
+
+        if (json?.status && json?.data) return json
+        if (json?.data || json?.result) return json
       } else {
         if (Array.isArray(json?.data) && json.data.length) return json
         if (Array.isArray(json?.result) && json.result.length) return json

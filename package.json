@@ -1,5 +1,5 @@
 {
-  "name": "yukiwabot",
+  "name": "rubyjxbot",
   "version": "3.0",
   "description": "WhatsApp Bot Multi Device",
   "main": "index.js",
@@ -14,7 +14,7 @@
     "bot-wa",
     "multi-device"
   ],
-  "author": "iamDestroy",
+  "author": "J_Drsx",
   "license": "MIT",
   "engines": {
     "node": ">=21.7.3",
@@ -22,9 +22,10 @@
   },
   "dependencies": {
     "@vitalets/google-translate-api": "^8.0.0",
-    "@whiskeysockets/baileys": "github:this-xys/baileys",
     "aptoide-scraper": "github:DIEGO-OFC/dv-aptoide-scraper",
+    "awesome-phonenumber": "^7.8.0",
     "axios": "^0.24.0",
+    "baileys": "^7.0.0-rc10",
     "cfonts": "latest",
     "chalk": "^4.1.2",
     "cheerio": "npm:cheerio@1.0.0-rc.12",

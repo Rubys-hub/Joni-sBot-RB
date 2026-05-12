@@ -1,0 +1,76 @@
+{
+  "codes": {
+    "LEI-YCMM-VGN2": {
+      "code": "LEI-YCMM-VGN2",
+      "coins": 100000,
+      "stock": 0,
+      "initialStock": 7,
+      "enabled": true,
+      "createdBy": "51901931862@s.whatsapp.net",
+      "createdAt": 1778301269248,
+      "redeemed": {
+        "51901931862@s.whatsapp.net": 1778301386455,
+        "5219212539534@s.whatsapp.net": 1778301537315,
+        "50240263424@s.whatsapp.net": 1778301913293,
+        "51929625664@s.whatsapp.net": 1778302172112,
+        "34643244581@s.whatsapp.net": 1778340526930,
+        "51935502887@s.whatsapp.net": 1778341205134,
+        "56910137684@s.whatsapp.net": 1778351445673
+      }
+    },
+    "LEI-9GYB-58CP": {
+      "code": "LEI-9GYB-58CP",
+      "coins": 150000,
+      "stock": 2,
+      "initialStock": 3,
+      "enabled": true,
+      "createdBy": "51901931862@s.whatsapp.net",
+      "createdAt": 1778351940207,
+      "redeemed": {
+        "56910137684@s.whatsapp.net": 1778352231112
+      }
+    },
+    "LEI-D52K-Q5KS": {
+      "code": "LEI-D52K-Q5KS",
+      "coins": 50000,
+      "stock": 6,
+      "initialStock": 10,
+      "enabled": true,
+      "createdBy": "51901931862@s.whatsapp.net",
+      "createdAt": 1778463241442,
+      "redeemed": {
+        "51913288587@s.whatsapp.net": 1778464221186,
+        "51929625664@s.whatsapp.net": 1778478974344,
+        "5219212539534@s.whatsapp.net": 1778508907680,
+        "34615600302@s.whatsapp.net": 1778508952276
+      }
+    },
+    "LEI-MHYZ-FJNH": {
+      "code": "LEI-MHYZ-FJNH",
+      "coins": 100000,
+      "stock": 0,
+      "initialStock": 3,
+      "enabled": true,
+      "createdBy": "51901931862@s.whatsapp.net",
+      "createdAt": 1778469542040,
+      "redeemed": {
+        "5491165655303@s.whatsapp.net": 1778469590657,
+        "56910137684@s.whatsapp.net": 1778471451585,
+        "34615600302@s.whatsapp.net": 1778511415805
+      }
+    },
+    "LEI-74FX-JCZV": {
+      "code": "LEI-74FX-JCZV",
+      "coins": 150000,
+      "stock": 0,
+      "initialStock": 2,
+      "enabled": true,
+      "createdBy": "51901931862@s.whatsapp.net",
+      "createdAt": 1778515602086,
+      "redeemed": {
+        "34615600302@s.whatsapp.net": 1778515675045,
+        "51929625664@s.whatsapp.net": 1778515675832
+      }
+    }
+  }
+}

@@ -1,5 +1,21 @@
 import { resolveLidToRealJid } from "../../core/utils.js"
 
+
+function isOwnerUser(jid = '') {
+  const number = String(jid)
+    .split('@')[0]
+    .split(':')[0]
+    .replace(/\D/g, '')
+
+  return Array.isArray(global.owner) && global.owner.includes(number)
+}
+
+function formatMoney(amount = 0, jid = '') {
+  if (isOwnerUser(jid)) return '∞'
+  return Number(amount || 0).toLocaleString()
+}
+
+
 export default {
   command: ['balance', 'bal', 'coins', 'bank'],
   category: 'rpg',
@@ -17,13 +33,18 @@ export default {
     if (!(who in db.chats[m.chat].users)) {
       return m.reply(`「✎」 El usuario mencionado no está registrado en el bot.`)
     }
-    const user = chatData.users[who]
-    const total = (user.coins || 0) + (user.bank || 0)
-    const bal = `✿ Usuario \`<${global.db.data.users[who].name}>\`
+const user = chatData.users[who]
+const total = (user.coins || 0) + (user.bank || 0)
 
-⛀ Cartera › *S/${user.coins?.toLocaleString() || 0} ${monedas}*
-⚿ Banco › *S/${user.bank?.toLocaleString() || 0} ${monedas}*
-⛁ Total › *S/${total.toLocaleString()} ${monedas}*
+const walletText = formatMoney(user.coins, who)
+const bankText = formatMoney(user.bank, who)
+const totalText = formatMoney(total, who)
+
+const bal = `✿ Usuario \`<${global.db.data.users[who].name}>\`
+
+⛀ Cartera › *S/${walletText} ${monedas}*
+⚿ Banco › *S/${bankText} ${monedas}*
+⛁ Total › *S/${totalText} ${monedas}*
 
 > _Para proteger tu dinero, ¡depósitalo en el banco usando ${usedPrefix}deposit!_`
     await client.sendMessage(chatId, { text: bal }, { quoted: m })

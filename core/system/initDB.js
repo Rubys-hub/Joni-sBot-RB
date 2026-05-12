@@ -8,14 +8,14 @@ function initDB(m, client) {
   settings.prefix ??= ['/', '!', '.', '#']
   settings.commandsejecut ??= isNumber(settings.commandsejecut) ? settings.commandsejecut : 0
   settings.id ??= '120363401404146384@newsletter'
-  settings.nameid ??= "'ೃ࿔ ყµҡเ ωαɓσƭ'ร - σƒƒเ૮เαℓ ૮ɦαɳɳεℓ .ೃ࿐"
+  settings.nameid ??= "© ⍴᥆ᥕᥱrᥱძ ᑲᥡ ⫷𝐉_𝐃𝐫𝐬𝐱 - 𝐔𝐥𝐭𝐢𝐦𝐚𝐭𝐞⫸"
   settings.type ??= 'Owner'
   settings.link ??= 'https://api.yuki-wabot.my.id'
   settings.banner ??= 'https://cdn.yuki-wabot.my.id/files/tCVD.jpeg'
   settings.icon ??= 'https://cdn.yuki-wabot.my.id/files/PJDp.jpeg'
-  settings.currency ??= 'Yenes'
-  settings.namebot ??= 'Yuki'
-  settings.botname ??= 'Yuki Suou'  
+  settings.currency ??= 'Soles'
+  settings.namebot ??= 'Ruby'
+  settings.botname ??= 'RubyJX Bot'  
   settings.owner ??= ''
 
   const user = global.db.data.users[m.sender] ||= {}

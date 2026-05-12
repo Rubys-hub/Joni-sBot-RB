@@ -1,4 +1,19 @@
-import { proto, delay, areJidsSameUser, generateWAMessage, prepareWAMessageMedia, generateWAMessageFromContent, downloadContentFromMessage, generateMessageID, generateWAMessageContent, getContentType, getDevice, extractMessageContent } from '@whiskeysockets/baileys';
+import {
+  proto,
+  delay,
+  areJidsSameUser,
+  generateWAMessage,
+  prepareWAMessageMedia,
+  generateWAMessageFromContent,
+  downloadContentFromMessage,
+  generateMessageID,
+  generateWAMessageContent,
+  getContentType,
+  getDevice,
+  extractMessageContent
+} from 'baileys'
+
+
 import { resolveLidToRealJid } from "./utils.js"
 import chalk from 'chalk';
 import fs from 'fs';
@@ -13,6 +28,8 @@ import path from 'path';
 import exif from './exif.js';
 import { fileURLToPath } from 'url'
 import GraphemeSplitter from 'grapheme-splitter'
+import PhoneNumber from 'awesome-phonenumber'
+
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -24,7 +41,7 @@ const unixTimestampSeconds = (date = new Date()) => Math.floor(date.getTime() / 
 export { unixTimestampSeconds };
 
 export function generateMessageTag(epoch) {
-  let tag = (0, exports.unixTimestampSeconds)().toString()
+  let tag = unixTimestampSeconds().toString()
   if (epoch) tag += '.--' + epoch
   return tag
 }
@@ -89,7 +106,7 @@ export function getTime(format, date) {
   if (date) {
     return moment(date).locale('id').format(format)
   } else {
-    return moment.tz('America/Bogota').locale('id').format(format)
+    return moment.tz('America/Lima').locale('id').format(format)
   }
 }
 
@@ -103,16 +120,17 @@ export function formatDate(n, locale = 'id') {
 }
 
 export function tanggal(numer) {
-  myMonths = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'diciembre']
-  myDays = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado']
+const myMonths = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'diciembre']
+const myDays = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado']
   var tgl = new Date(numer)
   var day = tgl.getDate()
-  bulan = tgl.getMonth()
+
+const bulan = tgl.getMonth()
   var thisDay = tgl.getDay(),
     thisDay = myDays[thisDay]
   var yy = tgl.getYear()
   var year = yy < 1000 ? yy + 1900 : yy
-  const time = moment.tz('America/Bogota').format('DD/MM HH:mm:ss')
+  const time = moment.tz('America/Lima').format('DD/MM HH:mm:ss')
   let d = new Date()
   let locale = 'id'
   let gmt = new Date(0).getTime() - new Date('1 Enero 1970').getTime()
@@ -159,12 +177,12 @@ export function getSizeMedia(path) {
     if (/http/.test(path)) {
       axios.get(path).then((res) => {
         let length = parseInt(res.headers['content-length'])
-        let size = exports.bytesToSize(length, 3)
+        let size = bytesToSize(length, 3)
         if (!isNaN(length)) resolve(size)
       })
     } else if (Buffer.isBuffer(path)) {
       let length = Buffer.byteLength(path)
-      let size = exports.bytesToSize(length, 3)
+      let size = bytesToSize(length, 3)
       if (!isNaN(length)) resolve(size)
     } else {
       reject('error')
@@ -201,6 +219,13 @@ export async function fixLid2(client, m) {
 }
 
 export async function smsg(client, m, store) {
+
+
+    store ||= {}
+  store.contacts ||= {}
+  store.loadMessage ||= async () => null
+
+
   client.downloadMediaMessage = async (message) => {
     const msg = message.msg || message
     const mime = msg.mimetype || ''
@@ -293,7 +318,7 @@ export async function smsg(client, m, store) {
       m.getQuotedObj = async () => {
         if (!m.quoted.id) return false
         let q = await store.loadMessage(m.chat, m.quoted.id)
-        return await exports.smsg(client, q)
+        return await smsg(client, q, store)
       }
       m.quoted.key = { remoteJid: m.msg?.contextInfo?.remoteJid || m.chat, participant: m.quoted.sender, fromMe: areJidsSameUser(client.decodeJid(m.msg?.contextInfo?.participant), client.decodeJid(client?.user?.id)), id: m.msg?.contextInfo?.stanzaId }
       m.quoted.isGroup = m.quoted.chat.endsWith('@g.us')
@@ -321,7 +346,16 @@ export async function smsg(client, m, store) {
           m.quoted.isAnimated = m?.quoted?.msg?.isAnimated || false
         }
       }
-      m.quoted.fakeObj = proto.WebMessageInfo.fromObject({ key: { remoteJid: m.quoted.chat, fromMe: m.quoted.fromMe, id: m.quoted.id }, message: m.quoted, ...(m.isGroup ? { participant: m.quoted.sender } : {}) })
+m.quoted.fakeObj = proto.WebMessageInfo.create({
+  key: {
+    remoteJid: m.quoted.chat,
+    fromMe: m.quoted.fromMe,
+    id: m.quoted.id,
+    participant: m.quoted.sender
+  },
+  message: m.msg?.contextInfo?.quotedMessage || {},
+  ...(m.isGroup ? { participant: m.quoted.sender } : {})
+})
       m.quoted.download = () => client.downloadMediaMessage(m.quoted)
       m.quoted.delete = () => {
         client.sendMessage(m.quoted.chat, { delete: { remoteJid: m.quoted.chat, fromMe: m.isBotAdmin ? false : true, id: m.quoted.id, participant: m.quoted.sender }})
@@ -330,7 +364,12 @@ export async function smsg(client, m, store) {
   }
 
   m.download = () => client.downloadMediaMessage(m)
-  m.copy = () => exports.smsg(client, proto.WebMessageInfo.fromObject(proto.WebMessageInfo.toObject(m)))
+  m.copy = () => smsg(client, proto.WebMessageInfo.create({
+  key: m.key,
+  message: m.message,
+  messageTimestamp: m.messageTimestamp,
+  pushName: m.pushName
+}), store)
   m.copyNForward = (jid = m.chat, forceForward = false, options = {}) => client.copyNForward(jid, m, forceForward, options)
   m.react = (u) => client.sendMessage(m.chat, { react: { text: u, key: m.key } })
 
@@ -362,7 +401,7 @@ export async function smsg(client, m, store) {
   }  
 
   client.getName = (jid, withoutContact = false) => {
-    id = client.decodeJid(jid)
+    const id = client.decodeJid(jid)
     withoutContact = client.withoutContact || withoutContact
     let v
     if (id.endsWith('@g.us'))
@@ -372,7 +411,7 @@ export async function smsg(client, m, store) {
         resolve(v.name || v.subject || PhoneNumber('+' + id.replace('@s.whatsapp.net', '')).getNumber('international'))
       })
     else
-      v = id === '0@s.whatsapp.net' ? { id, name: 'WhatsApp' } : id === client.decodeJid(client.user.jid) ? client.user : store.contacts[id] || {}
+      v = id === '0@s.whatsapp.net' ? { id, name: 'WhatsApp' } : id === client.decodeJid(client.user.id) ? client.user : store.contacts[id] || {}
     return ((withoutContact ? '' : v.name) || v.subject || v.verifiedName || PhoneNumber('+' + jid.replace('@s.whatsapp.net', '')).getNumber('international'))
   }
 
@@ -396,12 +435,12 @@ export async function smsg(client, m, store) {
 
   client.appenTextMessage = async (text, chatUpdate) => {
     let messages = await generateWAMessage(m.chat, { text: text, mentions: m.mentionedJid }, { userJid: client.user.id, quoted: m.quoted && m.quoted.fakeObj })
-    messages.key.fromMe = areJidsSameUser(m.sender, conn.user.id)
+    messages.key.fromMe = areJidsSameUser(m.sender, client.user.id)
     messages.key.id = m.key.id
     messages.pushName = m.pushName
     if (m.isGroup) messages.participant = m.sender
-    let msg = { ...chatUpdate, messages: [proto.WebMessageInfo.fromObject(messages)], type: 'append' }
-    conn.ev.emit('messages.upsert', msg)
+    let msg = { ...chatUpdate, messages: [proto.WebMessageInfo.create(messages)], type: 'append' }
+    client.ev.emit('messages.upsert', msg)
   }
 
 client.sendImageAsSticker = async (jid, path, quoted, options = {}) => {
@@ -575,7 +614,7 @@ client.sendVideoAsSticker = async (jid, path, quoted, options = {}) => {
     if (copy && (typeof copy === 'string' || typeof copy === 'number')) { dynamicButtons.push({ name: 'cta_copy', buttonParamsJson: JSON.stringify({ display_text: 'Copy', copy_code: copy, })}) }
     if (urls && Array.isArray(urls)) { urls.forEach((url) => { dynamicButtons.push({ name: 'cta_url', buttonParamsJson: JSON.stringify({ display_text: url[0], url: url[1], merchant_url: url[1] })}) })}
     const interactiveMessage = { body: { text: text }, footer: { text: footer }, header: { hasMediaAttachment: false, imageMessage: img ? img.imageMessage : null, videoMessage: video ? video.videoMessage : null, }, nativeFlowMessage: { buttons: dynamicButtons, messageParamsJson: '' }}
-    let msgL = generateWAMessageFromContent(jid, { viewOnceMessage: { message: { interactiveMessage }}}, { userJid: client.user.jid, quoted })
+    let msgL = generateWAMessageFromContent(jid, { viewOnceMessage: { message: { interactiveMessage }}}, { userJid: client.user.id, quoted })
     client.relayMessage(jid, msgL.message, { messageId: msgL.key.id, ...options })
   }
 

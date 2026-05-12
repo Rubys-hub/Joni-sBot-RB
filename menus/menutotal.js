@@ -6,393 +6,482 @@ export default {
     const currentPrefix = usedPrefix || '.'
     const pushname = m.pushName || 'Usuario'
 
-    const textMenu = `> 𖧧 *Hola, ${pushname}*
-> Aquí tienes el *panel completo* de categorías disponibles
+    const botRaw = client.user?.id || ''
+    const botId = botRaw.split(':')[0] + '@s.whatsapp.net'
+    const settings = global.db.data.settings?.[botId] || {}
 
-╭┈ࠢ͜┅ࠦ͜͜╾݊͜─ׄ͜─ׄ֟፝͜─ׄ͜─ׄ͜╴ ⋱࣭ ᩴ ⋮֔ ᩴ ⋰╶͜─ׄ͜─ׄ֟፝͜─ׄ͜─ׄ݊͜͜╼┅ࠦ͜͜┈ࠢ͜╮
-│✿ *OWNER ::* RubyJX
-│ꕥ *TYPE ::* MAIN SYSTEM
-│⸙ *VERSION ::* ^3.0 - Latest
-│⚘ *DEVICE ::* ACTIVE
-│○ *STATUS ::* ONLINE
-│𓏸 *MODE ::* FULL MENU ACCESS
-│         ✦ CHANNEL :: https://whatsapp.com/channel/0029Vb7O3ugGZNCpbDTDhr3F
-│       ✦ COMMUNITY :: https://chat.whatsapp.com/KtXac3mqt1zFv3FAfDkJ23
-│  
-╰┈ࠢ͜┅ࠦ͜͜╾݊͜─ׄ͜─ׄ֟፝͜─ׄ͜─ׄ͜╴ ⋱࣭ ᩴ ⋮֔ ᩴ ⋰╶͜─ׄ͜─ׄ֟፝͜─ׄ͜─ׄ݊͜͜╼┅ࠦ͜͜┈ࠢ͜╯
+    const botName = settings.botname || settings.namebot || 'RubyJX Bot'
+    const channelName = settings.nameid || global.my?.name || 'RubyJX Channel'
+    const channelJid = settings.id || global.my?.ch || '120363424461852442@newsletter'
+    const channelLink = settings.link || 'https://whatsapp.com/channel/0029Vb7O3ugGZNCpbDTDhr3F'
+    const thumbnail = settings.icon || settings.banner || undefined
 
-╭────────────〔 💰 ECONOMY 〕────────────╮
-│ ✦ *Comandos:* 26
-│ ✦ *Acceso:* ${currentPrefix}menu economia
-│
-│ 📌 *Incluye:*
-│ ${currentPrefix}work
-│ ${currentPrefix}balance
-│ ${currentPrefix}daily
-│ ${currentPrefix}deposit
-│ ${currentPrefix}withdraw
-│ ${currentPrefix}coinflip
-│ ${currentPrefix}casino
-│ ${currentPrefix}roulette
-│ ${currentPrefix}givecoins
-│ ${currentPrefix}steal
-│ ${currentPrefix}adventure
-│ ${currentPrefix}heal
-│ ${currentPrefix}hunt
-│ ${currentPrefix}fish
-│ ${currentPrefix}mine
-│ ${currentPrefix}cofre
-│ ${currentPrefix}weekly
-│ ${currentPrefix}monthly
-│ ${currentPrefix}dungeon
-│ ${currentPrefix}math
-│ ${currentPrefix}ppt
-│ ${currentPrefix}economyboard
-│ ${currentPrefix}economyinfo
-╰───────────────────────────────────────╯
+    const senderNum = m.sender.split('@')[0]
 
-╭────────────〔 🎴 GACHA 〕────────────╮
-│ ✦ *Comandos:* 21
-│ ✦ *Acceso:* ${currentPrefix}menu gacha
-│
-│ 📌 *Incluye:*
-│ ${currentPrefix}buycharacter
-│ ${currentPrefix}charimage
-│ ${currentPrefix}charinfo
-│ ${currentPrefix}claim
-│ ${currentPrefix}delclaimmsg
-│ ${currentPrefix}deletewaifu
-│ ${currentPrefix}favoritetop
-│ ${currentPrefix}gachainfo
-│ ${currentPrefix}giveallharem
-│ ${currentPrefix}givechar
-│ ${currentPrefix}harem
-│ ${currentPrefix}haremshop
-│ ${currentPrefix}removesale
-│ ${currentPrefix}rollwaifu
-│ ${currentPrefix}sell
-│ ${currentPrefix}serieinfo
-│ ${currentPrefix}serielist
-│ ${currentPrefix}setclaimmsg
-│ ${currentPrefix}setfavourite
-│ ${currentPrefix}trade
-│ ${currentPrefix}vote
-│ ${currentPrefix}waifusboard
-╰──────────────────────────────────────╯
+    const textMenu = `> 𖧧 *Hola, ${pushname}* 🧸
+> Aquí tienes el *panel completo* de comandos 📋✨
 
-╭────────────〔 ⬇️ DOWNLOADS 〕────────────╮
-│ ✦ *Comandos:* 12
-│ ✦ *Acceso:* ${currentPrefix}menu downloads
-│
-│ 📌 *Incluye:*
-│ ${currentPrefix}facebook
-│ ${currentPrefix}mediafire
-│ ${currentPrefix}play
-│ ${currentPrefix}play2
-│ ${currentPrefix}pinterest
-│ ${currentPrefix}instagram
-│ ${currentPrefix}tiktok
-│ ${currentPrefix}twitter
-│ ${currentPrefix}ytsearch
-│ ${currentPrefix}wagrupos
-│ ${currentPrefix}imagen
-│ ${currentPrefix}apk
-╰─────────────────────────────────────────╯
 
-╭────────────〔 👤 PROFILES 〕────────────╮
-│ ✦ *Comandos:* 15
-│ ✦ *Acceso:* ${currentPrefix}menu profile
-│
-│ 📌 *Incluye:*
-│ ${currentPrefix}profile
-│ ${currentPrefix}leaderboard
-│ ${currentPrefix}level
-│ ${currentPrefix}setgenre
-│ ${currentPrefix}delgenre
-│ ${currentPrefix}setbirth
-│ ${currentPrefix}delbirth
-│ ${currentPrefix}setdescription
-│ ${currentPrefix}deldescription
-│ ${currentPrefix}marry
-│ ${currentPrefix}divorce
-│ ${currentPrefix}setfavourite
-│ ${currentPrefix}deletefav
-│ ${currentPrefix}setpasatiempo
-│ ${currentPrefix}delpasatiempo
-╰────────────────────────────────────────╯
 
-╭────────────〔 🔐 SOCKETS 〕────────────╮
-│ ✦ *Comandos:* 18
-│ ✦ *Acceso:* ${currentPrefix}menu sockets
+╭┈ࠢ͜┅ࠦ͜͜╾݊͜─ׄ͜─ׄ֟፝͜─ׄ͜─ׄ͜╴ ⋱࣭ ᩴ ⋮֔ ᩴ ⋰ ╶͜─ׄ͜─ׄ֟፝͜─ׄ͜─ׄ݊͜͜╼┅ࠦ͜͜┈ࠢ͜╮
 │
-│ 📌 *Incluye:*
-│ ${currentPrefix}bots
-│ ${currentPrefix}join
-│ ${currentPrefix}leave
-│ ${currentPrefix}logout
-│ ${currentPrefix}self
-│ ${currentPrefix}qr
-│ ${currentPrefix}code
-│ ${currentPrefix}reload
-│ ${currentPrefix}setname
-│ ${currentPrefix}setbanner
-│ ${currentPrefix}seticon
-│ ${currentPrefix}setprefix
-│ ${currentPrefix}setcurrency
-│ ${currentPrefix}setowner
-│ ${currentPrefix}setchannel
-│ ${currentPrefix}setlink
-│ ${currentPrefix}setpfp
-│ ${currentPrefix}setstatus
-│ ${currentPrefix}setusername
+│             ⟐ *A L L  M E N U* ⟐
 │
-│ ⚠ *Nota:*
-│ La mayoría de estos comandos son solo para owner
-│ o propietario del socket.
-╰───────────────────────────────────────╯
+│        𖧧 USER :: @${senderNum} 🧑‍💻
+│        ✦ BOT :: ${botName} 🤖
+│        ⟡ OWNER :: RubyJX 👑
+│        ⎔ TYPE :: FULL MENU SYSTEM 📋
+│        ⟣ VERSION :: ^3.0 - Latest ⚙️
+│        ⌬ DEVICE :: ACTIVE 📲
+│        ⟐ STATUS :: ONLINE 🟢
+│        ✦ CHANNEL :: ${channelName} 📢
+│
+╰┈ࠢ͜┅ࠦ͜͜╾݊͜─ׄ͜─ׄ֟፝͜─ׄ͜─ׄ͜╴ ⋱࣭ ᩴ ⋮֔ ᩴ ⋰ ╶͜─ׄ͜─ׄ֟፝͜─ׄ͜─ׄ݊͜͜╼┅ࠦ͜͜┈ࠢ͜╯
 
-╭────────────〔 🎨 STICKERS 〕────────────╮
-│ ✦ *Comandos:* 15
-│ ✦ *Acceso:* ${currentPrefix}menu stickers
-│
-│ 📌 *Incluye:*
-│ ${currentPrefix}stickerpack
-│ ${currentPrefix}delpack
-│ ${currentPrefix}delstickermeta
-│ ${currentPrefix}getpack
-│ ${currentPrefix}newpack
-│ ${currentPrefix}setpackprivate
-│ ${currentPrefix}setpackpublic
-│ ${currentPrefix}setstickermeta
-│ ${currentPrefix}sticker
-│ ${currentPrefix}setstickerpackdesc
-│ ${currentPrefix}setstickerpackname
-│ ${currentPrefix}stickeradd
-│ ${currentPrefix}stickerdel
-│ ${currentPrefix}stickerpacks
-│ ${currentPrefix}brat
-│ ${currentPrefix}qc
-│ ${currentPrefix}emojimix
-╰────────────────────────────────────────╯
 
-╭────────────〔 🛠️ UTILITIES 〕────────────╮
-│ ✦ *Comandos:* 13
-│ ✦ *Acceso:* ${currentPrefix}menu utils
-│
-│ 📌 *Incluye:*
-│ ${currentPrefix}menu
-│ ${currentPrefix}help
-│ ${currentPrefix}chatgpt
-│ ${currentPrefix}getpic
-│ ${currentPrefix}say
-│ ${currentPrefix}get
-│ ${currentPrefix}translate
-│ ${currentPrefix}tourl
-│ ${currentPrefix}toimg
-│ ${currentPrefix}read
-│ ${currentPrefix}inspect
-│ ${currentPrefix}hd
-│ ${currentPrefix}gitclone
-│ ${currentPrefix}ssweb
-│ ${currentPrefix}sug
-│ ${currentPrefix}report
-╰─────────────────────────────────────────╯
 
-╭────────────〔 👥 GROUPS 〕────────────╮
-│ ✦ *Comandos:* 18
-│ ✦ *Acceso:* ${currentPrefix}menu grupo
-│
-│ 📌 *Incluye:*
-│ ${currentPrefix}alerts
-│ ${currentPrefix}antilinks
-│ ${currentPrefix}bot
-│ ${currentPrefix}close
-│ ${currentPrefix}gp
-│ ${currentPrefix}delwarn
-│ ${currentPrefix}demote
-│ ${currentPrefix}economy
-│ ${currentPrefix}gacha
-│ ${currentPrefix}goodbye
-│ ${currentPrefix}setgpbanner
-│ ${currentPrefix}setgpname
-│ ${currentPrefix}setgpdesc
-│ ${currentPrefix}kick
-│ ${currentPrefix}nsfw
-│ ${currentPrefix}adminonly
-│ ${currentPrefix}open
-│ ${currentPrefix}promote
-│ ${currentPrefix}setgoodbye
-│ ${currentPrefix}setprimary
-│ ${currentPrefix}setwarnlimit
-│ ${currentPrefix}setwelcome
-│ ${currentPrefix}tagall
-│ ${currentPrefix}msgcount
-│ ${currentPrefix}topcount
-│ ${currentPrefix}topinactive
-│ ${currentPrefix}warn
-│ ${currentPrefix}warns
-│ ${currentPrefix}welcome
-│ ${currentPrefix}link
-╰───────────────────────────────────────╯
+        𓆩 🧭 *CATEGORÍAS DISPONIBLES* 🧭 𓆪
+        ✨ *Menús públicos:* 12
+        ⚡ *Owner:* oculto y exclusivo del propietario
 
-╭────────────〔 🔞 NSFW 〕────────────╮
-│ ✦ *Comandos:* 38
-│ ✦ *Acceso:* ${currentPrefix}menu nsfw
-│
-│ 📌 *Incluye:*
-│ ${currentPrefix}xnxx
-│ ${currentPrefix}xvideos
-│ ${currentPrefix}danbooru
-│ ${currentPrefix}gelbooru
-│ ${currentPrefix}rule34
-│ ${currentPrefix}anal
-│ ${currentPrefix}blowjob
-│ ${currentPrefix}boobjob
-│ ${currentPrefix}bondage
-│ ${currentPrefix}bukkake
-│ ${currentPrefix}cum
-│ ${currentPrefix}cummouth
-│ ${currentPrefix}cumshot
-│ ${currentPrefix}creampie
-│ ${currentPrefix}deepthroat
-│ ${currentPrefix}facesitting
-│ ${currentPrefix}fap
-│ ${currentPrefix}fingering
-│ ${currentPrefix}footjob
-│ ${currentPrefix}fuck
-│ ${currentPrefix}futanari
-│ ${currentPrefix}grabboobs
-│ ${currentPrefix}grope
-│ ${currentPrefix}handjob
-│ ${currentPrefix}lickass
-│ ${currentPrefix}lickdick
-│ ${currentPrefix}lickpussy
-│ ${currentPrefix}orgy
-│ ${currentPrefix}pegging
-│ ${currentPrefix}sixnine
-│ ${currentPrefix}spank
-│ ${currentPrefix}squirt
-│ ${currentPrefix}suckboobs
-│ ${currentPrefix}thighjob
-│ ${currentPrefix}undress
-│ ${currentPrefix}yaoi
-│ ${currentPrefix}yuri
-╰──────────────────────────────────────╯
 
-╭────────────〔 🌌 ANIME 〕────────────╮
-│ ✦ *Comandos:* 69
-│ ✦ *Acceso:* ${currentPrefix}menu anime
-│
-│ 📌 *Incluye:*
-│ ${currentPrefix}waifu
-│ ${currentPrefix}ppcouple
-│ ${currentPrefix}peek
-│ ${currentPrefix}comfort
-│ ${currentPrefix}thinkhard
-│ ${currentPrefix}curious
-│ ${currentPrefix}sniff
-│ ${currentPrefix}stare
-│ ${currentPrefix}trip
-│ ${currentPrefix}blowkiss
-│ ${currentPrefix}snuggle
-│ ${currentPrefix}angry
-│ ${currentPrefix}bleh
-│ ${currentPrefix}bored
-│ ${currentPrefix}clap
-│ ${currentPrefix}coffee
-│ ${currentPrefix}cold
-│ ${currentPrefix}sing
-│ ${currentPrefix}tickle
-│ ${currentPrefix}scream
-│ ${currentPrefix}push
-│ ${currentPrefix}nope
-│ ${currentPrefix}jump
-│ ${currentPrefix}heat
-│ ${currentPrefix}gaming
-│ ${currentPrefix}draw
-│ ${currentPrefix}call
-│ ${currentPrefix}dramatic
-│ ${currentPrefix}drunk
-│ ${currentPrefix}impregnate
-│ ${currentPrefix}kisscheek
-│ ${currentPrefix}laugh
-│ ${currentPrefix}love
-│ ${currentPrefix}pout
-│ ${currentPrefix}punch
-│ ${currentPrefix}run
-│ ${currentPrefix}sad
-│ ${currentPrefix}scared
-│ ${currentPrefix}seduce
-│ ${currentPrefix}shy
-│ ${currentPrefix}sleep
-│ ${currentPrefix}smoke
-│ ${currentPrefix}spit
-│ ${currentPrefix}step
-│ ${currentPrefix}think
-│ ${currentPrefix}walk
-│ ${currentPrefix}hug
-│ ${currentPrefix}kill
-│ ${currentPrefix}eat
-│ ${currentPrefix}kiss
-│ ${currentPrefix}wink
-│ ${currentPrefix}pat
-│ ${currentPrefix}happy
-│ ${currentPrefix}bully
-│ ${currentPrefix}bite
-│ ${currentPrefix}blush
-│ ${currentPrefix}wave
-│ ${currentPrefix}bath
-│ ${currentPrefix}smug
-│ ${currentPrefix}smile
-│ ${currentPrefix}highfive
-│ ${currentPrefix}handhold
-│ ${currentPrefix}cringe
-│ ${currentPrefix}bonk
-│ ${currentPrefix}cry
-│ ${currentPrefix}lick
-│ ${currentPrefix}slap
-│ ${currentPrefix}dance
-│ ${currentPrefix}cuddle
-╰──────────────────────────────────────╯
 
-╭────────────〔 📌 ACCESS GUIDE 〕────────────╮
-│ ✦ *Abrir por nombre*
-│   ${currentPrefix}menu economia
-│   ${currentPrefix}menu gacha
-│   ${currentPrefix}menu downloads
-│   ${currentPrefix}menu profile
-│   ${currentPrefix}menu sockets
-│   ${currentPrefix}menu stickers
-│   ${currentPrefix}menu utils
-│   ${currentPrefix}menu grupo
-│   ${currentPrefix}menu nsfw
-│   ${currentPrefix}menu anime
-│
-│ ✦ *Abrir por número*
-│   ${currentPrefix}menu 1
-│   ${currentPrefix}menu 2
-│   ${currentPrefix}menu 3
-│   ${currentPrefix}menu 4
-│   ${currentPrefix}menu 5
-│   ${currentPrefix}menu 6
-│   ${currentPrefix}menu 7
-│   ${currentPrefix}menu 8
-│   ${currentPrefix}menu 9
-│   ${currentPrefix}menu 10
-╰─────────────────────────────────────────────╯
+ꕥ 🧩 *MAIN / GENERAL*
 
-╭────────────〔 💡 EXTRA 〕────────────╮
-│ ✦ *Volver al panel principal*
-│   ${currentPrefix}menu
-│
-│ ✦ *Abrir menú completo*
-│   ${currentPrefix}menutotal
-│
-│ ✦ *Consejo*
-│   Usa el nombre o número de categoría
-│   para entrar más rápido al menú deseado.
-╰─────────────────────────────────────╯`
+🏠 *${currentPrefix}menu*:
+Abre el menú principal del bot.
 
-    await client.sendMessage(m.chat, { text: textMenu }, { quoted: m })
+📋 *${currentPrefix}menutotal*:
+Muestra este panel completo de comandos.
+
+🤖 *${currentPrefix}infobot* / *${currentPrefix}infosocket*:
+Muestra información general del bot o socket.
+
+📨 *${currentPrefix}invite* / *${currentPrefix}invitar*:
+Genera o muestra invitación del bot.
+
+⚡ *${currentPrefix}ping* / *${currentPrefix}p*:
+Mide la velocidad de respuesta del bot.
+
+📊 *${currentPrefix}status* / *${currentPrefix}estado*:
+Muestra el estado actual del sistema.
+
+📝 *${currentPrefix}report* / *${currentPrefix}reporte* / *${currentPrefix}sug* / *${currentPrefix}suggest*:
+Envía reportes o sugerencias al owner.
+
+
+
+ꕥ 💰 *ECONOMÍA* — *19 comandos*
+> Acceso: *${currentPrefix}menu economia*
+
+💳 *${currentPrefix}balance* / *${currentPrefix}bal* / *${currentPrefix}coins* / *${currentPrefix}bank*
+🎁 *${currentPrefix}daily* / *${currentPrefix}diario*
+💼 *${currentPrefix}work* / *${currentPrefix}w* / *${currentPrefix}chambear* / *${currentPrefix}chamba* / *${currentPrefix}trabajar*
+🕵️ *${currentPrefix}crime* / *${currentPrefix}crimen*
+💋 *${currentPrefix}slut* / *${currentPrefix}prostituirse*
+🎰 *${currentPrefix}slot*
+🎲 *${currentPrefix}apostar* / *${currentPrefix}casino*
+🪙 *${currentPrefix}coinflip* / *${currentPrefix}cf* / *${currentPrefix}flip*
+🏦 *${currentPrefix}deposit* / *${currentPrefix}dep* / *${currentPrefix}depositar* / *${currentPrefix}d*
+💸 *${currentPrefix}withdraw* / *${currentPrefix}with* / *${currentPrefix}retirar*
+🤝 *${currentPrefix}givecoins* / *${currentPrefix}pay* / *${currentPrefix}coinsgive*
+🏆 *${currentPrefix}economyboard* / *${currentPrefix}eboard* / *${currentPrefix}baltop*
+ℹ️ *${currentPrefix}infoeconomy* / *${currentPrefix}cooldowns* / *${currentPrefix}economyinfo* / *${currentPrefix}einfo*
+💊 *${currentPrefix}heal* / *${currentPrefix}curar*
+🏹 *${currentPrefix}hunt* / *${currentPrefix}cazar*
+📅 *${currentPrefix}monthly* / *${currentPrefix}mensual*
+✊ *${currentPrefix}ppt*
+🎟️ *${currentPrefix}canjear*
+🎁 *${currentPrefix}code* / *${currentPrefix}codigo* / *${currentPrefix}codigos*
+
+
+
+ꕥ 🎴 *GACHA* — *26 comandos*
+> Acceso: *${currentPrefix}menu gacha*
+
+🎲 *${currentPrefix}rollwaifu* / *${currentPrefix}rw* / *${currentPrefix}roll*
+💖 *${currentPrefix}claim* / *${currentPrefix}c* / *${currentPrefix}reclamar*
+📦 *${currentPrefix}harem* / *${currentPrefix}waifus* / *${currentPrefix}claims*
+ℹ️ *${currentPrefix}gachainfo* / *${currentPrefix}ginfo* / *${currentPrefix}infogacha*
+👤 *${currentPrefix}charinfo* / *${currentPrefix}winfo* / *${currentPrefix}waifuinfo*
+🎞️ *${currentPrefix}serieinfo* / *${currentPrefix}ainfo* / *${currentPrefix}animeinfo*
+📚 *${currentPrefix}serielist* / *${currentPrefix}slist* / *${currentPrefix}animelist*
+🖼️ *${currentPrefix}charimage* / *${currentPrefix}waifuimage* / *${currentPrefix}cimage* / *${currentPrefix}wimage*
+🎬 *${currentPrefix}charvideo* / *${currentPrefix}waifuvideo* / *${currentPrefix}cvideo* / *${currentPrefix}wvideo*
+🗳️ *${currentPrefix}vote* / *${currentPrefix}votar*
+🏆 *${currentPrefix}waifusboard* / *${currentPrefix}waifustop* / *${currentPrefix}topwaifus* / *${currentPrefix}wtop*
+⭐ *${currentPrefix}favtop* / *${currentPrefix}favoritetop* / *${currentPrefix}favboard*
+💘 *${currentPrefix}setfav* / *${currentPrefix}setfavourite*
+❌ *${currentPrefix}deletefav* / *${currentPrefix}delfav*
+💰 *${currentPrefix}sell* / *${currentPrefix}vender*
+🛒 *${currentPrefix}wshop* / *${currentPrefix}haremshop* / *${currentPrefix}tiendawaifus*
+🛍️ *${currentPrefix}buyc* / *${currentPrefix}buycharacter* / *${currentPrefix}buychar*
+🚫 *${currentPrefix}removesale* / *${currentPrefix}removerventa*
+🎁 *${currentPrefix}givechar* / *${currentPrefix}givewaifu* / *${currentPrefix}regalar*
+📤 *${currentPrefix}giveallharem*
+🔁 *${currentPrefix}trade* / *${currentPrefix}intercambiar*
+✅ *${currentPrefix}aceptar*
+🦹 *${currentPrefix}robwaifu* / *${currentPrefix}robarwaifu*
+💬 *${currentPrefix}setclaim* / *${currentPrefix}setclaimmsg*
+🧹 *${currentPrefix}delclaimmsg* / *${currentPrefix}resetclaimmsg*
+🗑️ *${currentPrefix}delchar* / *${currentPrefix}deletewaifu* / *${currentPrefix}delwaifu*
+
+
+
+ꕥ 📥 *DOWNLOADS* — *13 comandos*
+> Acceso: *${currentPrefix}menu downloads*
+
+🎧 *${currentPrefix}play* / *${currentPrefix}mp3* / *${currentPrefix}ytmp3* / *${currentPrefix}ytaudio* / *${currentPrefix}playaudio*
+🎬 *${currentPrefix}play2* / *${currentPrefix}mp4* / *${currentPrefix}ytmp4* / *${currentPrefix}ytvideo* / *${currentPrefix}playvideo*
+🔎 *${currentPrefix}ytsearch* / *${currentPrefix}search*
+🎶 *${currentPrefix}tiktok* / *${currentPrefix}tt*
+🔍 *${currentPrefix}tiktoksearch* / *${currentPrefix}ttsearch* / *${currentPrefix}tts*
+📸 *${currentPrefix}instagram* / *${currentPrefix}ig*
+📘 *${currentPrefix}facebook* / *${currentPrefix}fb*
+🐦 *${currentPrefix}twitter* / *${currentPrefix}x* / *${currentPrefix}xdl*
+🌄 *${currentPrefix}imagen* / *${currentPrefix}img* / *${currentPrefix}image*
+📌 *${currentPrefix}pinterest* / *${currentPrefix}pin*
+📁 *${currentPrefix}mediafire* / *${currentPrefix}mf*
+☁️ *${currentPrefix}drive* / *${currentPrefix}gdrive*
+📲 *${currentPrefix}apk* / *${currentPrefix}aptoide* / *${currentPrefix}apkdl*
+👥 *${currentPrefix}wpgrupos* / *${currentPrefix}gruposwa* / *${currentPrefix}wagrupos*
+
+
+
+ꕥ 👤 *PROFILE* — *14 comandos*
+> Acceso: *${currentPrefix}menu profile*
+
+👤 *${currentPrefix}profile* / *${currentPrefix}perfil*
+📊 *${currentPrefix}level* / *${currentPrefix}lvl*
+🏆 *${currentPrefix}lboard* / *${currentPrefix}lb* / *${currentPrefix}leaderboard*
+💤 *${currentPrefix}afk*
+🎂 *${currentPrefix}setbirth*
+❌ *${currentPrefix}delbirth*
+📝 *${currentPrefix}setdescription* / *${currentPrefix}setdesc*
+🧹 *${currentPrefix}deldescription* / *${currentPrefix}deldesc*
+⚥ *${currentPrefix}setgenre*
+❌ *${currentPrefix}delgenre*
+🎯 *${currentPrefix}setpasatiempo* / *${currentPrefix}sethobby*
+🧹 *${currentPrefix}delpasatiempo* / *${currentPrefix}removehobby*
+💍 *${currentPrefix}marry* / *${currentPrefix}casarse*
+💔 *${currentPrefix}divorce*
+
+
+
+ꕥ 🔐 *SOCKETS* — *18 comandos*
+> Acceso: *${currentPrefix}menu sockets*
+
+🤖 *${currentPrefix}bots* / *${currentPrefix}sockets*
+📱 *${currentPrefix}code* / *${currentPrefix}qr*
+🔗 *${currentPrefix}join* / *${currentPrefix}unir*
+🚪 *${currentPrefix}leave*
+🔌 *${currentPrefix}logout*
+♻️ *${currentPrefix}reload*
+🔒 *${currentPrefix}self*
+📝 *${currentPrefix}setname* / *${currentPrefix}setbotname*
+🔤 *${currentPrefix}setprefix* / *${currentPrefix}setbotprefix*
+🖼️ *${currentPrefix}setbanner* / *${currentPrefix}setbotbanner*
+🧩 *${currentPrefix}seticon* / *${currentPrefix}setboticon*
+🔗 *${currentPrefix}setlink* / *${currentPrefix}setbotlink*
+📢 *${currentPrefix}setchannel* / *${currentPrefix}setbotchannel*
+💰 *${currentPrefix}setcurrency* / *${currentPrefix}setbotcurrency*
+👑 *${currentPrefix}setowner* / *${currentPrefix}setbotowner*
+🖼️ *${currentPrefix}setpfp* / *${currentPrefix}setimage*
+📊 *${currentPrefix}setstatus*
+👤 *${currentPrefix}setusername*
+
+
+
+ꕥ 🎨 *STICKERS* — *19 comandos*
+> Acceso: *${currentPrefix}menu stickers*
+
+🖼️ *${currentPrefix}sticker* / *${currentPrefix}s*
+🧩 *${currentPrefix}s1*
+🏷️ *${currentPrefix}stickername* / *${currentPrefix}sname* / *${currentPrefix}sn* / *${currentPrefix}sn1*
+💬 *${currentPrefix}qc*
+😎 *${currentPrefix}emojimix*
+🍼 *${currentPrefix}brat*
+🎥 *${currentPrefix}bratv*
+➕ *${currentPrefix}addsticker* / *${currentPrefix}stickeradd*
+❌ *${currentPrefix}stickerdel* / *${currentPrefix}delsticker*
+📦 *${currentPrefix}getpack* / *${currentPrefix}pack* / *${currentPrefix}stickerpack*
+🆕 *${currentPrefix}newpack* / *${currentPrefix}newstickerpack*
+📜 *${currentPrefix}packlist* / *${currentPrefix}stickerpacks*
+🗑️ *${currentPrefix}delpack*
+🧹 *${currentPrefix}delmeta* / *${currentPrefix}delstickermeta*
+⚙️ *${currentPrefix}setstickermeta* / *${currentPrefix}setmeta*
+📝 *${currentPrefix}setstickerpackdesc* / *${currentPrefix}setpackdesc* / *${currentPrefix}packdesc*
+🏷️ *${currentPrefix}setstickerpackname* / *${currentPrefix}setpackname* / *${currentPrefix}packname*
+🔒 *${currentPrefix}setpackprivate* / *${currentPrefix}setpackpriv* / *${currentPrefix}packprivate*
+🌍 *${currentPrefix}setpackpublic* / *${currentPrefix}setpackpub* / *${currentPrefix}packpublic*
+
+
+
+ꕥ 🛠️ *UTILITIES* — *31 comandos*
+> Acceso: *${currentPrefix}menu utilities*
+
+📖 *${currentPrefix}readviewonce* / *${currentPrefix}read* / *${currentPrefix}readvo*
+📚 *${currentPrefix}resumen*
+🗣️ *${currentPrefix}say* / *${currentPrefix}decir*
+🆓 *${currentPrefix}sf* / *${currentPrefix}stickfree* / *${currentPrefix}sf1*
+🌐 *${currentPrefix}ssweb* / *${currentPrefix}ss*
+🔠 *${currentPrefix}morse*
+🔡 *${currentPrefix}demorse*
+0️⃣ *${currentPrefix}binary*
+1️⃣ *${currentPrefix}unbinary*
+🔐 *${currentPrefix}encrypt*
+🔓 *${currentPrefix}decrypt*
+🔄 *${currentPrefix}reverse*
+🪞 *${currentPrefix}mirror*
+✨ *${currentPrefix}fancy*
+🔢 *${currentPrefix}count*
+🎲 *${currentPrefix}random*
+📐 *${currentPrefix}format*
+🖼️ *${currentPrefix}toimg* / *${currentPrefix}toimage*
+🏆 *${currentPrefix}topcmd* / *${currentPrefix}topcommands*
+🔗 *${currentPrefix}tourl*
+🌍 *${currentPrefix}translate* / *${currentPrefix}trad* / *${currentPrefix}traducir*
+💌 *${currentPrefix}anonmsg* / *${currentPrefix}anonimo* / *${currentPrefix}anon*
+🧮 *${currentPrefix}calc* / *${currentPrefix}calcular* / *${currentPrefix}math*
+🤖 *${currentPrefix}ia* / *${currentPrefix}chatgpt*
+🌐 *${currentPrefix}get* / *${currentPrefix}fetch*
+🖼️ *${currentPrefix}pfp* / *${currentPrefix}getpic*
+🧬 *${currentPrefix}gitclone* / *${currentPrefix}git*
+✨ *${currentPrefix}hd* / *${currentPrefix}enhance* / *${currentPrefix}remini*
+🕘 *${currentPrefix}historialcmd* / *${currentPrefix}cmdhistory*
+🔎 *${currentPrefix}inspect* / *${currentPrefix}inspeccionar*
+📄 *${currentPrefix}log* / *${currentPrefix}logs*
+⏱️ *${currentPrefix}uptime* / *${currentPrefix}runtime*
+
+
+
+ꕥ 👥 *GROUP* — *54 comandos*
+> Acceso: *${currentPrefix}menu group*
+
+👤 *${currentPrefix}add*
+👢 *${currentPrefix}kick*
+💥 *${currentPrefix}kickall*
+👑 *${currentPrefix}promote*
+⬇️ *${currentPrefix}demote*
+📌 *${currentPrefix}anclar* / *${currentPrefix}pin*
+🔗 *${currentPrefix}link*
+♻️ *${currentPrefix}revoke* / *${currentPrefix}restablecer*
+📛 *${currentPrefix}setgpname*
+📝 *${currentPrefix}setgpdesc*
+🖼️ *${currentPrefix}setgpbanner*
+ℹ️ *${currentPrefix}gp* / *${currentPrefix}groupinfo*
+🙈 *${currentPrefix}hidetag* / *${currentPrefix}tag*
+📢 *${currentPrefix}todos* / *${currentPrefix}invocar* / *${currentPrefix}tagall*
+🔇 *${currentPrefix}mute*
+🔊 *${currentPrefix}unmute*
+📃 *${currentPrefix}mutelist*
+⏳ *${currentPrefix}mutetime* / *${currentPrefix}tempmute*
+🧹 *${currentPrefix}delete* / *${currentPrefix}del* / *${currentPrefix}borrar*
+🧽 *${currentPrefix}purge* / *${currentPrefix}clearchat*
+🚮 *${currentPrefix}purgeuser* / *${currentPrefix}clearuser* / *${currentPrefix}deluser*
+⚠️ *${currentPrefix}warn*
+📋 *${currentPrefix}warns*
+🧹 *${currentPrefix}delwarn*
+🚧 *${currentPrefix}setwarnlimit*
+🔒 *${currentPrefix}closet* / *${currentPrefix}close* / *${currentPrefix}cerrar*
+🔓 *${currentPrefix}open* / *${currentPrefix}abrir*
+🤖 *${currentPrefix}bot*
+🛡️ *${currentPrefix}modconfig* / *${currentPrefix}automodconfig*
+🚫 *${currentPrefix}antiestado*
+🌊 *${currentPrefix}antiflood* / *${currentPrefix}flood*
+🖼️ *${currentPrefix}antiimage* / *${currentPrefix}antiimg*
+🔞 *${currentPrefix}nsfwfilter* / *${currentPrefix}antinsfw*
+🎭 *${currentPrefix}antisticker*
+🎬 *${currentPrefix}antivideo*
+🤬 *${currentPrefix}badwords* / *${currentPrefix}antitoxic* / *${currentPrefix}antigroserias*
+🔗 *${currentPrefix}antilink* / *${currentPrefix}antienlaces* / *${currentPrefix}antilinks*
+🧷 *${currentPrefix}antilinksoft*
+👮 *${currentPrefix}autoadmin*
+👋 *${currentPrefix}welcome* / *${currentPrefix}bienvenida*
+🚪 *${currentPrefix}goodbye* / *${currentPrefix}despedida*
+🚨 *${currentPrefix}alerts* / *${currentPrefix}alertas*
+🔞 *${currentPrefix}nsfw*
+💰 *${currentPrefix}rpg* / *${currentPrefix}economy* / *${currentPrefix}economia*
+🎴 *${currentPrefix}gacha*
+👮‍♂️ *${currentPrefix}adminonly* / *${currentPrefix}onlyadmin*
+💬 *${currentPrefix}setwelcome*
+💬 *${currentPrefix}setgoodbye*
+⭐ *${currentPrefix}setprimary*
+🔢 *${currentPrefix}count* / *${currentPrefix}mensajes* / *${currentPrefix}messages* / *${currentPrefix}msgcount*
+🏆 *${currentPrefix}topcount* / *${currentPrefix}topmensajes* / *${currentPrefix}topmsgcount* / *${currentPrefix}topmessages*
+😴 *${currentPrefix}topinactive* / *${currentPrefix}topinactivos* / *${currentPrefix}topinactiveusers*
+👢 *${currentPrefix}kickinactive* / *${currentPrefix}kickinactivos* / *${currentPrefix}kickinactivepage* / *${currentPrefix}kickinactiveall*
+🌎 *${currentPrefix}kicknum* / *${currentPrefix}kickprefix* / *${currentPrefix}kickcountry*
+
+
+
+ꕥ 🔞 *NSFW* — *37 comandos*
+> Acceso: *${currentPrefix}menu nsfw*
+
+🔎 *${currentPrefix}danbooru* / *${currentPrefix}dbooru*
+🔎 *${currentPrefix}gelbooru* / *${currentPrefix}gbooru*
+🔎 *${currentPrefix}r34* / *${currentPrefix}rule34* / *${currentPrefix}rule*
+🎥 *${currentPrefix}xnxx*
+🎥 *${currentPrefix}xvideos*
+🍑 *${currentPrefix}anal*
+💦 *${currentPrefix}cum*
+🔓 *${currentPrefix}undress* / *${currentPrefix}encuerar*
+🔥 *${currentPrefix}fuck* / *${currentPrefix}coger*
+🍑 *${currentPrefix}spank* / *${currentPrefix}nalgada*
+👅 *${currentPrefix}lickpussy*
+✊ *${currentPrefix}fap* / *${currentPrefix}paja*
+🫳 *${currentPrefix}grope*
+6️⃣9️⃣ *${currentPrefix}sixnine* / *${currentPrefix}69*
+🍒 *${currentPrefix}suckboobs*
+🍒 *${currentPrefix}grabboobs*
+💋 *${currentPrefix}blowjob* / *${currentPrefix}mamada* / *${currentPrefix}bj*
+🍒 *${currentPrefix}boobjob*
+🌸 *${currentPrefix}yuri* / *${currentPrefix}tijeras*
+🦶 *${currentPrefix}footjob*
+💦 *${currentPrefix}cummouth*
+💦 *${currentPrefix}cumshot*
+✋ *${currentPrefix}handjob*
+👅 *${currentPrefix}lickass*
+👅 *${currentPrefix}lickdick*
+👉 *${currentPrefix}fingering*
+💦 *${currentPrefix}creampie*
+🪑 *${currentPrefix}facesitting*
+🔥 *${currentPrefix}deepthroat*
+🦵 *${currentPrefix}thighjob*
+⛓️ *${currentPrefix}bondage*
+🔥 *${currentPrefix}pegging*
+🔞 *${currentPrefix}futanari* / *${currentPrefix}futa*
+🌈 *${currentPrefix}yaoi*
+💦 *${currentPrefix}bukkake*
+🎉 *${currentPrefix}orgy* / *${currentPrefix}orgia*
+💦 *${currentPrefix}squirt* / *${currentPrefix}squirting*
+
+
+
+ꕥ 🌌 *ANIME* — *3 comandos*
+> Acceso: *${currentPrefix}menu anime*
+
+💞 *${currentPrefix}ppcp* / *${currentPrefix}ppcouple*
+🌸 *${currentPrefix}waifu*
+🐱 *${currentPrefix}neko*
+
+
+
+ꕥ 💞 *INTERACCIONES* — *67 comandos*
+> Acceso: *${currentPrefix}menu interacciones*
+
+😡 *${currentPrefix}angry* / *${currentPrefix}enojado* / *${currentPrefix}enojada*
+😛 *${currentPrefix}bleh*
+🥱 *${currentPrefix}bored* / *${currentPrefix}aburrido* / *${currentPrefix}aburrida*
+👏 *${currentPrefix}clap* / *${currentPrefix}aplaudir*
+☕ *${currentPrefix}coffee* / *${currentPrefix}cafe*
+🎭 *${currentPrefix}dramatic* / *${currentPrefix}drama*
+🍻 *${currentPrefix}drunk*
+🥶 *${currentPrefix}cold*
+🤰 *${currentPrefix}impregnate* / *${currentPrefix}preg* / *${currentPrefix}preñar* / *${currentPrefix}embarazar*
+😘 *${currentPrefix}kisscheek* / *${currentPrefix}beso* / *${currentPrefix}besar*
+😂 *${currentPrefix}laugh*
+❤️ *${currentPrefix}love* / *${currentPrefix}amor*
+😗 *${currentPrefix}pout*
+👊 *${currentPrefix}punch* / *${currentPrefix}golpear*
+🏃 *${currentPrefix}run* / *${currentPrefix}correr*
+😔 *${currentPrefix}sad* / *${currentPrefix}triste*
+😨 *${currentPrefix}scared* / *${currentPrefix}asustado*
+🔥 *${currentPrefix}seduce* / *${currentPrefix}seducir*
+😳 *${currentPrefix}shy* / *${currentPrefix}timido* / *${currentPrefix}timida*
+😴 *${currentPrefix}sleep* / *${currentPrefix}dormir*
+🚬 *${currentPrefix}smoke* / *${currentPrefix}fumar*
+💦 *${currentPrefix}spit* / *${currentPrefix}escupir*
+👣 *${currentPrefix}step* / *${currentPrefix}pisar*
+🤔 *${currentPrefix}think* / *${currentPrefix}pensar*
+🚶 *${currentPrefix}walk* / *${currentPrefix}caminar*
+🫂 *${currentPrefix}hug* / *${currentPrefix}abrazar*
+🔪 *${currentPrefix}kill* / *${currentPrefix}matar*
+🍽️ *${currentPrefix}eat* / *${currentPrefix}nom* / *${currentPrefix}comer*
+💋 *${currentPrefix}kiss* / *${currentPrefix}muak*
+😉 *${currentPrefix}wink* / *${currentPrefix}guiñar*
+👋 *${currentPrefix}pat* / *${currentPrefix}acariciar*
+😄 *${currentPrefix}happy* / *${currentPrefix}feliz*
+😈 *${currentPrefix}bully* / *${currentPrefix}molestar*
+🦷 *${currentPrefix}bite* / *${currentPrefix}morder*
+😊 *${currentPrefix}blush* / *${currentPrefix}sonrojarse*
+👋 *${currentPrefix}wave* / *${currentPrefix}saludar*
+🛁 *${currentPrefix}bath* / *${currentPrefix}bañarse*
+😏 *${currentPrefix}smug* / *${currentPrefix}presumir*
+😊 *${currentPrefix}smile* / *${currentPrefix}sonreir*
+🙌 *${currentPrefix}highfive* / *${currentPrefix}choca*
+🤝 *${currentPrefix}handhold* / *${currentPrefix}tomar*
+😬 *${currentPrefix}cringe*
+🔨 *${currentPrefix}bonk* / *${currentPrefix}golpe*
+😭 *${currentPrefix}cry* / *${currentPrefix}llorar*
+👅 *${currentPrefix}lick* / *${currentPrefix}lamer*
+🖐️ *${currentPrefix}slap* / *${currentPrefix}bofetada*
+💃 *${currentPrefix}dance* / *${currentPrefix}bailar*
+🤗 *${currentPrefix}cuddle* / *${currentPrefix}acurrucar*
+🎤 *${currentPrefix}sing* / *${currentPrefix}cantar*
+🤭 *${currentPrefix}tickle* / *${currentPrefix}cosquillas*
+😱 *${currentPrefix}scream* / *${currentPrefix}gritar*
+🖐️ *${currentPrefix}push* / *${currentPrefix}empujar*
+🙅 *${currentPrefix}nope* / *${currentPrefix}no*
+🦘 *${currentPrefix}jump* / *${currentPrefix}saltar*
+🥵 *${currentPrefix}heat* / *${currentPrefix}calor*
+🎮 *${currentPrefix}gaming* / *${currentPrefix}jugar*
+🎨 *${currentPrefix}draw* / *${currentPrefix}dibujar*
+📞 *${currentPrefix}call* / *${currentPrefix}llamar*
+🤗 *${currentPrefix}snuggle* / *${currentPrefix}acurrucarse*
+😘 *${currentPrefix}blowkiss* / *${currentPrefix}besito*
+🦶 *${currentPrefix}trip* / *${currentPrefix}tropezar*
+👁️ *${currentPrefix}stare* / *${currentPrefix}mirar*
+👃 *${currentPrefix}sniff* / *${currentPrefix}oler*
+🧐 *${currentPrefix}curious* / *${currentPrefix}curioso* / *${currentPrefix}curiosa*
+🤯 *${currentPrefix}thinkhard*
+🫂 *${currentPrefix}comfort* / *${currentPrefix}consolar*
+👀 *${currentPrefix}peek*
+
+
+
+ꕥ 🎯 *REACTIONS* — *2 comandos*
+> Acceso: *${currentPrefix}menu reactions*
+
+💫 *${currentPrefix}react* / *${currentPrefix}reacciones*
+🧪 *${currentPrefix}holabotones*
+
+
+
+        𓆩 🔙 *RETURN* 🔙 𓆪
+
+🏠 *${currentPrefix}menu*:
+Regresa al menú principal del bot.
+
+📋 *${currentPrefix}menutotal*:
+Vuelve a abrir el panel completo.`
+
+   await client.sendMessage(
+  m.chat,
+  {
+    text: textMenu,
+    mentions: [m.sender],
+    contextInfo: {
+      mentionedJid: [m.sender],
+      forwardingScore: 999,
+      isForwarded: true,
+      forwardedNewsletterMessageInfo: {
+        newsletterJid: channelJid,
+        newsletterName: channelName,
+        serverMessageId: '1'
+      },
+      externalAdReply: {
+        title: channelName,
+        body: 'Ver canal oficial',
+        thumbnailUrl: thumbnail,
+        sourceUrl: channelLink,
+        mediaType: 1,
+        renderLargerThumbnail: true,
+        showAdAttribution: false
+      }
+    }
+  },
+  { quoted: m }
+)
   }
 }

@@ -5,329 +5,209 @@ export default {
   run: async (client, m, args, usedPrefix, command, text) => {
     const currentPrefix = usedPrefix || '.'
     const pushname = m.pushName || 'Usuario'
+    const userTag = `@${m.sender.split('@')[0]}`
 
-    const textMenu = `> 𖧧 *Hola, ${pushname}*
-> Accediste al sistema de *utilidades*
+    const botRaw = client.user?.id || ''
+    const botId = botRaw.split(':')[0] + '@s.whatsapp.net'
+    const settings = global.db.data.settings?.[botId] || {}
+
+    const botName = settings.botname || settings.namebot || 'RubyJX Bot'
+    const channelName = settings.nameid || global.my?.name || 'RubyJX Channel'
+    const channelJid = settings.id || global.my?.ch || '120363424461852442@newsletter'
+    const channelLink = settings.link || 'https://whatsapp.com/channel/0029Vb7O3ugGZNCpbDTDhr3F'
+    const thumbnail = settings.icon || settings.banner || undefined
+
+    const textMenu = `> 𖧧 *Hola, ${pushname}* 🧸
+> Accediste al sistema de *utilidades* 🛠️✨
+
+
 
 ╭┈ࠢ͜┅ࠦ͜͜╾݊͜─ׄ͜─ׄ֟፝͜─ׄ͜─ׄ͜╴ ⋱࣭ ᩴ ⋮֔ ᩴ ⋰ ╶͜─ׄ͜─ׄ֟፝͜─ׄ͜─ׄ݊͜͜╼┅ࠦ͜͜┈ࠢ͜╮
 │
-│             ⟐ *U T I L I T I E S* ⟐
+│            ⟐ *U T I L I T I E S* ⟐
 │
-│               ⟡ OWNER :: RubyJX
-│           ⎔ TYPE :: UTILITY SYSTEM
-│        ⟣ VERSION :: ^3.0 - Latest
-│           ⌬ DEVICE :: ACTIVE
-│           ⟐ STATUS :: ONLINE
-│         ✦ CHANNEL :: https://whatsapp.com/channel/0029Vb7O3ugGZNCpbDTDhr3F
-│       ✦ COMMUNITY :: https://chat.whatsapp.com/KtXac3mqt1zFv3FAfDkJ23
-│  
+│        𖧧 USER :: ${userTag} 🧑‍💻
+│        ✦ BOT :: ${botName} 🤖
+│        ⟡ OWNER :: RubyJX 👑
+│        ⎔ TYPE :: UTILITY SYSTEM 🛠️
+│        ⟣ VERSION :: ^3.0 - Latest ⚙️
+│        ⌬ DEVICE :: ACTIVE 📲
+│        ⟐ STATUS :: ONLINE 🟢
+│        ✦ CHANNEL :: ${channelName} 📢
+│
 ╰┈ࠢ͜┅ࠦ͜͜╾݊͜─ׄ͜─ׄ֟፝͜─ׄ͜─ׄ͜╴ ⋱࣭ ᩴ ⋮֔ ᩴ ⋰ ╶͜─ׄ͜─ׄ֟፝͜─ׄ͜─ׄ݊͜͜╼┅ࠦ͜͜┈ࠢ͜╯
 
-╭────────────〔 🛠️ UTILITY SYSTEM 〕────────────╮
-│ ⟡ *TOTAL DISPONIBLE ::* 13 comandos
-│ ⎔ *MODO ::* Herramientas, búsquedas y conversión
-╰───────────────────────────────────────────────╯
 
-╭────────〔 📖 MENU / HELP / AYUDA 〕────────╮
-│ ✦ *Comando principal:* ${currentPrefix}menu
-│ ✦ *Aliases:* ${currentPrefix}help • ${currentPrefix}ayuda
-│
-│ 📌 *¿Qué hace?*
-│ Te muestra el menú general del bot o una
-│ categoría específica si la indicas.
-│
-│ 🧠 *¿Cómo funciona?*
-│ Puedes usarlo sin argumentos para ver el menú
-│ principal, o escribir una categoría para abrir
-│ directamente esa sección.
-│
-│ 🧾 *Uso:*
-│ ${currentPrefix}menu
-│ ${currentPrefix}menu anime
-│ ${currentPrefix}help
-│
-│ 💡 *Ejemplo:*
-│ ${currentPrefix}ayuda
-╰──────────────────────────────────────────────╯
 
-╭────────〔 🤖 CHATGPT / IA 〕────────╮
-│ ✦ *Comando principal:* ${currentPrefix}chatgpt
-│ ✦ *Alias:* ${currentPrefix}ia
-│
-│ 📌 *¿Qué hace?*
-│ Realiza preguntas a la IA integrada del bot.
-│
-│ 🧠 *¿Cómo funciona?*
-│ Envías una pregunta o instrucción y el sistema
-│ responde con texto generado por IA.
-│
-│ 🧾 *Uso:*
-│ ${currentPrefix}chatgpt Hola
-│ ${currentPrefix}ia explícame JavaScript
-│
-│ 💡 *Ejemplo:*
-│ ${currentPrefix}chatgpt dame ideas para mi grupo
-│
-│ ✅ *Recomendación:*
-│ Úsalo para dudas rápidas, ideas, textos y apoyo.
-╰──────────────────────────────────────────────╯
+        𓆩 🛠️ *UTILITY SYSTEM* 🛠️ 𓆪
+        ✨ *Total disponible:* 31 comandos
+        ⚡ *Modo:* herramientas, conversión, IA y texto
 
-╭────────〔 🖼️ GETPIC / PFP 〕────────╮
-│ ✦ *Comando principal:* ${currentPrefix}getpic
-│ ✦ *Alias:* ${currentPrefix}pfp
-│
-│ 📌 *¿Qué hace?*
-│ Muestra la foto de perfil de un usuario.
-│
-│ 🧠 *¿Cómo funciona?*
-│ Mencionas a alguien y el bot intenta obtener
-│ la foto de perfil de esa persona.
-│
-│ 🧾 *Uso:*
-│ ${currentPrefix}getpic @usuario
-│ ${currentPrefix}pfp @usuario
-│
-│ 💡 *Ejemplo:*
-│ ${currentPrefix}pfp @RubyJX
-╰──────────────────────────────────────────────╯
 
-╭────────〔 🗣️ SAY / DECIR 〕────────╮
-│ ✦ *Comando principal:* ${currentPrefix}say
-│ ✦ *Alias:* ${currentPrefix}decir
-│
-│ 📌 *¿Qué hace?*
-│ Hace que el bot repita un mensaje.
-│
-│ 🧠 *¿Cómo funciona?*
-│ Escribes un texto y el bot lo enviará tal como
-│ fue escrito.
-│
-│ 🧾 *Uso:*
-│ ${currentPrefix}say hola mundo
-│ ${currentPrefix}decir bienvenidos
-│
-│ 💡 *Ejemplo:*
-│ ${currentPrefix}say Activen las reglas
-╰──────────────────────────────────────────────╯
 
-╭────────〔 🌐 GET / FETCH 〕────────╮
-│ ✦ *Comando principal:* ${currentPrefix}get
-│ ✦ *Alias:* ${currentPrefix}fetch
-│
-│ 📌 *¿Qué hace?*
-│ Realiza una solicitud a una URL o página web.
-│
-│ 🧠 *¿Cómo funciona?*
-│ Le pasas un enlace y el bot intenta obtener
-│ información o contenido desde ese recurso.
-│
-│ 🧾 *Uso:*
-│ ${currentPrefix}get https://ejemplo.com
-│ ${currentPrefix}fetch https://api.github.com
-│
-│ 💡 *Ejemplo:*
-│ ${currentPrefix}get https://google.com
-│
-│ ⚠ *Recomendación:*
-│ Usa enlaces completos que empiecen con http o https.
-╰──────────────────────────────────────────────╯
+ꕥ 📖 *LECTURA Y RESUMEN*
 
-╭────────〔 🌍 TRAD / TRANSLATE 〕────────╮
-│ ✦ *Comando principal:* ${currentPrefix}trad
-│ ✦ *Aliases:* ${currentPrefix}traducir • ${currentPrefix}translate
-│
-│ 📌 *¿Qué hace?*
-│ Traduce texto al idioma que indiques.
-│
-│ 🧠 *¿Cómo funciona?*
-│ Escribes el idioma y el texto a traducir, y el
-│ bot devuelve la versión traducida.
-│
-│ 🧾 *Uso:*
-│ ${currentPrefix}translate en / hola
-│ ${currentPrefix}traducir pt / buenos días
-│
-│ 💡 *Ejemplo:*
-│ ${currentPrefix}trad en / como estas
-│
-│ ✅ *Recomendación:*
-│ Separa idioma y texto para obtener mejores resultados.
-╰──────────────────────────────────────────────╯
+📖 *${currentPrefix}readviewonce* / *${currentPrefix}read* / *${currentPrefix}readvo*:
+Permite leer contenido de una sola vista respondiendo a una imagen o video compatible.
 
-╭────────〔 🔗 TOURL 〕────────╮
-│ ✦ *Comando principal:* ${currentPrefix}tourl
-│
-│ 📌 *¿Qué hace?*
-│ Convierte una imagen o video en un enlace.
-│
-│ 🧠 *¿Cómo funciona?*
-│ Debes responder a un archivo multimedia y el bot
-│ lo sube para devolverte una URL directa.
-│
-│ 🧾 *Uso:*
-│ ${currentPrefix}tourl
-│
-│ 💡 *Ejemplo:*
-│ Responde a una imagen y usa:
-│ ${currentPrefix}tourl
-╰──────────────────────────────────────────────╯
+📚 *${currentPrefix}resumen*:
+Resume textos largos para obtener una versión más corta y entendible.
 
-╭────────〔 🖼️ TOIMAGE / TOIMG 〕────────╮
-│ ✦ *Comando principal:* ${currentPrefix}toimage
-│ ✦ *Alias:* ${currentPrefix}toimg
-│
-│ 📌 *¿Qué hace?*
-│ Convierte un sticker en imagen.
-│
-│ 🧠 *¿Cómo funciona?*
-│ Respondes a un sticker y el bot lo transforma
-│ en una imagen descargable o visible.
-│
-│ 🧾 *Uso:*
-│ ${currentPrefix}toimg
-│
-│ 💡 *Ejemplo:*
-│ Responde a un sticker y usa:
-│ ${currentPrefix}toimage
-╰──────────────────────────────────────────────╯
+🗣️ *${currentPrefix}say* / *${currentPrefix}decir*:
+Hace que el bot repita el texto que escribas.
 
-╭────────〔 📚 READ / READVIEWONCE 〕────────╮
-│ ✦ *Comando principal:* ${currentPrefix}read
-│ ✦ *Alias:* ${currentPrefix}readviewonce
-│
-│ 📌 *¿Qué hace?*
-│ Permite leer contenido de una sola vista.
-│
-│ 🧠 *¿Cómo funciona?*
-│ Respondes a una imagen o video view once y el
-│ bot intenta mostrar el contenido normalmente.
-│
-│ 🧾 *Uso:*
-│ ${currentPrefix}read
-│
-│ 💡 *Ejemplo:*
-│ Responde a una foto view once y usa:
-│ ${currentPrefix}read
-╰──────────────────────────────────────────────╯
 
-╭────────〔 🔎 INSPECT / INSPECCIONAR 〕────────╮
-│ ✦ *Comando principal:* ${currentPrefix}inspect
-│ ✦ *Alias:* ${currentPrefix}inspeccionar
-│
-│ 📌 *¿Qué hace?*
-│ Muestra información de grupos o canales.
-│
-│ 🧠 *¿Cómo funciona?*
-│ Le pasas un enlace de invitación y el bot intenta
-│ analizarlo para mostrar información útil.
-│
-│ 🧾 *Uso:*
-│ ${currentPrefix}inspect <url>
-│ ${currentPrefix}inspeccionar <url>
-│
-│ 💡 *Ejemplo:*
-│ ${currentPrefix}inspect https://chat.whatsapp.com/xxxx
-╰──────────────────────────────────────────────╯
 
-╭────────〔 ✨ HD / ENHANCE / REMINI 〕────────╮
-│ ✦ *Comando principal:* ${currentPrefix}hd
-│ ✦ *Aliases:* ${currentPrefix}enhance • ${currentPrefix}remini
-│
-│ 📌 *¿Qué hace?*
-│ Mejora la calidad de una imagen.
-│
-│ 🧠 *¿Cómo funciona?*
-│ Respondes a una imagen y el bot intenta aumentar
-│ su nitidez o mejorar su calidad visual.
-│
-│ 🧾 *Uso:*
-│ ${currentPrefix}hd
-│ ${currentPrefix}enhance
-│
-│ 💡 *Ejemplo:*
-│ Responde a una foto y usa:
-│ ${currentPrefix}remini
-╰──────────────────────────────────────────────╯
+ꕥ 🌐 *WEB Y ARCHIVOS*
 
-╭────────〔 🧬 GITCLONE / GIT 〕────────╮
-│ ✦ *Comando principal:* ${currentPrefix}gitclone
-│ ✦ *Alias:* ${currentPrefix}git
-│
-│ 📌 *¿Qué hace?*
-│ Busca o descarga un repositorio de GitHub.
-│
-│ 🧠 *¿Cómo funciona?*
-│ Puedes enviar una URL o una búsqueda para que
-│ el bot localice o descargue el repositorio.
-│
-│ 🧾 *Uso:*
-│ ${currentPrefix}gitclone <url>
-│ ${currentPrefix}git <url|query>
-│
-│ 💡 *Ejemplo:*
-│ ${currentPrefix}git https://github.com/usuario/repo
-╰──────────────────────────────────────────────╯
+🌐 *${currentPrefix}ssweb* / *${currentPrefix}ss*:
+Toma una captura de pantalla de una página web usando un enlace.
 
-╭────────〔 🌐 SSWEB / CAPTURA WEB 〕────────╮
-│ ✦ *Comando principal:* ${currentPrefix}ssweb
-│
-│ 📌 *¿Qué hace?*
-│ Toma una captura de una página web.
-│
-│ 🧠 *¿Cómo funciona?*
-│ Le pasas un enlace y el bot genera una imagen
-│ de esa página.
-│
-│ 🧾 *Uso:*
-│ ${currentPrefix}ssweb https://ejemplo.com
-│
-│ 💡 *Ejemplo:*
-│ ${currentPrefix}ssweb https://openai.com
-╰──────────────────────────────────────────────╯
+🔗 *${currentPrefix}tourl*:
+Convierte una imagen, video o archivo respondido en un enlace directo.
 
-╭────────〔 💡 SUG / SUGGEST 〕────────╮
-│ ✦ *Comando principal:* ${currentPrefix}sug
-│ ✦ *Alias:* ${currentPrefix}suggest
-│
-│ 📌 *¿Qué hace?*
-│ Envía sugerencias a los moderadores o owner.
-│
-│ 🧠 *¿Cómo funciona?*
-│ Escribes una idea o mejora y el bot la reenvía
-│ como sugerencia.
-│
-│ 🧾 *Uso:*
-│ ${currentPrefix}sug Agreguen nuevos comandos
-│ ${currentPrefix}suggest Mejoren el menú
-│
-│ 💡 *Ejemplo:*
-│ ${currentPrefix}sug pongan más comandos de anime
-╰──────────────────────────────────────────────╯
+🌐 *${currentPrefix}get* / *${currentPrefix}fetch*:
+Obtiene información o contenido desde una URL indicada.
 
-╭────────〔 📡 REPORT / REPORTE 〕────────╮
-│ ✦ *Comando principal:* ${currentPrefix}report
-│ ✦ *Alias:* ${currentPrefix}reporte
-│
-│ 📌 *¿Qué hace?*
-│ Envía un reporte de error o problema.
-│
-│ 🧠 *¿Cómo funciona?*
-│ Escribes el fallo que encontraste y el sistema
-│ lo manda a revisión.
-│
-│ 🧾 *Uso:*
-│ ${currentPrefix}report El comando menu falla
-│ ${currentPrefix}reporte bug en sticker
-│
-│ 💡 *Ejemplo:*
-│ ${currentPrefix}report no funciona play2
-╰──────────────────────────────────────────────╯
+🔎 *${currentPrefix}inspect* / *${currentPrefix}inspeccionar*:
+Inspecciona enlaces de grupos, canales u otros recursos compatibles.
 
-╭──────────〔 🔙 RETURN 〕──────────╮
-│ ⟐ ${currentPrefix}menu
-│ ⟡ ${currentPrefix}menutotal
-╰──────────────────────────────────╯`
+🧬 *${currentPrefix}gitclone* / *${currentPrefix}git*:
+Descarga o clona un repositorio de GitHub mediante enlace.
 
-    await client.sendMessage(m.chat, { text: textMenu }, { quoted: m })
+
+
+ꕥ 🖼️ *IMAGEN Y MULTIMEDIA*
+
+🖼️ *${currentPrefix}toimg* / *${currentPrefix}toimage*:
+Convierte un sticker respondido en imagen.
+
+🖼️ *${currentPrefix}pfp* / *${currentPrefix}getpic*:
+Obtiene la foto de perfil de un usuario mencionado o respondido.
+
+✨ *${currentPrefix}hd* / *${currentPrefix}enhance* / *${currentPrefix}remini*:
+Mejora la calidad de una imagen respondida.
+
+
+
+ꕥ 🤖 *IA Y CÁLCULO*
+
+🤖 *${currentPrefix}ia* / *${currentPrefix}chatgpt*:
+Realiza consultas a la IA integrada del bot.
+
+🧮 *${currentPrefix}calc* / *${currentPrefix}calcular* / *${currentPrefix}math*:
+Resuelve operaciones matemáticas o cálculos rápidos.
+
+
+
+ꕥ 🌍 *TRADUCCIÓN Y MENSAJES*
+
+🌍 *${currentPrefix}translate* / *${currentPrefix}trad* / *${currentPrefix}traducir*:
+Traduce texto al idioma indicado.
+
+💌 *${currentPrefix}anonmsg* / *${currentPrefix}anonimo* / *${currentPrefix}anon*:
+Envía un mensaje anónimo según el funcionamiento del comando.
+
+
+
+ꕥ 🔤 *HERRAMIENTAS DE TEXTO*
+
+🔠 *${currentPrefix}morse*:
+Convierte texto normal a código morse.
+
+🔡 *${currentPrefix}demorse*:
+Convierte código morse a texto normal.
+
+0️⃣ *${currentPrefix}binary*:
+Convierte texto a formato binario.
+
+1️⃣ *${currentPrefix}unbinary*:
+Convierte texto binario a texto normal.
+
+🔐 *${currentPrefix}encrypt*:
+Encripta o codifica texto.
+
+🔓 *${currentPrefix}decrypt*:
+Desencripta o decodifica texto.
+
+🔄 *${currentPrefix}reverse*:
+Invierte el orden del texto escrito.
+
+🪞 *${currentPrefix}mirror*:
+Convierte texto a formato espejo.
+
+✨ *${currentPrefix}fancy*:
+Genera texto decorado o estilizado.
+
+🔢 *${currentPrefix}count*:
+Cuenta caracteres, palabras o datos del texto indicado.
+
+🎲 *${currentPrefix}random*:
+Genera un resultado aleatorio según el uso del comando.
+
+📐 *${currentPrefix}format*:
+Formatea texto para que se vea más limpio o estructurado.
+
+
+
+ꕥ 📊 *SISTEMA Y ESTADÍSTICAS*
+
+🏆 *${currentPrefix}topcmd* / *${currentPrefix}topcommands*:
+Muestra los comandos más usados del bot.
+
+🕘 *${currentPrefix}historialcmd* / *${currentPrefix}cmdhistory*:
+Muestra historial de comandos usados.
+
+📄 *${currentPrefix}log* / *${currentPrefix}logs*:
+Muestra registros o logs disponibles del sistema.
+
+⏱️ *${currentPrefix}uptime* / *${currentPrefix}runtime*:
+Muestra cuánto tiempo lleva activo el bot.
+
+
+
+        𓆩 ⚠️ *NOTA* ⚠️ 𓆪
+
+🔢 *${currentPrefix}count*:
+En utilidades funciona como herramienta de texto.
+En group también existe un *count* para contar mensajes.
+
+
+
+        𓆩 🔙 *RETURN* 🔙 𓆪
+
+🏠 *${currentPrefix}menu*:
+Regresa al menú principal del bot.
+
+📋 *${currentPrefix}menutotal*:
+Abre el menú completo con todas las categorías.`
+
+    await client.sendMessage(
+  m.chat,
+  {
+    text: textMenu,
+    mentions: [m.sender],
+    contextInfo: {
+      mentionedJid: [m.sender],
+      forwardingScore: 999,
+      isForwarded: true,
+      forwardedNewsletterMessageInfo: {
+        newsletterJid: channelJid,
+        newsletterName: channelName,
+        serverMessageId: '1'
+      },
+      externalAdReply: {
+        title: channelName,
+        body: 'Ver canal oficial',
+        thumbnailUrl: thumbnail,
+        sourceUrl: channelLink,
+        mediaType: 1,
+        renderLargerThumbnail: true,
+        showAdAttribution: false
+      }
+    }
+  },
+  { quoted: m }
+)
   }
 }

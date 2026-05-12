@@ -1,5 +1,16 @@
 import { resolveLidToRealJid } from "../../core/utils.js"
 
+
+function isOwnerUser(jid = '') {
+  const number = String(jid)
+    .split('@')[0]
+    .split(':')[0]
+    .replace(/\D/g, '')
+
+  return Array.isArray(global.owner) && global.owner.includes(number)
+}
+
+
 export default {
   command: ['givecoins', 'pay', 'coinsgive'],
   category: 'rpg',
@@ -18,21 +29,52 @@ export default {
     const who = await resolveLidToRealJid(who2, client, m.chat)
     const senderData = chatData.users[m.sender]
     const targetData = chatData.users[who]
+
+
+    const senderIsOwner = isOwnerUser(m.sender)
+
+
     if (!targetData) return m.reply(`⌬ El usuario mencionado no está registrado en el bot.`)
-    const cantidadInput = args[0]?.toLowerCase()
-    let cantidad = cantidadInput === 'all' ? senderData.bank : parseInt(cantidadInput)
-    if (!cantidadInput || isNaN(cantidad) || cantidad <= 0) {
-      return m.reply(`⌬ Ingresa una cantidad válida de *${monedas}* para transferir.`)
-    }
-    if (typeof senderData.bank !== 'number') senderData.bank = 0
-    if (senderData.bank < cantidad) {
-      return m.reply(`⌬ No tienes suficientes *${monedas}* en el banco para transferir.\n> Tu saldo actual: *S/${senderData.bank.toLocaleString()} ${monedas}*`)
-    }
-    senderData.bank -= cantidad
+const cantidadInput = args[0]?.toLowerCase()
+let cantidad
+
+if (cantidadInput === 'all') {
+  if (senderIsOwner) {
+    return m.reply(`⌬ Como owner tienes saldo ilimitado. Ingresa una cantidad exacta.
+
+Ejemplo:
+*${usedPrefix + command} 50000 @usuario*`)
+  }
+
+  cantidad = senderData.bank
+} else {
+  cantidad = parseInt(cantidadInput)
+}
+
+if (!cantidadInput || isNaN(cantidad) || cantidad <= 0) {
+  return m.reply(`⌬ Ingresa una cantidad válida de *${monedas}* para transferir.`)
+}
+
+if (typeof senderData.bank !== 'number') senderData.bank = 0
+
+if (!senderIsOwner && senderData.bank < cantidad) {
+  return m.reply(`⌬ No tienes suficientes *${monedas}* en el banco para transferir.\n> Tu saldo actual: *S/${senderData.bank.toLocaleString()} ${monedas}*`)
+}
+
+if (!senderIsOwner) {
+  senderData.bank -= cantidad
+}
     if (typeof targetData.bank !== 'number') targetData.bank = 0
     targetData.bank += cantidad
     if (isNaN(senderData.bank)) senderData.bank = 0
     let name = global.db.data.users[who]?.name || who.split('@')[0]
-    await client.sendMessage(chatId, { text: `❀ Transferiste *S/${cantidad.toLocaleString()} ${monedas}* a *${name}*\n> Ahora tienes *S/${senderData.bank.toLocaleString()} ${monedas}* en tu banco.`, mentions: [who], }, { quoted: m })
+    const senderBalanceText = senderIsOwner ? '∞' : senderData.bank.toLocaleString()
+
+await client.sendMessage(chatId, {
+  text: `❀ Transferiste *S/${cantidad.toLocaleString()} ${monedas}* a *${name}*
+
+> Saldo actual en tu banco: *S/${senderBalanceText} ${monedas}*`,
+  mentions: [who],
+}, { quoted: m })
   }
 }

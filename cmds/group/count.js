@@ -23,7 +23,7 @@ export default {
     let report = `❀ Contador de mensajes de @${who.split('@')[0]}\n`
     report += `> Total en los últimos *${daysArg}* días: \`${totalMsgs}\` mensajes\n\n`
     for (const [date, d] of days) {
-      const fecha = new Date(date).toLocaleDateString('es-CO', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'America/Bogota' })
+      const fecha = new Date(date).toLocaleDateString('es-CO', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'America/Lima' })
       report += `*❏ ${fecha}*\n`
       report += `\t» Mensajes: \`${d.msgs || 0}\`, Comandos: \`${d.cmds || 0}\`\n`
     }

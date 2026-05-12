@@ -4,7 +4,7 @@ import chalk from 'chalk';
 import fs from 'fs';
 import path from 'path';
 import gradient from 'gradient-string';
-import seecmds from './core/system/commandLoader.js';
+ 
 import initDB from './core/system/initDB.js';
 import antilink from './cmds/antilink.js';
 import level from './cmds/level.js';
@@ -13,7 +13,31 @@ import messageLogger from './cmds/messageLogger.js';
 import { getGroupAdmins } from './core/message.js';
 
 
-seecmds();
+
+const groupMetadataCache = new Map()
+const GROUP_METADATA_TTL = 30_000
+
+async function getCachedGroupMetadata(client, jid) {
+  const now = Date.now()
+  const cached = groupMetadataCache.get(jid)
+
+  if (cached && now - cached.time < GROUP_METADATA_TTL) {
+    return cached.data
+  }
+
+  const data = await client.groupMetadata(jid).catch(() => null)
+
+  if (data) {
+    groupMetadataCache.set(jid, {
+      time: now,
+      data
+    })
+  }
+
+  return data
+}
+
+
 
 export default async (client, m) => {
   const sender = m.sender;
@@ -23,9 +47,18 @@ export default async (client, m) => {
 
   // if ((m.id.startsWith("3EB0") || (m.id.startsWith("BAE5") && m.id.length === 16) || (m.id.startsWith("B24E") && m.id.length === 20))) return
 initDB(m, client)
-await messageLogger.all(m, { client });
-antilink(client, m);
-await automod(client, m);
+
+Promise.resolve(messageLogger.all(m, { client })).catch(err => {
+  console.error('messageLogger error:', err?.message || err)
+})
+
+Promise.resolve(antilink(client, m)).catch(err => {
+  console.error('antilink error:', err?.message || err)
+})
+
+Promise.resolve(automod(client, m)).catch(err => {
+  console.error('automod error:', err?.message || err)
+})
 
   const from = m.key.remoteJid;
   const botJid = client.user.id.split(':')[0] + '@s.whatsapp.net' || client.user.lid;
@@ -35,34 +68,103 @@ await automod(client, m);
   const users = chat.users[sender] || {}
   const pushname = m.pushName || 'Sin nombre';
   
-  let groupMetadata = null
-  let groupAdmins = []
-  let groupName = ''
-  if (m.isGroup) {
-    groupMetadata = await client.groupMetadata(m.chat).catch(() => null)
-    groupName = groupMetadata?.subject || ''
-    groupAdmins = groupMetadata?.participants.filter(p => (p.admin === 'admin' || p.admin === 'superadmin')) || []
-  }  
-  const isBotAdmins = m.isGroup ? groupAdmins.some(p => p.phoneNumber === botJid || p.jid === botJid || p.id === botJid || p.lid === botJid ) : false
-  const isAdmins = m.isGroup ? groupAdmins.some(p => p.phoneNumber === sender || p.jid === sender || p.id === sender || p.lid === sender ) : false
-  const isOwners = [botJid, ...(settings.owner ? [settings.owner] : []), ...global.owner.map(num => num + '@s.whatsapp.net')].includes(sender);
+let groupMetadata = null
+let groupAdmins = []
+let groupName = ''
 
-  m.isAdmin = isAdmins
+if (m.isGroup) {
+  groupMetadata = await getCachedGroupMetadata(client, m.chat)
+  groupName = groupMetadata?.subject || ''
+  groupAdmins = groupMetadata?.participants?.filter(p => p.admin === 'admin' || p.admin === 'superadmin') || []
+}
+const cleanId = (value = '') => {
+  return String(value)
+    .replace(/:\d+@/g, '@')
+    .trim()
+}
+
+const digitsOnly = (value = '') => {
+  return cleanId(value)
+    .split('@')[0]
+    .replace(/\D/g, '')
+}
+
+const sameUser = (a = '', b = '') => {
+  const rawA = cleanId(a)
+  const rawB = cleanId(b)
+
+  if (rawA && rawB && rawA === rawB) return true
+
+  const digA = digitsOnly(rawA)
+  const digB = digitsOnly(rawB)
+
+  return !!digA && !!digB && digA === digB
+}
+
+const participantIds = (p = {}) => {
+  return [
+    p.id,
+    p.jid,
+    p.lid,
+    p.phoneNumber,
+    p.phoneNumber ? `${digitsOnly(p.phoneNumber)}@s.whatsapp.net` : ''
+  ].filter(Boolean)
+}
+
+const senderCandidates = [
+  sender,
+  m.sender,
+  m.key?.participant,
+  m.participant
+].filter(Boolean)
+
+const botCandidates = [
+  botJid,
+  client.user?.id,
+  client.user?.lid
+].filter(Boolean)
+
+const isBotAdmins = m.isGroup
+  ? groupAdmins.some(p =>
+      participantIds(p).some(id =>
+        botCandidates.some(bot => sameUser(id, bot))
+      )
+    )
+  : false
+
+const isAdmins = m.isGroup
+  ? groupAdmins.some(p =>
+      participantIds(p).some(id =>
+        senderCandidates.some(user => sameUser(id, user))
+      )
+    )
+  : false
+
+const ownerCandidates = [
+  botJid,
+  settings.owner,
+  ...(Array.isArray(global.owner)
+    ? global.owner.map(num => `${String(num).replace(/\D/g, '')}@s.whatsapp.net`)
+    : [])
+].filter(Boolean)
+
+const isOwners = ownerCandidates.some(owner => sameUser(owner, sender))
+
+m.isAdmin = isAdmins
 m.isBotAdmin = isBotAdmins
 m.isOwner = isOwners
 
-  for (const name in global.plugins) {
-    const plugin = global.plugins[name];
-    if (plugin && typeof plugin.all === "function") {
-      try {
-        await plugin.all.call(client, m, { client });
-      } catch (err) {
-        console.error(`Error en plugin.all -> ${name}`, err);
-      }
-    }
-  }
+for (const name in global.plugins) {
+  const plugin = global.plugins[name]
 
-  const today = new Date().toLocaleDateString('es-CO', { timeZone: 'America/Bogota', year: 'numeric', month: '2-digit', day: '2-digit' }).split('/').reverse().join('-');
+  if (plugin && typeof plugin.all === "function") {
+    Promise.resolve(plugin.all.call(client, m, { client })).catch(err => {
+      console.error(`Error en plugin.all -> ${name}:`, err?.message || err)
+    })
+  }
+}
+
+  const today = new Date().toLocaleDateString('es-CO', { timeZone: 'America/Lima', year: 'numeric', month: '2-digit', day: '2-digit' }).split('/').reverse().join('-');
   if (!users.stats) users.stats = {};
   if (!users.stats[today]) users.stats[today] = { msgs: 0, cmds: 0 };
   users.stats[today].msgs++;
@@ -113,6 +215,10 @@ let matchs = pluginPrefix instanceof RegExp ? [[pluginPrefix.exec(body), pluginP
   let text = args.join(' ');
   if (!command) return;
   
+  if (!global.commandsReady) {
+  return m.reply('⏳ El bot todavía está cargando comandos, intenta otra vez en unos segundos.');
+}
+
   const chatData = global.db.data.chats[from] || {};
   const consolePrimary = chatData.primaryBot;
   if (m.message || !consolePrimary || consolePrimary === botJid) {
@@ -164,7 +270,7 @@ let matchs = pluginPrefix instanceof RegExp ? [[pluginPrefix.exec(body), pluginP
     const allowedInPrivateForUsers = ['allmenu', 'help', 'menu', 'infobot', 'botinfo', 'invite', 'invitar', 'ping', 'speed', 'p', 'status', 'estado', 'report', 'reporte', 'sug', 'suggest', 'token', 'join', 'unir', 'logout', 'reload', 'self', 'setbanner', 'setbotbanner', 'setchannel', 'setbotchannel', 'setbotcurrency', 'setcurrency', 'seticon', 'setboticon', 'setlink', 'setbotlink', 'setbotname', 'setname', 'setbotowner', 'setowner', 'setimage', 'setpfp', 'setprefix', 'setbotprefix', 'setstatus', 'setusername', 'code', 'qr']
     if (!global.owner.map(num => num + '@s.whatsapp.net').includes(sender) && !allowedInPrivateForUsers.includes(command)) return;
   }
-  if (chat?.isBanned && !(command === 'bot' && text === 'on') && !(global.mods || []).map(num => num + '@s.whatsapp.net').includes(sender)) {
+  if (chat?.isBanned && !(command === 'botruby' && text === 'on') && !(global.mods || []).map(num => num + '@s.whatsapp.net').includes(sender)) {
 await m.reply(`ʀᴜʙʏᴊx ʙᴏᴛ  •  ᴇsᴛᴀᴅᴏ ᴅᴇsᴀᴄᴛɪᴠᴀᴅᴏ\nᴇʟ ʙᴏᴛ *${settings.botname}* ᴇsᴛᴀ́ ᴅᴇsᴀᴄᴛɪᴠᴀᴅᴏ ᴇɴ ᴇsᴛᴇ ɢʀᴜᴘᴏ.\n\n✎ ᴜɴ *ᴀᴅᴍɪɴɪsᴛʀᴀᴅᴏʀ* ᴘᴜᴇᴅᴇ ᴀᴄᴛɪᴠᴀʀʟᴏ ᴄᴏɴ:\n${usedPrefix}bot on`);
     return;
   }  

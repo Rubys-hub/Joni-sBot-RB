@@ -36,24 +36,63 @@ global.loadDatabase = function loadDatabase() {
   return global.db.data
 }
 
+let pendingSerialized = null
+let lastSave = Date.now()
+
+function serializeDatabase() {
+  try {
+    return JSON.stringify(global.db.data)
+  } catch {
+    return null
+  }
+}
+
 function hasPendingChanges() {
-  return global.db._snapshot !== JSON.stringify(global.db.data)
+  const serialized = serializeDatabase()
+
+  if (!serialized) return false
+
+  if (global.db._snapshot !== serialized) {
+    pendingSerialized = serialized
+    return true
+  }
+
+  return false
 }
 
 global.saveDatabase = function saveDatabase() {
-  if (!hasPendingChanges()) return
-  fs.writeFileSync(dbFile, JSON.stringify(global.db.data, null, 2))
-  global.db._snapshot = JSON.stringify(global.db.data)
+  const serialized = pendingSerialized || serializeDatabase()
+
+  if (!serialized) return
+  if (global.db._snapshot === serialized) return
+
+  fs.writeFileSync(dbFile, serialized)
+  global.db._snapshot = serialized
+  pendingSerialized = null
+  lastSave = Date.now()
 }
 
-let lastSave = Date.now()
 setInterval(() => {
   const now = Date.now()
-  const elapsed = now - lastSave
-  if (elapsed >= 1000 && hasPendingChanges()) {
-    global.saveDatabase()
-    lastSave = now
-  }
-}, 500)
 
+  if (now - lastSave < 15000) return
+
+  if (hasPendingChanges()) {
+    global.saveDatabase()
+  }
+}, 5000)
+
+process.once('beforeExit', () => {
+  try {
+    if (hasPendingChanges()) global.saveDatabase()
+  } catch {}
+})
+
+process.once('SIGINT', () => {
+  try {
+    if (hasPendingChanges()) global.saveDatabase()
+  } catch {}
+
+  process.exit(0)
+})
 export default global.db

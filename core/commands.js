@@ -1,565 +1,587 @@
-export const bodyMenu = `> 𖧧 ¡Hola! *@$sender*, Soy *$namebot*, Aquí tienes la lista de comandos$cat
+export const bodyMenu = `> 𖧧 ¡Hola! *@$sender*, Soy *$namebot* ✨
+> ¡Es un gusto saludarte! Aquí tienes mi lista completa de comandos organizada por categorías. 📑 $cat
 
 ╭┈ࠢ͜┅ࠦ͜͜╾݊͜─ؕ͜─ׄ͜─֬͜─֟͜─֫͜─ׄ͜─ؕ͜─݊͜┈ࠦ͜┅ࠡ͜͜┈࠭͜͜۰۰͜۰
-│✿ *ᴅᴇᴠᴇʟᴏᴘᴇʀ ::* $owner
-│⌬ *ᴛʏᴘᴇ ::* $botType
-│⸙ *ᴠᴇʀsɪᴏɴ ::* ^3.0 - Latest
-│⚘ *sʏsᴛᴇᴍ/ᴏᴘʀ ::* $device
-│○ *ᴛɪᴍᴇ ::* $tiempo, $tempo
-│𓏸 *ᴜsᴇʀs ::* $users
-│○ *ᴜʀʟ ::* $link
+│ 👤 *ᴅᴇᴠᴇʟᴏᴘᴇʀ ::* $owner
+│ 🤖 *ᴛʏᴘᴇ ::* $botType
+│ 🧬 *ᴠᴇʀsɪᴏɴ ::* ^3.0 - Latest
+│ 💻 *sʏsᴛᴇᴍ/ᴏᴘʀ ::* $device
+│ ⏰ *ᴛɪᴍᴇ ::* $tiempo, $tempo
+│ 👥 *ᴜsᴇʀs ::* $users
+│ 🌐 *ᴜʀʟ ::* $link
 ╰ׅ┈ࠢ͜─ׄ͜─ׄ֟፝͜─ׄ͜─ׄ͜╴ ⋱࣭ ᩴ  ⋮֔   ᩴ ⋰╶͜─ׄ͜─ׄ֟፝͜─ׄ͜─ׄ͜┈ࠢ͜╯ׅ
-> Vincula un *Socket* con tu número utilizando *$prefixqr* o *$prefixcode*.
+
+> 💡 *Tip:* Vincula un *Socket* con tu número utilizando *$prefixqr* o *$prefixcode*.
 ‧꒷︶꒷꒥꒷‧₊˚꒷︶꒷꒥꒷︶꒷˚₊‧꒷꒥꒷︶꒷‧`
+
 export const menuObject = {
-economia: `╭┈ࠢ͜─ׄ֟፝͜─ׄ͜─ׄ͜╴𐔌 *ECONOMY* 𐦯╶͜─ׄ͜─ׄ֟፝͜─ׄ͜─ׄ͜
-> ✐ Comandos de Economía para ganar dinero y divertirte con tus amigos.
+economia: `╭┈ࠢ͜─ׄ֟፝͜─ׄ͜─ׄ͜╴𐔌 💰 *ECONOMY* 𐦯╶͜─ׄ͜─ׄ֟፝͜─ׄ͜─ׄ͜
+> ✐ Gana dinero, diviértete y compite con tus amigos.[cite: 1]
+
 ꕤ *$prefixw » $prefixwork » $prefixtrabajar*
-> Ganar coins trabajando.
+> 🛠️ Ganar coins trabajando.[cite: 1]
 ꕤ *$prefixbalance » $prefixbal » $prefixcoins* + <mention>
-> Ver cuantos coins tienes.
+> 💳 Ver cuantos coins tienes.[cite: 1]
 ꕤ *$prefixcoinflip » $prefixflip » $prefixcf* + <cantidad / cara|cruz>
-> Apostar coins en un cara o cruz.
+> 🪙 Apostar coins en un cara o cruz.[cite: 1]
 ꕤ *$prefixcrime » $prefixcrimen*
-> Ganar coins rapido.
+> 🔫 Ganar coins rápido (con riesgo).[cite: 1]
 ꕤ *$prefixdaily » $prefixdiario*
-> Reclamar tu recompensa diaria.
+> 📅 Reclamar tu recompensa diaria.[cite: 1]
 ꕤ *$prefixdeposit » $prefixdep » $prefixdepositar » $prefixd* + <cantidad|all>
-> Depositar tus coins en el banco.
+> 🏦 Guardar tus coins en el banco.[cite: 1]
 ꕤ *$prefixeconomyboard » $prefixeboard » $prefixbaltop* + <page>
-> Ver el ranking de usuarios con más coins.
+> 🏆 Ver el ranking de los más ricos.[cite: 1]
 ꕤ *$prefixcasino » $prefixapostar » $prefixslot* + <amount>
-> Apostar coins en el casino.
+> 🎰 Probar suerte en el casino.[cite: 1]
 ꕤ *$prefixeconomyinfo » $prefixeinfo*
-> Ver tu información de economía en el grupo.
+> 📊 Ver tu info económica en el grupo.[cite: 1]
 ꕤ *$prefixgivecoins » $prefixpay » $prefixcoinsgive* + <cantidad|all / mention>
-> Dar coins a un usuario.
+> 🎁 Dar coins a otro usuario.[cite: 1]
 ꕤ *$prefixroulette » $prefixrt » $prefixruleta* + <cantidad / red|black|green>
-> Apostar coins en una ruleta.
+> 🎡 Apostar en la ruleta.[cite: 1]
 ꕤ *$prefixslut » $prefixprostituirse*
-> Ganar coins prostituyéndote.
+> 💋 Ganar coins de forma... peculiar.[cite: 1]
 ꕤ *$prefixsteal » $prefixrobar » $prefixrob* + <mention>
-> Intentar robar coins a un usuario.
+> 🥷 Intentar robar coins a alguien.[cite: 1]
 ꕤ *$prefixwithdraw » $prefixwith » $prefixretirar* + <cantidad|all>
-> Retirar tus coins en el banco.
+> 🏧 Sacar coins del banco.[cite: 1]
 ꕤ *$prefixminar » $prefixmine*
-> Realizar trabajos de minería y ganar coins.
+> ⛏️ Realizar trabajos de minería.[cite: 1]
 ꕤ *$prefixcofre » $prefixcoffer*
-> Reclamar tu cofre diario.
+> 📦 Reclamar tu cofre diario.[cite: 1]
 ꕤ *$prefixweekly » $prefixsemanal*
-> Reclamar tu recompensa semanal.
+> 🗓️ Reclamar tu recompensa semanal.[cite: 1]
 ꕤ *$prefixmonthly » $prefixmensual*
-> Reclamar tu recompensa mensual.
+> 📅 Reclamar tu recompensa mensual.[cite: 1]
 ꕤ *$prefixaventura » $prefixadventure*
-> Ir de Aventuras para ganar coins.
+> ⚔️ Ir de aventura por el mundo.[cite: 1]
 ꕤ *$prefixcurar » $prefixheal*
-> Curar salud para salir de aventuras.
+> 🧪 Curar tu salud para seguir.[cite: 1]
 ꕤ *$prefixcazar » $prefixhunt*
-> Cazar animales para ganar coins.
+> 🏹 Cazar animales por dinero.[cite: 1]
 ꕤ *$prefixfish » $prefixpescar*
-> Ganar coins pescando.
+> 🎣 Ganar coins pescando.[cite: 1]
 ꕤ *$prefixmazmorra » $prefixdungeon*
-> Explorar mazmorras para ganar coins.
+> 🏰 Explorar peligrosas mazmorras.[cite: 1]
 ꕤ *$prefixmath » $prefixmates* + <difficulty>
-> Iniciar un juego de matemáticas.
+> 🧮 Reto de matemáticas.[cite: 1]
 ꕤ *$prefixppt* + <piedra|papel|tijera>
-> Jugar piedra, papel o tijera con el bot y gana o pierde coins.
+> ✂️ Juega contra el bot.[cite: 1]
 ╰ׅ͜─֟͜─͜─ٞ͜─͜─๊͜─͜─๋͜─⃔═̶፝֟͜═̶⃔─๋͜─͜─͜─๊͜─ٞ͜─͜─֟͜┈ࠢ͜╯ׅ`,
-gacha: `╭┈ࠢ͜─ׄ֟፝͜─ׄ͜─ׄ͜╴𐔌 *GACHA* 𐦯╶͜─ׄ͜─ׄ֟፝͜─ׄ͜─ׄ͜
-> ✐ Comandos de Gacha para reclamar y intercambiar personajes.
+
+gacha: `╭┈ࠢ͜─ׄ֟፝͜─ׄ͜─ׄ͜╴𐔌 ⛩️ *GACHA* 𐦯╶͜─ׄ͜─ׄ֟፝͜─ׄ͜─ׄ͜
+> ✐ Colecciona, reclama e intercambia tus personajes favoritos.[cite: 1]
+
 ꕤ *$prefixbuycharacter » $prefixbuychar » $prefixbuyc* + <waifu>
-> Comprar un personaje en venta.
+> 🛒 Comprar un personaje en venta.[cite: 1]
 ꕤ *$prefixcharimage » $prefixwaifuimage » $prefixcimage » $prefixwimage* + <waifu>
-> Ver una imagen aleatoria de un personaje.
+> 🖼️ Ver imagen aleatoria de un personaje.[cite: 1]
 ꕤ *$prefixcharinfo » $prefixwinfo » $prefixwaifuinfo* + <waifu>
-> Ver información de un personaje.
+> 📜 Información detallada del personaje.[cite: 1]
 ꕤ *$prefixclaim » $prefixc » $prefixreclamar* + <cite / waifu>
-> Reclamar un personaje.
+> ✨ Reclamar un personaje nuevo.[cite: 1]
 ꕤ *$prefixdelclaimmsg*
-> Restablecer el mensaje al reclamar un personaje.
+> 🔄 Restablecer mensaje de reclamo.[cite: 1]
 ꕤ *$prefixdeletewaifu » $prefixdelwaifu » $prefixdelchar* + <waifu>
-> Eliminar un personaje reclamado.
+> 🗑️ Eliminar un personaje que tengas.[cite: 1]
 ꕤ *$prefixfavoritetop » $prefixfavtop*
-> Ver el top de personajes favoritos.
+> ❤️ Top de personajes más queridos.[cite: 1]
 ꕤ *$prefixgachainfo » $prefixginfo » $prefixinfogacha*
-> Ver tu información de gacha.
+> 📂 Ver tu estado en el Gacha.[cite: 1]
 ꕤ *$prefixgiveallharem* + <mention>
-> Regalar todos tus personajes a otro usuario.
+> 💝 Regalar toda tu colección a alguien.[cite: 1]
 ꕤ *$prefixgivechar » $prefixgivewaifu » $prefixregalar* + <waifu / mention>
-> Regalar un personaje a otro usuario.
+> 🎁 Regalar un personaje específico.[cite: 1]
 ꕤ *$prefixharem » $prefixwaifus » $prefixclaims* + <mention>
-> Ver tus personajes reclamados.
+> 🎎 Ver tu colección de personajes.[cite: 1]
 ꕤ *$prefixharemshop » $prefixtiendawaifus » $prefixwshop* + <page>
-> Ver los personajes en venta.
+> 🏪 Ver qué personajes están en venta.[cite: 1]
 ꕤ *$prefixremovesale » $prefixremoverventa* + <waifu>
-> Eliminar un personaje en venta.
+> 🚫 Quitar un personaje de la tienda.[cite: 1]
 ꕤ *$prefixrollwaifu » $prefixrw » $prefixroll*
-> Waifu o husbando aleatorio.
+> 🎲 Lanzar por un personaje aleatorio.[cite: 1]
 ꕤ *$prefixsell » $prefixvender* + <value> <waifu>
-> Poner un personaje a la venta.
+> 🏷️ Poner un personaje a la venta.[cite: 1]
 ꕤ *$prefixserieinfo » $prefixainfo » $prefixanimeinfo* <name>
-> Información de un anime.
+> ⛩️ Información de un anime.[cite: 1]
 ꕤ *$prefixserielist » $prefixslist » $prefixanimelist*
-> Listar series del bot.
+> 📋 Lista de series disponibles.[cite: 1]
 ꕤ *$prefixsetclaimmsg » $prefixsetclaim* + <text>
-> Modificar el mensaje al reclamar un personaje.
+> ✍️ Personalizar mensaje de reclamo.[cite: 1]
 ꕤ *$prefixtrade » $prefixintercambiar* + <tu personaje / personaje 2>
-> Intercambiar un personaje con otro usuario.
+> 🤝 Intercambiar con otro usuario.[cite: 1]
 ꕤ *$prefixvote » $prefixvotar* + <waifu>
-> Votar por un personaje para subir su valor.
+> 👍 Votar para subir el valor de alguien.[cite: 1]
 ꕤ *$prefixwaifusboard » $prefixwaifustop » $prefixtopwaifus » $prefixwtop* + <page>
-> Ver el top de personajes con mayor valor.
+> 📈 Ranking de personajes más valiosos.[cite: 1]
 ╰ׅ͜─֟͜─͜─ٞ͜─͜─๊͜─͜─๋͜─⃔═̶፝֟͜═̶⃔─๋͜─͜─͜─๊͜─ٞ͜─͜─֟͜┈ࠢ͜╯ׅ`,
-downloads: `╭┈ࠢ͜─ׄ֟፝͜─ׄ͜─ׄ͜╴𐔌 *DOWNLOAD* 𐦯╶͜─ׄ͜─ׄ֟፝͜─ׄ͜─ׄ͜
-> ✐ Comandos de Descargas para descargar archivos de varias fuentes.
+
+downloads: `╭┈ࠢ͜─ׄ֟፝͜─ׄ͜─ׄ͜╴𐔌 📥 *DOWNLOAD* 𐦯╶͜─ׄ͜─ׄ֟፝͜─ׄ͜─ׄ͜
+> ✐ Descarga contenido de tus redes favoritas.[cite: 1]
+
 ꕤ *$prefixfacebook » $prefixfb* + <url>
-> Descargar un video de Facebook.
+> 👥 Video de Facebook.[cite: 1]
 ꕤ *$prefixmediafire » $prefixmf* + <url|query>
-> Descargar un archivo de MediaFire.
+> 📂 Archivos de MediaFire.[cite: 1]
 ꕤ *$prefixplay » $prefixmp3 » $prefixplayaudio » $prefixytaudio » $prefixytmp3* + <url|query>
-> Descargar una canción de YouTube.
+> 🎵 Música de YouTube.[cite: 1]
 ꕤ *$prefixpinterest » $prefixpin* + <url|query>
-> Buscar y descargar imagenes de Pinterest.
+> 📌 Imágenes de Pinterest.[cite: 1]
 ꕤ *$prefixplay2 » $prefixmp4 » $prefixplayvideo » $prefixytvideo » $prefixytmp4* + <url|query>
-> Descargar un vídeo de YouTube.
+> 🎬 Video de YouTube.[cite: 1]
 ꕤ *$prefixreel » $prefixig » $prefixinstagram* + <url>
-> Descargar un reel de Instagram.
+> 📸 Reels de Instagram.[cite: 1]
 ꕤ *$prefixtiktok » $prefixtt* + <url|query>
-> Descargar un video de TikTok.
+> 🎶 Videos de TikTok.[cite: 1]
 ꕤ *$prefixtwitter » $prefixx* + <url>
-> Descargar un video/imagen de Twitter/X.
+> 🐦 Videos/Imágenes de X/Twitter.[cite: 1]
 ꕤ *$prefixytsearch » $prefixsearch* + <query>
-> Buscar videos de YouTube.
+> 🔍 Buscar videos en YouTube.[cite: 1]
 ꕤ *$prefixwagrupos » $prefixgruposwa* + <query>
-> Buscar grupos de WhatsApp.
+> 💬 Buscar grupos de WhatsApp.[cite: 1]
 ꕤ *$prefiximagen » $prefiximg* + <query>
-> Buscar y descargar imagenes de Google.
+> 🖼️ Buscar imágenes en Google.[cite: 1]
 ꕤ *$prefixaptoide » $prefixapk » $prefixapkdl* + <query>
-> Buscar y descargar aplicaciones de Aptoide.
+> 📲 Descargar APKs de Aptoide.[cite: 1]
 ╰ׅ͜─֟͜─͜─ٞ͜─͜─๊͜─͜─๋͜─⃔═̶፝֟͜═̶⃔─๋͜─͜─͜─๊͜─ٞ͜─͜─֟͜┈ࠢ͜╯ׅ`,
-profile: `╭┈ࠢ͜─ׄ֟፝͜─ׄ͜─ׄ͜╴𐔌 *PROFILES* 𐦯╶͜─ׄ͜─ׄ֟፝͜─ׄ͜─ׄ͜
-> ✐ Comandos de Perfil para ver y configurar tu perfil.
+
+profile: `╭┈ࠢ͜─ׄ֟፝͜─ׄ͜─ׄ͜╴𐔌 👤 *PROFILES* 𐦯╶͜─ׄ͜─ׄ֟፝͜─ׄ͜─ׄ͜
+> ✐ Gestiona y personaliza tu identidad en el bot.[cite: 1]
+
 ꕤ *$prefixprofile » $prefixperfil* + <mention>
-> Ver tu perfil o el de un usuario.
+> 🆔 Ver perfil propio o ajeno.[cite: 1]
 ꕤ *$prefixleaderboard » $prefixlboard » $prefixlb* + <page>
-> Top de usuarios con más experiencia.
+> 🆙 Top usuarios con más XP.[cite: 1]
 ꕤ *$prefixlevel » $prefixlvl* + <mention>
-> Ver tu nivel y experiencia actual.
+> 📈 Ver nivel y experiencia.[cite: 1]
 ꕤ *$prefixsetgenre* + <hombre|mujer>
-> Establecer tu genero.
+> 🚻 Establecer género.[cite: 1]
 ꕤ *$prefixdelgenre*
-> Eliminar tu genero.
+> 🚫 Eliminar género.[cite: 1]
 ꕤ *$prefixsetbirth* + <dia/mes/año|mes/dia>
-> Establecer tu fecha de cumpleaños.
+> 🎂 Configurar cumpleaños.[cite: 1]
 ꕤ *$prefixdelbirth*
-> Borrar tu fecha de cumpleaños.
+> 🕯️ Borrar cumpleaños.[cite: 1]
 ꕤ *$prefixsetdescription » $prefixsetdesc* + <text>
-> Establecer tu descripcion.
+> 📝 Escribir tu biografía.[cite: 1]
 ꕤ *$prefixdeldescription » $prefixdeldesc*
-> Eliminar tu descripción de perfil.
+> 🗑️ Eliminar biografía.[cite: 1]
 ꕤ *$prefixmarry » $prefixcasarse* <mention>
-> Casarte con alguien.
+> 💍 Casarte con alguien.[cite: 1]
 ꕤ *$prefixdivorce*
-> Divorciarte de tu pareja.
+> 💔 Divorciarte.[cite: 1]
 ꕤ *$prefixsetfavourite » $prefixsetfav* + <waifu>
-> Establecer tu claim favorito.
+> ⭐ Establecer personaje favorito.[cite: 1]
 ꕤ *$prefixdeletefav » $prefixdelfav* + <waifu>
-> Borrar tu claim favorito.
+> ❌ Borrar favorito.[cite: 1]
 ꕤ *$prefixsetpasatiempo » $prefixsethobby* 
-> Establecer tu pasatiempo.
+> 🎨 Añadir pasatiempo.[cite: 1]
 ꕤ *$prefixdelpasatiempo » $prefixremovehobby*
-> Elimina tu pasatiempo del perfil.
+> 💨 Eliminar pasatiempo.[cite: 1]
 ╰ׅ͜─֟͜─͜─ٞ͜─͜─๊͜─͜─๋͜─⃔═̶፝֟͜═̶⃔─๋͜─͜─͜─๊͜─ٞ͜─͜─֟͜┈ࠢ͜╯ׅ`,
-sockets: `╭┈ࠢ͜─ׄ֟፝͜─ׄ͜─ׄ͜╴𐔌 *SOCKETS* 𐦯╶͜─ׄ͜─ׄ֟፝͜─ׄ͜─ׄ͜
-> ✐ Comandos para registrar tu propio bot.
+
+sockets: `╭┈ࠢ͜─ׄ֟፝͜─ׄ͜─ׄ͜╴𐔌 ⚙️ *SOCKETS* 𐦯╶͜─ׄ͜─ׄ֟፝͜─ׄ͜─ׄ͜
+> ✐ Comandos para gestionar y crear tu propio bot.[cite: 1]
+
 ꕤ *$prefixbotinfo » $prefixinfobot*
-> Obtener informacion del bot.
+> ℹ️ Información técnica del bot.[cite: 1]
 ꕤ *$prefixjoin* + <link>
-> Unir al bot a un grupo.
+> ➕ Unir bot a un grupo.[cite: 1]
 ꕤ *$prefixleave » $prefixsalir*
-> Salir de un grupo.
+> 🚪 Salir del grupo actual.[cite: 1]
 ꕤ *$prefixlogout*
-> Cerrar sesion del bot.
+> 🔌 Cerrar sesión del bot.[cite: 1]
 ꕤ *$prefixself* + <on|off>
-> Haz privado o público tu bot.
+> 🔒 Modo privado o público.[cite: 1]
 ꕤ *$prefixqr » $prefixcode*
-> Crear un Sub-Bot con un codigo Code.
+> 📱 Crear un Sub-Bot (QR/Código).[cite: 1]
 ꕤ *$prefixreload*
-> Recargar la sesion del bot
+> 🔄 Recargar sesión.[cite: 1]
 ꕤ *$prefixsetname » $prefixsetbotname*  + <corto / largo>
-> Cambiar el nombre del bot.
+> 🏷️ Cambiar nombre del bot.[cite: 1]
 ꕤ *$prefixsetbanner » setbotbanner*
-> Cambiar el banner del menu.
+> 🖼️ Cambiar banner del menú.[cite: 1]
 ꕤ *$prefixseticon » $prefixsetboticon*
-> Cambiar el icon del bot.
+> 🔘 Cambiar icono del bot.[cite: 1]
 ꕤ *$prefixsetprefix » $prefixsetbotprefix* + <value>
-> Cambiar el prefijo del bot.
+> ⌨️ Cambiar prefijo.[cite: 1]
 ꕤ *$prefixsetcurrency » $prefixsetbotcurrency* + <value>
-> Cambiar la moneda del bot.
+> 🪙 Cambiar nombre de la moneda.[cite: 1]
 ꕤ *$prefixsetowner » $prefixsetbotowner* + <mention|number>
-> Cambiar el dueño del bot.
+> 👑 Cambiar dueño del bot.[cite: 1]
 ꕤ *$prefixsetchannel » $prefixsetbotchannel* + <link>
-> Cambiar el canal del bot.
+> 📢 Cambiar canal del bot.[cite: 1]
 ꕤ *$prefixsetlink » $prefixsetbotlink* + <link>
-> Cambiar el enlace del bot.
+> 🔗 Cambiar enlace oficial.[cite: 1]
 ꕤ *$prefixsetpfp » $prefixsetimage*
-> Cambiar la imagen de perfil.
+> 📸 Cambiar foto de perfil.[cite: 1]
 ꕤ *setstatus* + <value>
-> Cambiar el estado del bot.
+> 💬 Cambiar estado (Bio).[cite: 1]
 ꕤ *setusername* + <value>
-> Cambiar el nombre de usuario.
+> 👤 Cambiar nombre de usuario.[cite: 1]
 ╰ׅ͜─֟͜─͜─ٞ͜─͜─๊͜─͜─๋͜─⃔═̶፝֟͜═̶⃔─๋͜─͜─͜─๊͜─ٞ͜─͜─֟͜┈ࠢ͜╯ׅ`,
-stickers: `╭┈ࠢ͜─ׄ֟፝͜─ׄ͜─ׄ͜╴𐔌 *STICKERS* 𐦯╶͜─ׄ͜─ׄ֟፝͜─ׄ͜
-> ✐ Comandos de *Stickers* para crear y gestionar stickers.
+
+stickers: `╭┈ࠢ͜─ׄ֟፝͜─ׄ͜─ׄ͜╴𐔌 🎨 *STICKERS* 𐦯╶͜─ׄ͜─ׄ֟፝͜─ׄ͜
+> ✐ Crea y organiza tus propios stickers.[cite: 1]
+
 ꕤ *$prefixstickerpack » $prefixspack » $prefixstickers* + <query|url>
-> Busca y descarga packs de Stickers.
+> 🔍 Buscar packs de stickers.[cite: 1]
 ꕤ *$prefixdelpack* + <name pack>
-> Elimina un paquete de stickers.
+> 🗑️ Eliminar un paquete.[cite: 1]
 ꕤ *$prefixdelstickermeta » $prefixdelmeta*
-> Restablecer el pack y autor por defecto para tus stickers.
+> 🔄 Metadatos por defecto.[cite: 1]
 ꕤ *$prefixgetpack » $prefixstickerpack » $prefixpack* + <name pack>
-> Descarga un paquete de stickers.
+> 📥 Descargar un paquete.[cite: 1]
 ꕤ *$prefixnewpack » $prefixnewstickerpack* + <name pack>
-> Crea un nuevo paquete de stickers.
+> ✨ Crear pack nuevo.[cite: 1]
 ꕤ *$prefixsetpackprivate » $prefixsetpackpriv » $prefixpackprivate* + <name pack>
-> Establecer un paquete de stickers como privado.
+> 🔒 Hacer pack privado.[cite: 1]
 ꕤ *$prefixsetpackpublic » $prefixsetpackpub » $prefixpackpublic* + <name pack>
-> Establecer un paquete de stickers como público.
+> 🔓 Hacer pack público.[cite: 1]
 ꕤ *$prefixsetstickermeta » $prefixsetmeta* + <autor|pack>
-> Establecer el pack y autor por defecto para tus stickers.
+> ✍️ Configurar autor y pack.[cite: 1]
 ꕤ *$prefixsticker » $prefixs* + <cite / image|video>
-> Convertir una imagen/video a sticker.
+> 🎭 Crear sticker (Imagen/Video).[cite: 1]
 ꕤ *$prefixsetstickerpackdesc » $prefixsetpackdesc » $prefixpackdesc* + <name pack / desc>
-> Establece la descripción de un paquete de stickers.
+> 📝 Descripción del pack.[cite: 1]
 ꕤ *$prefixsetstickerpackname » $prefixsetpackname » $prefixpackname* + <name pack / new name pack>
-> Cambia el nombre de un paquete de stickers.
+> 🏷️ Renombrar pack.[cite: 1]
 ꕤ *$prefixstickeradd » $prefixaddsticker* + <name pack>
-> Agrega un sticker a un paquete de stickers.
+> ➕ Añadir sticker al pack.[cite: 1]
 ꕤ *$prefixstickerdel » $prefixdelsticker* + <name pack>
-> Elimina un sticker de un paquete de stickers.
+> ➖ Quitar sticker del pack.[cite: 1]
 ꕤ *$prefixstickerpacks » $prefixpacklist*
-> Lista de tus paquetes de stickers.
+> 📋 Lista de tus packs.[cite: 1]
 ꕤ *$prefixbrat » $prefixbratv » $prefixqc › $prefixemojimix* + <text|mention>
-> Crear stickers con texto.
+> 💬 Stickers de texto y mezcla.[cite: 1]
 ╰ׅ͜─֟͜─͜─ٞ͜─͜─๊͜─͜─๋͜─⃔═̶፝֟͜═̶⃔─๋͜─͜─͜─๊͜─ٞ͜─͜─֟͜┈ࠢ͜╯ׅ`,
-utils: `╭┈ࠢ͜─ׄ֟፝͜─ׄ͜─ׄ͜╴𐔌 *UTILITIES* 𐦯╶͜─ׄ͜─ׄ֟፝͜─ׄ͜
-> ✐ Comandos de Útilidades.
+
+utils: `╭┈ࠢ͜─ׄ֟፝͜─ׄ͜─ׄ͜╴𐔌 🛠️ *UTILITIES* 𐦯╶͜─ׄ͜─ׄ֟፝͜─ׄ͜
+> ✐ Comandos de utilidad general.[cite: 1]
+
 ꕤ *$prefixmenu » $prefixhelp » $prefixayuda* + <category>
-> Ver el menú de comandos.
+> 📜 Mostrar este menú.[cite: 1]
 ꕤ *$prefixbots » $prefixsockets*
-> Ver el numero de bots activos.
+> 🤖 Ver bots activos.[cite: 1]
 ꕤ *$prefixstatus » $prefixestado*
-> Ver estado del bot.
+> ⚡ Estado del sistema.[cite: 1]
 ꕤ *$prefixping » $prefixp » $prefixspeed*
-> Medir tiempo de respuesta del bot.
+> 🏓 Ver velocidad de respuesta.[cite: 1]
 ꕤ *$prefixreport » $prefixreporte* + <error>
-> Enviar un mensaje de reporte a los moderadores.
+> ⚠️ Reportar fallos.[cite: 1]
 ꕤ *$prefixsug » $prefixsuggest* + <suggest>
-> Enviar una sugerencia a los moderadores.
+> 💡 Enviar sugerencias.[cite: 1]
 ꕤ *$prefixinvitar » $prefixinvite* + <link>
-> Invitar el bot a un grupo.
+> 📩 Invitar bot al grupo.[cite: 1]
 ꕤ *$prefixia » $prefixchatgpt* + <query>
-> Realizar peticiones a chatgpt.
+> 🧠 Preguntar a la IA.[cite: 1]
 ꕤ *$prefixgetpic » $prefixpfp* + <mention>
-> Ver la foto de perfil de un usuario.
+> 🖼️ Obtener foto de perfil.[cite: 1]
 ꕤ *$prefixtoimage » $prefixtoimg* + <cite / sticker>
-> Convertir un sticker/imagen de una vista a imagen.
+> 📷 De sticker a imagen.[cite: 1]
 ꕤ *$prefixtourl* + <cite / image|video>
-> Convierte la imagen en un link.
+> 🔗 Generar link de archivo.[cite: 1]
 ꕤ *$prefixsay » $prefixdecir* + <text>
-> Repetir un mensaje.
+> 🗣️ El bot repite tu mensaje.[cite: 1]
 ꕤ *$prefixtrad » $prefixtraducir » $prefixtranslate* + <language / text>
-> Traducir texto al idioma especificado.
+> 🌎 Traductor de idiomas.[cite: 1]
 ꕤ *$prefixget » $prefixfetch* + <url>
-> Realizar solicitudes get a páginas web.
+> 🌐 Peticiones web GET.[cite: 1]
 ꕤ *$prefixhd » $prefixenhance » $prefixremini* + <cite / image>
-> Mejorar la calidad de una imagen.
+> ✨ Mejorar calidad de imagen.[cite: 1]
 ꕤ *$prefixgitclone » $prefixgit* + <url|query>
-> Buscar y descargar un repositorio de Github.
+> 🐙 Descargar de GitHub.[cite: 1]
 ꕤ *inspect » inspeccionar* + <url>
-> Ver información de grupos/canales de WhatsApp.
+> 🔍 Info de grupos/canales.[cite: 1]
 ꕤ *$prefixread » $prefixreadviewonce* + <cite / image|video>
-> Convertir imagen/video de una vista a contenido.
+> 👁️ Ver mensajes de "una vez".[cite: 1]
 ╰ׅ͜─֟͜─͜─ٞ͜─͜─๊͜─͜─๋͜─⃔═̶፝֟͜═̶⃔─๋͜─͜─͜─๊͜─ٞ͜─͜─֟͜┈ࠢ͜╯ׅ`,
-grupo: `╭┈ࠢ͜─ׄ֟፝͜─ׄ͜─ׄ͜╴𐔌 *GROUPS* 𐦯╶͜─ׄ͜─ׄ֟፝͜─ׄ͜─ׄ͜
-> ✐ Comandos para administradores de grupos.
+
+grupo: `╭┈ࠢ͜─ׄ֟፝͜─ׄ͜─ׄ͜╴𐔌 👥 *GROUPS* 𐦯╶͜─ׄ͜─ׄ֟፝͜─ׄ͜─ׄ͜
+> ✐ Herramientas de administración de grupos.[cite: 1]
+
 ꕤ *$prefixalerts » $prefixalertas* + <on|off>
-> Activar/desactivar las alertas de grupo.
+> 🔔 Alertas de grupo.[cite: 1]
 ꕤ *$prefixantilinks » $prefixantienlaces* + <on|off>
-> Activar/desactivar el antienlaces.
+> 🔗 Bloqueo de enlaces.[cite: 1]
 ꕤ *$prefixbot* + <on|off>
-> Activar/desactivar al bot.
+> 🤖 Encender/Apagar bot en el grupo.[cite: 1]
 ꕤ *$prefixclose » $prefixcerrar* + <time>
-> Cerrar el grupo para que solo los administradores puedan enviar mensajes.
+> 🔒 Cerrar el chat.[cite: 1]
 ꕤ *$prefixgp » $prefixgroupinfo*
-> Informacion del grupo.
+> ℹ️ Info del grupo.[cite: 1]
 ꕤ *$prefixdelwarn* + <mention / number|all>
-> Eliminar una advertencia de un miembro del grupo.
+> 🧼 Quitar advertencias.[cite: 1]
 ꕤ *$prefixdemote* + <mention>
-> Descender a un usuario de administrador.
+> ⬇️ Quitar admin.[cite: 1]
 ꕤ *$prefixeconomy » $prefixeconomia* + <on|off>
-> Activar/desactivar los comandos de economía
+> 💰 Activar/Desactivar economía.[cite: 1]
 ꕤ *$prefixgacha » $prefixrpg* + <on|off>
-> Activar/desactivar los comandos de GACHA
+> ⛩️ Activar/Desactivar Gacha.[cite: 1]
 ꕤ *$prefixgoodbye » $prefixdespedida* + <on|off>
-> Activar/desactivar la despedida.
+> 👋 Activar despedida.[cite: 1]
 ꕤ *$prefixsetgpbaner* + <cite / image>
-> Cambiar la imagen del grupo.
+> 🖼️ Cambiar imagen del grupo.[cite: 1]
 ꕤ *$prefixsetgpname* + <value>
-> Cambiar el nombre del grupo.
+> 🏷️ Cambiar nombre del grupo.[cite: 1]
 ꕤ *$prefixsetgpdesc* + <value>
-> Cambiar la descripción del grupo.
+> 📝 Cambiar descripción.[cite: 1]
 ꕤ *$prefixkick* + <mention>
-> Expulsar a un usuario del grupo.
+> 🚪 Expulsar usuario.[cite: 1]
 ꕤ *$prefixnsfw* + <on|off>
-> Activar/desactivar los comandos NSFW
+> 🔞 Activar contenido adulto.[cite: 1]
 ꕤ *$prefixonlyadmin » $prefixadminonly* + <on|off>
-> Permitir que solo los administradores puedan utilizar los comandos.
+> 👮 Solo admins usan comandos.[cite: 1]
 ꕤ *$prefixopen » $prefixabrir* + <time>
-> Abrir el grupo para que todos los usuarios puedan enviar mensajes.
+> 🔓 Abrir el chat.[cite: 1]
 ꕤ *$prefixpromote* + <mention>
-> Ascender a un usuario a administrador.
+> ⬆️ Dar admin.[cite: 1]
 ꕤ *$prefixsetgoodbye* + <value>
-> Establecer un mensaje de despedida personalizado.
+> ✍️ Mensaje de despedida.[cite: 1]
 ꕤ *$prefixsetprimary* + <mention>
-> Establece un bot como primario del grupo.
+> 🥇 Establecer bot principal.[cite: 1]
 ꕤ *$prefixsetwarnlimit* + <number>
-> Establecer el límite de advertencias para un grupo.
+> ⚠️ Límite de advertencias.[cite: 1]
 ꕤ *$prefixsetwelcome* + <value>
-> Establecer un mensaje de bienvenida personalizado.
+> ✍️ Mensaje de bienvenida.[cite: 1]
 ꕤ *$prefixtag » $prefixhidetag » $prefixtagall* + <text>
-> Envía un mensaje mencionando a todos los usuarios del grupo.
+> 📣 Mencionar a todos.[cite: 1]
 ꕤ *$prefixmsgcount » $prefixcount » $prefixmessages » $prefixmensajes* + <mention / days>
-> Obtener el conteo de mensajes y comandos de un usuario.
+> 📊 Conteo de mensajes.[cite: 1]
 ꕤ *$prefixtopcount » $prefixtopmessages » $prefixtopmsgcount » $prefixtopmensajes* + <days>
-> Obtener el top de usuarios con más mensajes en el grupo.
+> 🏆 Top más activos.[cite: 1]
 ꕤ *$prefixtopinactive » $prefixtopinactivos » $prefixtopinactiveusers* + <days>
-> Obtener el top de usuarios más inactivos en el grupo.
+> 💤 Top más inactivos.[cite: 1]
 ꕤ *$prefixwarn* + <mention / reason>
-> Darle una advertencia a un miembro del grupo.
+> ⚠️ Dar advertencia.[cite: 1]
 ꕤ *$prefixwarns* + <mention>
-> Ver todas las advertencias de un miembro del grupo.
+> 📋 Ver advertencias.[cite: 1]
 ꕤ *$prefixwelcome » $prefixbienvenida* + <on|off>
-> Activar/desactivar la bienvenida.
+> 👋 Activar bienvenida.[cite: 1]
 ꕤ *$prefixlink » $prefixrevoke*
-> Obtener o restablecer el enlace del grupo.
+> 🔗 Link del grupo.[cite: 1]
 ╰ׅ͜─֟͜─͜─ٞ͜─͜─๊͜─͜─๋͜─⃔═̶፝֟͜═̶⃔─๋͜─͜─͜─๊͜─ٞ͜─͜─֟͜┈ࠢ͜╯ׅ`,
-nsfw: `╭┈ࠢ͜─ׄ֟፝͜─ׄ͜─ׄ͜╴𐔌 *NSFW* 𐦯╶͜─ׄ͜─ׄ֟፝͜─ׄ͜─ׄ͜
-> ✐ Comandos *NSFW* (Contenido para adultos).
+
+nsfw: `╭┈ࠢ͜─ׄ֟፝͜─ׄ͜─ׄ͜╴𐔌 🔞 *NSFW* 𐦯╶͜─ׄ͜─ׄ֟፝͜─ׄ͜─ׄ͜
+> ✐ Contenido para adultos (+18).[cite: 1]
+
 ꕤ *$prefixxnxx* + <query|url>
-> Buscar y descarga videos de XNXX.
+> 🎥 Buscar en XNXX.[cite: 1]
 ꕤ *$prefixxvideos* + <query|url>
-> Buscar y descarga videos de XVideos.
+> 🎥 Buscar en XVideos.[cite: 1]
 ꕤ *$prefixdanbooru » $prefixdbooru* + <tag>
-> Buscar imágenes en Danbooru.
+> 🖼️ Imágenes Danbooru.[cite: 1]
 ꕤ *$prefixgelbooru » $prefixgbooru* + <tag>
-> Buscar imágenes en Gelbooru.
+> 🖼️ Imágenes Gelbooru.[cite: 1]
 ꕤ *$prefixrule34 » $prefixr34* + <tag>
-> Buscar imagenes en Rule34.
+> 🖼️ Imágenes Rule34.[cite: 1]
 ꕤ *$prefixanal » $prefixviolar* + <mention>
-> Hacer un anal.
+> 🔞 Comando Anal.[cite: 1]
 ꕤ *$prefixblowjob » $prefixmamada » $prefixbj* + <mention>
-> Dar una mamada.
+> 🔞 Comando Blowjob.[cite: 1]
 ꕤ *$prefixboobjob* + <mention>
-> Hacer una rusa.
+> 🔞 Comando Boobjob.[cite: 1]
 ꕤ *$prefixbondage* + <mention>
-> Atar sin escapatoria.
+> 🔞 Comando Bondage.[cite: 1]
 ꕤ *$prefixbukkake* + <mention>
-> Hacer un bukkake.
+> 🔞 Comando Bukkake.[cite: 1]
 ꕤ *$prefixcum* + <mention>
-> Venirse en alguien.
+> 🔞 Comando Cum.[cite: 1]
 ꕤ *$prefixcummouth* + <mention>
-> Acabar en la boca de alguien.
+> 🔞 Comando Cum Mouth.[cite: 1]
 ꕤ *$prefixcumshot* + <mention>
-> Disparar semen.
+> 🔞 Comando Cumshot.[cite: 1]
 ꕤ *$prefixcreampie* + <mention>
-> Dejar un creampie.
+> 🔞 Comando Creampie.[cite: 1]
 ꕤ *$prefixdeepthroat* + <mention>
-> Hacer una garganta profunda.
+> 🔞 Comando Deepthroat.[cite: 1]
 ꕤ *$prefixfacesitting* + <mention>
-> Sentarse en la cara de alguien.
+> 🔞 Comando Facesitting.[cite: 1]
 ꕤ *$prefixfap » $prefixpaja* + <mention>
-> Hacerse una paja.
+> 🔞 Comando Fap.[cite: 1]
 ꕤ *$prefixfingering* + <mention>
-> Meter los dedos.
+> 🔞 Comando Fingering.[cite: 1]
 ꕤ *$prefixfootjob* + <mention>
-> Hacer una paja con los pies.
+> 🔞 Comando Footjob.[cite: 1]
 ꕤ *$prefixfuck » $prefixcoger* + <mention>
-> Follarte a alguien.
+> 🔞 Comando Fuck.[cite: 1]
 ꕤ *$prefixfutanari » $prefixfuta* + <mention>
-> Lo mejor de los dos mundos.
+> 🔞 Comando Futanari.[cite: 1]
 ꕤ *$prefixgrabboobs* + <mention>
-> Agarrar tetas.
+> 🔞 Comando Grabboobs.[cite: 1]
 ꕤ *$prefixgrope* + <mention>
-> Manosear a alguien.
+> 🔞 Comando Grope.[cite: 1]
 ꕤ *$prefixhandjob* + <mention>
-> Hacer una paja.
+> 🔞 Comando Handjob.[cite: 1]
 ꕤ *$prefixlickass* + <mention>
-> Lamer un culo.
+> 🔞 Comando Lickass.[cite: 1]
 ꕤ *$prefixlickdick* + <mention>
-> Lamer un pene.
+> 🔞 Comando Lickdick.[cite: 1]
 ꕤ *$prefixlickpussy* + <mention>
-> Lamer un coño.
+> 🔞 Comando Lickpussy.[cite: 1]
 ꕤ *$prefixorgy » $prefixorgia* + <mention>
-> Organizar una orgía.
+> 🔞 Comando Orgy.[cite: 1]
 ꕤ *$prefixpegging* + <mention>
-> Dar por detrás.
+> 🔞 Comando Pegging.[cite: 1]
 ꕤ *$prefixsixnine » $prefix69* + <mention>
-> Haz un 69 con alguien.
+> 🔞 Comando 69.[cite: 1]
 ꕤ *$prefixspank » $prefixnalgada* + <mention>
-> Dar una nalgada.
+> 🔞 Comando Spank.[cite: 1]
 ꕤ *$prefixsquirt » $prefixsquirting* + <mention>
-> Tener un squirt.
+> 🔞 Comando Squirt.[cite: 1]
 ꕤ *$prefixsuckboobs* + <mention>
-> Chupar tetas.
+> 🔞 Comando Suckboobs.[cite: 1]
 ꕤ *$prefixthighjob* + <mention>
-> Hacer una entre piernas.
+> 🔞 Comando Thighjob.[cite: 1]
 ꕤ *$prefixundress » $prefixencuerar* + <mention>
-> Desnudar a alguien.
+> 🔞 Comando Undress.[cite: 1]
 ꕤ *$prefixyaoi* + <mention>
-> Momento muy intenso.
+> 🔞 Comando Yaoi.[cite: 1]
 ꕤ *$prefixYuri » $prefixtijeras* + <mention>
-> Hacer tijeras.
+> 🔞 Comando Yuri.[cite: 1]
 ╰ׅ͜─֟͜─͜─ٞ͜─͜─๊͜─͜─๋͜─⃔═̶፝֟͜═̶⃔─๋͜─͜─͜─๊͜─ٞ͜─͜─֟͜┈ࠢ͜╯ׅ`,
-anime: `╭┈ࠢ͜─ׄ֟፝͜─ׄ͜─ׄ͜╴𐔌 *ANIME* 𐦯╶͜─ׄ͜─ׄ֟፝͜─ׄ͜─ׄ͜
-> ✐ Comandos de reacciones de Anime.
+
+anime: `╭┈ࠢ͜─ׄ֟፝͜─ׄ͜─ׄ͜╴𐔌 🌸 *ANIME* 𐦯╶͜─ׄ͜─ׄ֟፝͜─ׄ͜─ׄ͜
+> ✐ Reacciones y diversión estilo anime.[cite: 1]
+
 ꕤ *$prefixwaifu » $prefixneko*
-> Buscar una waifu aleatoria.
+> ✨ Waifu/Neko aleatoria.[cite: 1]
 ꕤ *$prefixppcouple » $prefixppcp* 
-> Generar imágenes para amistades o parejas.
+> 👩‍❤️‍👨 Fotos compartidas para parejas.[cite: 1]
 ꕤ *$prefixpeek » $prefixmirar* + <mention>
-> Mirar a alguien.
+> 👀 Mirar a alguien.[cite: 1]
 ꕤ *$prefixcomfort » $prefixconsolar* + <mention>
-> Consolar a alguien.
+> 🤗 Consolar a alguien.[cite: 1]
 ꕤ *$prefixthinkhard » $prefixpensar* + <mention>
-> Pensar intensamente.
+> 🤔 Pensar mucho.[cite: 1]
 ꕤ *$prefixcurious » $prefixcurioso* + <mention>
-> Mostrar curiosidad.
+> 🧐 Curiosidad.[cite: 1]
 ꕤ *$prefixsniff » $prefixoler* + <mention>
-> Oler a alguien.
+> 👃 Oler a alguien.[cite: 1]
 ꕤ *$prefixstare » $prefixmirar* + <mention>
-> Mirar fijamente.
+> 👁️ Mirar fijamente.[cite: 1]
 ꕤ *$prefixtrip » $prefixtropezar* + <mention>
-> Tropezar con alguien.
+> 😵 Tropezar con alguien.[cite: 1]
 ꕤ *$prefixblowkiss » $prefixbesito* + <mention>
-> Mandar un besito.
+> 😘 Mandar un besito.[cite: 1]
 ꕤ *$prefixsnuggle » $prefixacurrucar* + <mention>
-> Acurrucarse con alguien.
+> 🥰 Acurrucarse.[cite: 1]
 ꕤ *$prefixangry » $prefixenojado* + <mention>
-> Estar enojado.
+> 💢 Estar enojado.[cite: 1]
 ꕤ *$prefixbleh » $prefixmeh* + <mention>
-> Sacar la lengua.
+> 😛 Sacar la lengua.[cite: 1]
 ꕤ *$prefixbored » $prefixaburrido* + <mention>
-> Estar aburrido.
+> 😑 Estar aburrido.[cite: 1]
 ꕤ *$prefixclap » $prefixaplaudir* + <mention>
-> Aplaudir.
+> 👏 Aplaudir.[cite: 1]
 ꕤ *$prefixcoffee » $prefixcafe* + <mention>
-> Tomar café.
+> ☕ Tomar café.[cite: 1]
 ꕤ *$prefixcold » $prefixfrio* + <mention>
-> Tener frío.
+> 🥶 Tener frío.[cite: 1]
 ꕤ *$prefixsing » $prefixcantar* + <mention>
-> Cantar.
+> 🎤 Cantar.[cite: 1]
 ꕤ *$prefixtickle » $prefixcosquillas* + <mention>
-> Hacer cosquillas.
+> 🤣 Hacer cosquillas.[cite: 1]
 ꕤ *$prefixscream » $prefixgritar* + <mention>
-> Gritar.
+> 😱 Gritar.[cite: 1]
 ꕤ *$prefixpush » $prefixempujar* + <mention>
-> Empujar a alguien.
+> 🖐️ Empujar a alguien.[cite: 1]
 ꕤ *$prefixnope » $prefixno* + <mention>
-> Negarse a hacer algo.
+> 🙅 Negarse.[cite: 1]
 ꕤ *$prefixjump » $prefixsaltar* + <mention>
-> Saltar.
+> 🏃 Saltar.[cite: 1]
 ꕤ *$prefixheat » $prefixcalor* + <mention>
-> Tener calor.
+> 🥵 Tener calor.[cite: 1]
 ꕤ *$prefixgaming » $prefixjugar* + <mention>
-> Jugar videojuegos.
+> 🎮 Jugar videojuegos.[cite: 1]
 ꕤ *$prefixdraw » $prefixdibujar* + <mention>
-> Dibujar.
+> 🎨 Dibujar.[cite: 1]
 ꕤ *$prefixcall » $prefixllamar* + <mention>
-> Llamar a alguien.
+> 📞 Llamar a alguien.[cite: 1]
 ꕤ *$prefixdramatic » $prefixdrama* + <mention>
-> Drama.
+> 🎭 Hacer un drama.[cite: 1]
 ꕤ *$prefixdrunk » $prefixborracho* + <mention>
-> Estar borracho.
+> 🍺 Estar borracho.[cite: 1]
 ꕤ *$prefiximpregnate » $prefixembarazar* + <mention>
-> Embarazar a alguien.
+> 🤰 Embarazar.[cite: 1]
 ꕤ *$prefixkisscheek » $prefixbeso* + <mention>
-> Beso en la mejilla.
+> 💋 Beso en la mejilla.[cite: 1]
 ꕤ *$prefixlaugh » $prefixreir* + <mention>
-> Reírse de alguien.
+> 😂 Reírse.[cite: 1]
 ꕤ *$prefixlove » $prefixamor* + <mention>
-> Sentirse enamorado.
+> 😍 Sentir amor.[cite: 1]
 ꕤ *$prefixpout » $prefixmueca* + <mention>
-> Hacer pucheros.
+> 😗 Hacer pucheros.[cite: 1]
 ꕤ *$prefixpunch » $prefixgolpear* + <mention>
-> Dar un puñetazo.
+> 👊 Dar puñetazo.[cite: 1]
 ꕤ *$prefixrun » $prefixcorrer* + <mention>
-> Correr.
+> 🏃 Correr.[cite: 1]
 ꕤ *$prefixsad » $prefixtriste* + <mention>
-> Expresar tristeza.
+> 😢 Estar triste.[cite: 1]
 ꕤ *$prefixscared » $prefixasustado* + <mention>
-> Estar asustado.
+> 😨 Estar asustado.[cite: 1]
 ꕤ *$prefixseduce » $prefixseducir* + <mention>
-> Seducir a alguien.
+> 😏 Seducir.[cite: 1]
 ꕤ *$prefixshy » $prefixtimido* + <mention>
-> Sentir timidez.
+> 😳 Sentir timidez.[cite: 1]
 ꕤ *$prefixsleep » $prefixdormir* + <mention>
-> Tumbarse a dormir.
+> 💤 Dormir.[cite: 1]
 ꕤ *$prefixsmoke » $prefixfumar* + <mention>
-> Fumar.
+> 🚬 Fumar.[cite: 1]
 ꕤ *$prefixspit » $prefixescupir* + <mention>
-> Escupir.
+> 💦 Escupir.[cite: 1]
 ꕤ *$prefixstep » $prefixpisar* + <mention>
-> Pisar a alguien.
+> 👣 Pisar a alguien.[cite: 1]
 ꕤ *$prefixthink » $prefixpensar* + <mention>
-> Pensar en algo.
+> 💭 Pensar.[cite: 1]
 ꕤ *$prefixwalk » $prefixcaminar* + <mention>
-> Caminar.
+> 🚶 Caminar.[cite: 1]
 ꕤ *$prefixhug » $prefixabrazar* + <mention>
-> Dar un abrazo.
+> 🫂 Dar un abrazo.[cite: 1]
 ꕤ *$prefixkill » $prefixmatar* + <mention>
-> Toma tu arma y mata a alguien.
+> ⚔️ Matar a alguien.[cite: 1]
 ꕤ *$prefixeat » $prefixnom » $prefixcomer* + <mention>
-> Comer algo delicioso.
+> 🍱 Comer algo rico.[cite: 1]
 ꕤ *$prefixkiss » $prefixmuak* + <mention>
-> Dar un beso.
+> 👄 Dar un beso.[cite: 1]
 ꕤ *$prefixwink* + <mention>
-> Guiñar un ojo.
+> 😉 Guiñar un ojo.[cite: 1]
 ꕤ *$prefixpat* + <mention>
-> Acariciar a alguien.
+> 👋 Acariciar a alguien.[cite: 1]
 ꕤ *$prefixhappy » $prefixfeliz* + <mention>
-> Saltar de felicidad.
+> 😄 Estar feliz.[cite: 1]
 ꕤ *$prefixbully* + <mention>
-> Molestar a alguien.
+> 😤 Molestar.[cite: 1]
 ꕤ *$prefixbite » $prefixmorder* + <mention>
-> Morder a alguien.
+> 🦷 Morder a alguien.[cite: 1]
 ꕤ *$prefixblush* + <mention>
-> Sonrojarse.
+> 😊 Sonrojarse.[cite: 1]
 ꕤ *$prefixwave* + <mention>
-> Saludar con la mano.
+> 👋 Saludar.[cite: 1]
 ꕤ *$prefixbath* + <mention>
-> Bañarse.
+> 🛁 Bañarse.[cite: 1]
 ꕤ *$prefixsmug* + <mention>
-> Actuar presumido.
+> 😏 Actuar presumido.[cite: 1]
 ꕤ *$prefixsmile* + <mention>
-> Sonreír.
+> 🙂 Sonreír.[cite: 1]
 ꕤ *$prefixhighfive* + <mention>
-> Dar un "choca esos cinco".
+> ✋ Choca esos cinco.[cite: 1]
 ꕤ *$prefixhandhold* + <mention>
-> Tomar de la mano.
+> 🤝 Tomar de la mano.[cite: 1]
 ꕤ *$prefixcringe* + <mention>
-> Hacer una mueca incómoda.
+> 😬 Mueca incómoda.[cite: 1]
 ꕤ *$prefixbonk* + <mention>
-> Dar un golpe divertido.
+> 🔨 Golpe divertido.[cite: 1]
 ꕤ *$prefixcry* + <mention>
-> Llorar.
+> 😭 Llorar.[cite: 1]
 ꕤ *$prefixlick* + <mention>
-> Lamer a alguien.
+> 👅 Lamer.[cite: 1]
 ꕤ *$prefixslap* + <mention>
-> Dar una bofetada.
+> 👋 Bofetada.[cite: 1]
 ꕤ *$prefixdance* + <mention>
-> Bailar.
+> 💃 Bailar.[cite: 1]
 ꕤ *$prefixcuddle* + <mention>
-> Acurrucarse.
+> 🧶 Acurrucarse.[cite: 1]
 ╰ׅ͜─֟͜─͜─ٞ͜─͜─๊͜─͜─๋͜─⃔═̶፝֟͜═̶⃔─๋͜─͜─͜─๊͜─ٞ͜─͜─֟͜┈ࠢ͜╯ׅ`,
 }

@@ -1,7 +1,7 @@
 export default {
   command: ['delete', 'del', 'borrar'],
   category: 'grupo',
-  botAdmin: true,
+  botAdmin: false,
 
   run: async (client, m) => {
     const OWNER_NUMBER = '51901931862'
@@ -24,7 +24,7 @@ export default {
     try {
       const targetKey = quoted.key || {
         remoteJid: m.chat,
-        fromMe: quoted.fromMe || false,
+        fromMe: quoted.fromMe || quoted.isBot || false,
         id: quoted.id,
         participant: quoted.sender || quoted.participant || quoted.key?.participant
       }
@@ -33,20 +33,27 @@ export default {
         return m.reply('No pude obtener el mensaje para borrarlo.')
       }
 
-      await client.sendMessage(m.chat, {
-        delete: {
-          remoteJid: targetKey.remoteJid || m.chat,
-          fromMe: targetKey.fromMe || false,
-          id: targetKey.id,
-          participant: targetKey.participant || quoted.sender || undefined
-        }
-      })
+      // Intenta borrar el mensaje citado.
+      // Si el bot no es admin y el mensaje es de otra persona, WhatsApp rechaza la acción
+      // y el "catch" hace que falle en silencio, exactamente como pediste.
+      try {
+        await client.sendMessage(m.chat, {
+          delete: {
+            remoteJid: targetKey.remoteJid || m.chat,
+            fromMe: targetKey.fromMe || false,
+            id: targetKey.id,
+            participant: targetKey.participant || quoted.sender || undefined
+          }
+        })
+      } catch {}
 
+      // Intenta borrar el mensaje del comando.
+      // Corregido a m.key.fromMe para que identifique correctamente si el mensaje es suyo.
       try {
         await client.sendMessage(m.chat, {
           delete: {
             remoteJid: m.chat,
-            fromMe: false,
+            fromMe: m.key.fromMe || false,
             id: m.key.id,
             participant: m.key.participant || m.sender
           }
@@ -54,7 +61,8 @@ export default {
       } catch {}
 
     } catch (e) {
-      return m.reply(`No pude borrar ese mensaje.\nError: ${e.message}`)
+      // Solo reporta error si algo crítico falla, no si falla el borrado silencioso
+      return m.reply(`No pude procesar la solicitud.\nError: ${e.message}`)
     }
   }
 }

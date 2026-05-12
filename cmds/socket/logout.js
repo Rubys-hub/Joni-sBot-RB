@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import {jidDecode} from '@whiskeysockets/baileys';
+import { jidDecode } from 'baileys'
 
 export default {
   command: ['logout'],

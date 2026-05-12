@@ -11,7 +11,7 @@ export default {
       }
       const formatDate = (timestamp) => {
         const date = new Date(parseInt(timestamp))
-        return date.toLocaleString('es-CO', { timeZone: 'America/Bogota', day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit', hour12: true })
+        return date.toLocaleString('es-CO', { timeZone: 'America/Lima', day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit', hour12: true })
       }
       let text = `*❀ Lista de tus paquetes de stickers:*\n`
       text += `> ❏ Total: \`${packs.length}\`\n`

@@ -35,11 +35,11 @@ export default {
     }
     const platform = os.type()
     const now = new Date()
-    const colombianTime = new Date(now.toLocaleString('en-US', { timeZone: 'America/Bogota' }))
+    const peruvianTime = new Date(now.toLocaleString('en-US', { timeZone: 'America/Lima' }))
     const nodeVersion = process.version
     const sistemaUptime = rTime(os.uptime())
     const uptime = process.uptime()
-    const uptimeDate = new Date(colombianTime.getTime() - uptime * 1000)
+    const uptimeDate = new Date(peruvianTime.getTime() - uptime * 1000)
     const formattedUptimeDate = uptimeDate.toLocaleString('es-ES', {
       weekday: 'long',
       year: 'numeric',

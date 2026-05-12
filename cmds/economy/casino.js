@@ -1,4 +1,4 @@
-import { delay } from "@whiskeysockets/baileys"
+import { delay } from "baileys"
 
 let buatall = 1
 export default {

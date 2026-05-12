@@ -5,193 +5,157 @@ export default {
   run: async (client, m, args, usedPrefix) => {
     const currentPrefix = usedPrefix || '.'
     const pushname = m.pushName || 'Usuario'
-    const botId = client.user.id.split(':')[0] + '@s.whatsapp.net'
+    const userTag = `@${m.sender.split('@')[0]}`
+
+    const botRaw = client.user?.id || ''
+    const botId = botRaw.split(':')[0] + '@s.whatsapp.net'
     const settings = global.db.data.settings?.[botId] || {}
 
-    const textMenu = `> 𖧧 *Hola, ${pushname}*
-> Accediste al sistema de *stickers*
+    const botName = settings.botname || settings.namebot || 'RubyJX Bot'
+    const channelName = settings.nameid || global.my?.name || 'RubyJX Channel'
+    const channelJid = settings.id || global.my?.ch || '120363424461852442@newsletter'
+    const channelLink = settings.link || 'https://whatsapp.com/channel/0029Vb7O3ugGZNCpbDTDhr3F'
+    const thumbnail = settings.icon || settings.banner || undefined
+
+    const textMenu = `> 𖧧 *Hola, ${pushname}* 🧸
+> Accediste al sistema de *stickers* 🎨✨
+
+
 
 ╭┈ࠢ͜┅ࠦ͜͜╾݊͜─ׄ͜─ׄ֟፝͜─ׄ͜─ׄ͜╴ ⋱࣭ ᩴ ⋮֔ ᩴ ⋰ ╶͜─ׄ͜─ׄ֟፝͜─ׄ͜─ׄ݊͜͜╼┅ࠦ͜͜┈ࠢ͜╮
 │
-│           ⟐ *S T I C K E R S* ⟐
+│             ⟐ *S T I C K E R S* ⟐
 │
-│               ⟡ OWNER :: RubyJX
-│           ⎔ TYPE :: STICKER SYSTEM
-│        ⟣ VERSION :: ^3.0 - Latest
-│           ⌬ DEVICE :: ACTIVE
-│           ⟐ STATUS :: ONLINE
-│         ✦ CHANNEL :: https://whatsapp.com/channel/0029Vb7O3ugGZNCpbDTDhr3F
-│       ✦ COMMUNITY :: https://chat.whatsapp.com/KtXac3mqt1zFv3FAfDkJ23
-│  
+│        𖧧 USER :: ${userTag} 🧑‍💻
+│        ✦ BOT :: ${botName} 🤖
+│        ⟡ OWNER :: RubyJX 👑
+│        ⎔ TYPE :: STICKER SYSTEM 🎨
+│        ⟣ VERSION :: ^3.0 - Latest ⚙️
+│        ⌬ DEVICE :: ACTIVE 📲
+│        ⟐ STATUS :: ONLINE 🟢
+│        ✦ CHANNEL :: ${channelName} 📢
+│
 ╰┈ࠢ͜┅ࠦ͜͜╾݊͜─ׄ͜─ׄ֟፝͜─ׄ͜─ׄ͜╴ ⋱࣭ ᩴ ⋮֔ ᩴ ⋰ ╶͜─ׄ͜─ׄ֟፝͜─ׄ͜─ׄ݊͜͜╼┅ࠦ͜͜┈ࠢ͜╯
 
-╭────────────〔 🎨 STICKER SYSTEM 〕────────────╮
-│ ⟡ *TOTAL DISPONIBLE ::* 17 comandos
-│ ⎔ *MODO ::* Crear, editar y gestionar stickers
-╰──────────────────────────────────────────────╯
 
-╭────────〔 🖼️ STICKER / S 〕────────╮
-│ ✦ *Comando principal:* ${currentPrefix}sticker
-│ ✦ *Alias:* ${currentPrefix}s
-│
-│ 📌 *¿Qué hace?*
-│ Convierte imágenes o videos en stickers.
-│
-│ 🧾 *Uso:*
-│ ${currentPrefix}s (responder imagen/video)
-╰──────────────────────────────────────╯
 
-╭────────〔 🎨 QC 〕────────╮
-│ ✦ *Comando principal:* ${currentPrefix}qc
-│
-│ 📌 *¿Qué hace?*
-│ Genera un sticker tipo quote con texto.
-│
-│ 🧾 *Uso:*
-│ ${currentPrefix}qc hola mundo
-╰──────────────────────────╯
+        𓆩 🎨 *STICKER SYSTEM* 🎨 𓆪
+        ✨ *Total disponible:* 19 comandos
+        ⚡ *Modo:* crear, editar y gestionar stickers
 
-╭────────〔 😎 EMOJIMIX 〕────────╮
-│ ✦ *Comando principal:* ${currentPrefix}emojimix
-│
-│ 📌 *¿Qué hace?*
-│ Combina dos emojis en un solo sticker.
-│
-│ 🧾 *Uso:*
-│ ${currentPrefix}emojimix 😎+🔥
-╰──────────────────────────────╯
 
-╭────────〔 📦 PACK 〕────────╮
-│ ✦ *Comando principal:* ${currentPrefix}pack
-│
-│ 📌 *¿Qué hace?*
-│ Muestra tus packs de stickers disponibles.
-│
-│ 🧾 *Uso:*
-│ ${currentPrefix}pack
-╰──────────────────────────╯
 
-╭────────〔 📦 NEWPACK 〕────────╮
-│ ✦ *Comando principal:* ${currentPrefix}newpack
-│
-│ 📌 *¿Qué hace?*
-│ Crea un nuevo pack de stickers.
-│
-│ 🧾 *Uso:*
-│ ${currentPrefix}newpack nombre
-╰─────────────────────────────╯
+ꕥ 🖼️ *CREACIÓN DE STICKERS*
 
-╭────────〔 ❌ DELPACK 〕────────╮
-│ ✦ *Comando principal:* ${currentPrefix}delpack
-│
-│ 📌 *¿Qué hace?*
-│ Elimina un pack de stickers.
-│
-│ 🧾 *Uso:*
-│ ${currentPrefix}delpack
-╰─────────────────────────────╯
+🖼️ *${currentPrefix}sticker* / *${currentPrefix}s*:
+Convierte imágenes, videos o multimedia compatible en sticker.
 
-╭────────〔 📜 PACKLIST 〕────────╮
-│ ✦ *Comando principal:* ${currentPrefix}packlist
-│
-│ 📌 *¿Qué hace?*
-│ Lista todos tus packs creados.
-│
-│ 🧾 *Uso:*
-│ ${currentPrefix}packlist
-╰──────────────────────────────╯
+🧩 *${currentPrefix}s1*:
+Crea sticker usando el segundo método disponible del sistema.
 
-╭────────〔 ➕ ADDSTICKER 〕────────╮
-│ ✦ *Comando principal:* ${currentPrefix}addsticker
-│
-│ 📌 *¿Qué hace?*
-│ Agrega un sticker a un pack.
-│
-│ 🧾 *Uso:*
-│ ${currentPrefix}addsticker (responder sticker)
-╰──────────────────────────────╯
+💬 *${currentPrefix}qc*:
+Genera un sticker tipo quote con el texto que escribas.
 
-╭────────〔 ❌ DELSTICKER 〕────────╮
-│ ✦ *Comando principal:* ${currentPrefix}delsticker
-│
-│ 📌 *¿Qué hace?*
-│ Elimina un sticker guardado.
-│
-│ 🧾 *Uso:*
-│ ${currentPrefix}delsticker
-╰──────────────────────────────╯
+😎 *${currentPrefix}emojimix*:
+Combina dos emojis para crear un sticker especial.
 
-╭────────〔 ⚙️ SETMETA 〕────────╮
-│ ✦ *Comando principal:* ${currentPrefix}setmeta
-│
-│ 📌 *¿Qué hace?*
-│ Configura metadata del sticker.
-╰──────────────────────────────╯
+🍼 *${currentPrefix}brat*:
+Crea un sticker estilo brat con texto personalizado.
 
-╭────────〔 ⚙️ SETPACKDESC 〕────────╮
-│ ✦ *Comando principal:* ${currentPrefix}setpackdesc
-│
-│ 📌 *¿Qué hace?*
-│ Cambia la descripción del pack.
-╰────────────────────────────────╯
+🎥 *${currentPrefix}bratv*:
+Crea una versión animada o en video del estilo brat, según el sistema.
 
-╭────────〔 ⚙️ SETPACKNAME 〕────────╮
-│ ✦ *Comando principal:* ${currentPrefix}setpackname
-│
-│ 📌 *¿Qué hace?*
-│ Cambia el nombre del pack.
-╰────────────────────────────────╯
 
-╭────────〔 🔒 SETPACKPRIVATE 〕────────╮
-│ ✦ *Comando principal:* ${currentPrefix}setpackprivate
-│
-│ 📌 *¿Qué hace?*
-│ Hace privado el pack.
-╰────────────────────────────────────╯
 
-╭────────〔 🌍 SETPACKPUBLIC 〕────────╮
-│ ✦ *Comando principal:* ${currentPrefix}setpackpublic
-│
-│ 📌 *¿Qué hace?*
-│ Hace público el pack.
-╰───────────────────────────────────╯
+ꕥ 🏷️ *NOMBRE Y METADATA*
 
-╭────────〔 ✨ BRAT 〕────────╮
-│ ✦ *Comando principal:* ${currentPrefix}brat
-│
-│ 📌 *¿Qué hace?*
-│ Genera sticker con estilo especial.
-╰──────────────────────────╯
+🏷️ *${currentPrefix}stickername* / *${currentPrefix}sname* / *${currentPrefix}sn* / *${currentPrefix}sn1*:
+Cambia o personaliza el nombre y autor de un sticker.
 
-╭────────〔 ✨ BRATV 〕────────╮
-│ ✦ *Comando principal:* ${currentPrefix}bratv
-│
-│ 📌 *¿Qué hace?*
-│ Genera versión animada del sticker.
-╰──────────────────────────╯
+⚙️ *${currentPrefix}setstickermeta* / *${currentPrefix}setmeta*:
+Configura la metadata general de tus stickers.
 
-╭──────────〔 🔙 RETURN 〕──────────╮
-│ ⟐ ${currentPrefix}menu
-│ ⟡ ${currentPrefix}menutotal
-╰──────────────────────────────────╯`
+🧹 *${currentPrefix}delmeta* / *${currentPrefix}delstickermeta*:
+Elimina la metadata personalizada de stickers.
+
+
+
+ꕥ 📦 *PACKS DE STICKERS*
+
+📦 *${currentPrefix}getpack* / *${currentPrefix}pack* / *${currentPrefix}stickerpack*:
+Muestra u obtiene información de tus packs de stickers.
+
+🆕 *${currentPrefix}newpack* / *${currentPrefix}newstickerpack*:
+Crea un nuevo pack de stickers.
+
+📜 *${currentPrefix}packlist* / *${currentPrefix}stickerpacks*:
+Lista los packs de stickers disponibles.
+
+🗑️ *${currentPrefix}delpack*:
+Elimina un pack de stickers.
+
+
+
+ꕥ ➕ *GESTIÓN DE STICKERS*
+
+➕ *${currentPrefix}addsticker* / *${currentPrefix}stickeradd*:
+Agrega un sticker a un pack existente.
+
+❌ *${currentPrefix}stickerdel* / *${currentPrefix}delsticker*:
+Elimina un sticker guardado dentro de un pack.
+
+
+
+ꕥ 📝 *CONFIGURACIÓN DE PACKS*
+
+📝 *${currentPrefix}setstickerpackdesc* / *${currentPrefix}setpackdesc* / *${currentPrefix}packdesc*:
+Cambia la descripción de un pack de stickers.
+
+🏷️ *${currentPrefix}setstickerpackname* / *${currentPrefix}setpackname* / *${currentPrefix}packname*:
+Cambia el nombre de un pack de stickers.
+
+🔒 *${currentPrefix}setpackprivate* / *${currentPrefix}setpackpriv* / *${currentPrefix}packprivate*:
+Hace privado un pack de stickers.
+
+🌍 *${currentPrefix}setpackpublic* / *${currentPrefix}setpackpub* / *${currentPrefix}packpublic*:
+Hace público un pack de stickers.
+
+
+
+        𓆩 🔙 *RETURN* 🔙 𓆪
+
+🏠 *${currentPrefix}menu*:
+Regresa al menú principal del bot.
+
+📋 *${currentPrefix}menutotal*:
+Abre el menú completo con todas las categorías.`
 
     await client.sendMessage(
-      m.chat,
-      {
-        text: textMenu,
-        contextInfo: {
-          externalAdReply: {
-            title: settings.nameid || 'RubyJX Bot',
-            body: 'Ver canal oficial',
-            thumbnailUrl: settings.icon || settings.banner || 'https://i.imgur.com/0Z8FQ9H.jpeg',
-            sourceUrl: settings.link || 'https://whatsapp.com/channel/0029Vb7O3ugGZNCpbDTDhr3F',
-            mediaType: 1,
-            renderLargerThumbnail: true,
-            showAdAttribution: false
-          }
-        }
+  m.chat,
+  {
+    text: textMenu,
+    mentions: [m.sender],
+    contextInfo: {
+      mentionedJid: [m.sender],
+      forwardingScore: 999,
+      isForwarded: true,
+      forwardedNewsletterMessageInfo: {
+        newsletterJid: channelJid,
+        newsletterName: channelName,
+        serverMessageId: '1'
       },
-      { quoted: m }
-    )
+      externalAdReply: {
+        title: channelName,
+        body: 'Ver canal oficial',
+        thumbnailUrl: thumbnail,
+        sourceUrl: channelLink,
+        mediaType: 1,
+        renderLargerThumbnail: true,
+        showAdAttribution: false
+      }
+    }
+  },
+  { quoted: m }
+)
   }
 }

@@ -1,5 +1,5 @@
 import fetch from 'node-fetch';
-import { getDevice } from '@whiskeysockets/baileys';
+import { getDevice } from 'baileys'
 import fs from 'fs';
 import axios from 'axios';
 import moment from 'moment-timezone';
@@ -16,8 +16,8 @@ export default {
   run: async (client, m, args, usedPrefix, command) => {
     try {
       const now = new Date();
-      const colombianTime = new Date(now.toLocaleString('en-US', { timeZone: 'America/Caracas' }));
-      const tiempo = colombianTime.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }).replace(/,/g, '');
+      const peruvianTime = new Date(now.toLocaleString('en-US', { timeZone: 'America/Caracas' }));
+      const tiempo = peruvianTime.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }).replace(/,/g, '');
       const tempo = moment.tz('America/Caracas').format('hh:mm A');
       const botId = client?.user?.id.split(':')[0] + '@s.whatsapp.net';
       const botSettings = global.db.data.settings[botId] || {};

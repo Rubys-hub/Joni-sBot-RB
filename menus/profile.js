@@ -1,216 +1,150 @@
 export default {
-  command: ['menu profile', 'menuperfil'],
+  command: ['menuprofile', 'menuperfil'],
   category: 'main',
 
   run: async (client, m, args, usedPrefix, command, text) => {
     const currentPrefix = usedPrefix || '.'
     const pushname = m.pushName || 'Usuario'
-    const botId = client.user.id.split(':')[0] + '@s.whatsapp.net'
+    const userTag = `@${m.sender.split('@')[0]}`
+
+    const botRaw = client.user?.id || ''
+    const botId = botRaw.split(':')[0] + '@s.whatsapp.net'
     const settings = global.db.data.settings?.[botId] || {}
 
-    const textMenu = `> 𖧧 *Hola, ${pushname}*
-> Accediste al sistema de *perfil*
+    const botName = settings.botname || settings.namebot || 'RubyJX Bot'
+    const channelName = settings.nameid || global.my?.name || 'RubyJX Channel'
+    const channelJid = settings.id || global.my?.ch || '120363424461852442@newsletter'
+    const channelLink = settings.link || 'https://whatsapp.com/channel/0029Vb7O3ugGZNCpbDTDhr3F'
+    const thumbnail = settings.icon || settings.banner || undefined
+
+    const textMenu = `> 𖧧 *Hola, ${pushname}* 🧸
+> Accediste al sistema de *perfil* 👤✨
+
+
 
 ╭┈ࠢ͜┅ࠦ͜͜╾݊͜─ׄ͜─ׄ֟፝͜─ׄ͜─ׄ͜╴ ⋱࣭ ᩴ ⋮֔ ᩴ ⋰ ╶͜─ׄ͜─ׄ֟፝͜─ׄ͜─ׄ݊͜͜╼┅ࠦ͜͜┈ࠢ͜╮
 │
-│            ⟐ *P R O F I L E* ⟐
+│              ⟐ *P R O F I L E* ⟐
 │
-│               ⟡ OWNER :: RubyJX
-│           ⎔ TYPE :: USER SYSTEM
-│        ⟣ VERSION :: ^3.0 - Latest
-│           ⌬ DEVICE :: ACTIVE
-│           ⟐ STATUS :: ONLINE
-│         ✦ CHANNEL :: https://whatsapp.com/channel/0029Vb7O3ugGZNCpbDTDhr3F
-│       ✦ COMMUNITY :: https://chat.whatsapp.com/KtXac3mqt1zFv3FAfDkJ23
-│  
+│        𖧧 USER :: ${userTag} 🧑‍💻
+│        ✦ BOT :: ${botName} 🤖
+│        ⟡ OWNER :: RubyJX 👑
+│        ⎔ TYPE :: USER SYSTEM 👤
+│        ⟣ VERSION :: ^3.0 - Latest ⚙️
+│        ⌬ DEVICE :: ACTIVE 📲
+│        ⟐ STATUS :: ONLINE 🟢
+│        ✦ CHANNEL :: ${channelName} 📢
+│
 ╰┈ࠢ͜┅ࠦ͜͜╾݊͜─ׄ͜─ׄ֟፝͜─ׄ͜─ׄ͜╴ ⋱࣭ ᩴ ⋮֔ ᩴ ⋰ ╶͜─ׄ͜─ׄ֟፝͜─ׄ͜─ׄ݊͜͜╼┅ࠦ͜͜┈ࠢ͜╯
 
-╭────────────〔 👤 PROFILE SYSTEM 〕────────────╮
-│ ⟡ *TOTAL DISPONIBLE ::* 14 comandos
-│ ⎔ *MODO ::* Información, progreso y datos personales
-╰──────────────────────────────────────────────╯
 
-╭────────〔 🧾 PROFILE / PERFIL 〕────────╮
-│ ✦ *Comando principal:* ${currentPrefix}profile
-│ ✦ *Alias:* ${currentPrefix}perfil
-│
-│ 📌 *¿Qué hace?*
-│ Muestra tu perfil completo dentro del bot.
-│ Incluye cumpleaños, género, pasatiempo, pareja,
-│ nivel, experiencia, ranking, coins y datos de gacha.
-│
-│ 🧾 *Uso:*
-│ ${currentPrefix}profile
-│ ${currentPrefix}profile @usuario
-╰────────────────────────────────────────╯
 
-╭────────〔 📊 LEVEL / LVL 〕────────╮
-│ ✦ *Comando principal:* ${currentPrefix}level
-│ ✦ *Alias:* ${currentPrefix}lvl
-│
-│ 📌 *¿Qué hace?*
-│ Muestra tu nivel, experiencia, progreso y puesto
-│ dentro del ranking de usuarios.
-│
-│ 🧾 *Uso:*
-│ ${currentPrefix}level
-│ ${currentPrefix}level @usuario
-╰───────────────────────────────────╯
+        𓆩 👤 *PROFILE SYSTEM* 👤 𓆪
+        ✨ *Total disponible:* 14 comandos
+        ⚡ *Modo:* perfil, nivel, datos personales y pareja
 
-╭────────〔 🏆 LEADERBOARD / LBOARD 〕────────╮
-│ ✦ *Comando principal:* ${currentPrefix}lboard
-│ ✦ *Aliases:* ${currentPrefix}lb • ${currentPrefix}leaderboard
-│
-│ 📌 *¿Qué hace?*
-│ Muestra el top de usuarios con más experiencia.
-│
-│ 🧾 *Uso:*
-│ ${currentPrefix}lboard
-│ ${currentPrefix}leaderboard 2
-╰────────────────────────────────────────────╯
 
-╭────────〔 💤 AFK 〕────────╮
-│ ✦ *Comando principal:* ${currentPrefix}afk
-│
-│ 📌 *¿Qué hace?*
-│ Marca tu estado como ausente y permite indicar
-│ un motivo. Al volver, el bot muestra cuánto tiempo
-│ estuviste inactivo.
-│
-│ 🧾 *Uso:*
-│ ${currentPrefix}afk ocupado
-╰───────────────────────────╯
 
-╭────────〔 🎂 SETBIRTH 〕────────╮
-│ ✦ *Comando principal:* ${currentPrefix}setbirth
-│
-│ 📌 *¿Qué hace?*
-│ Establece tu fecha de nacimiento en el perfil.
-│
-│ 🧾 *Uso:*
-│ ${currentPrefix}setbirth 01/01/2000
-│ ${currentPrefix}setbirth 01/01
-╰───────────────────────────────╯
+ꕥ 🧾 *PERFIL Y PROGRESO*
 
-╭────────〔 ❌ DELBIRTH 〕────────╮
-│ ✦ *Comando principal:* ${currentPrefix}delbirth
-│
-│ 📌 *¿Qué hace?*
-│ Elimina tu fecha de nacimiento guardada.
-│
-│ 🧾 *Uso:*
-│ ${currentPrefix}delbirth
-╰──────────────────────────────╯
+👤 *${currentPrefix}profile* / *${currentPrefix}perfil*:
+Muestra tu perfil completo dentro del bot. Incluye datos como nivel, experiencia, coins, banco, pareja, cumpleaños, género, pasatiempo y datos del sistema gacha.
 
-╭────────〔 📝 SETDESC 〕────────╮
-│ ✦ *Comando principal:* ${currentPrefix}setdescription
-│ ✦ *Alias:* ${currentPrefix}setdesc
-│
-│ 📌 *¿Qué hace?*
-│ Establece una descripción personalizada para tu perfil.
-│
-│ 🧾 *Uso:*
-│ ${currentPrefix}setdesc Hola, uso RubyJX Bot
-╰──────────────────────────────╯
+📊 *${currentPrefix}level* / *${currentPrefix}lvl*:
+Muestra tu nivel, experiencia actual, progreso y posición dentro del sistema.
 
-╭────────〔 ❌ DELDESC 〕────────╮
-│ ✦ *Comando principal:* ${currentPrefix}deldescription
-│ ✦ *Alias:* ${currentPrefix}deldesc
-│
-│ 📌 *¿Qué hace?*
-│ Elimina tu descripción personalizada.
-│
-│ 🧾 *Uso:*
-│ ${currentPrefix}deldesc
-╰─────────────────────────────╯
+🏆 *${currentPrefix}lboard* / *${currentPrefix}lb* / *${currentPrefix}leaderboard*:
+Muestra el ranking de usuarios con más experiencia o progreso.
 
-╭────────〔 ⚥ SETGENRE 〕────────╮
-│ ✦ *Comando principal:* ${currentPrefix}setgenre
-│
-│ 📌 *¿Qué hace?*
-│ Establece tu género dentro del perfil.
-│
-│ 🧾 *Uso:*
-│ ${currentPrefix}setgenre hombre
-│ ${currentPrefix}setgenre mujer
-╰──────────────────────────────╯
+💤 *${currentPrefix}afk*:
+Marca tu estado como ausente. Puedes agregar un motivo para que el bot avise cuando alguien te mencione.
 
-╭────────〔 ❌ DELGENRE 〕────────╮
-│ ✦ *Comando principal:* ${currentPrefix}delgenre
-│
-│ 📌 *¿Qué hace?*
-│ Elimina el género guardado en tu perfil.
-│
-│ 🧾 *Uso:*
-│ ${currentPrefix}delgenre
-╰──────────────────────────────╯
 
-╭────────〔 🎯 SETHOBBY 〕────────╮
-│ ✦ *Comando principal:* ${currentPrefix}setpasatiempo
-│ ✦ *Alias:* ${currentPrefix}sethobby
-│
-│ 📌 *¿Qué hace?*
-│ Establece tu pasatiempo favorito dentro del perfil.
-│
-│ 🧾 *Uso:*
-│ ${currentPrefix}sethobby 1
-│ ${currentPrefix}setpasatiempo Leer
-╰──────────────────────────────╯
 
-╭────────〔 ❌ REMOVEHOBBY 〕────────╮
-│ ✦ *Comando principal:* ${currentPrefix}delpasatiempo
-│ ✦ *Alias:* ${currentPrefix}removehobby
-│
-│ 📌 *¿Qué hace?*
-│ Elimina tu pasatiempo guardado.
-│
-│ 🧾 *Uso:*
-│ ${currentPrefix}removehobby
-╰─────────────────────────────────╯
+ꕥ 🎂 *CUMPLEAÑOS*
 
-╭────────〔 💍 MARRY / CASARSE 〕────────╮
-│ ✦ *Comando principal:* ${currentPrefix}marry
-│ ✦ *Alias:* ${currentPrefix}casarse
-│
-│ 📌 *¿Qué hace?*
-│ Envía una propuesta de matrimonio a otro usuario.
-│
-│ 🧾 *Uso:*
-│ ${currentPrefix}marry @usuario
-╰──────────────────────────────────────╯
+🎂 *${currentPrefix}setbirth*:
+Establece tu fecha de nacimiento dentro del perfil.
 
-╭────────〔 💔 DIVORCE 〕────────╮
-│ ✦ *Comando principal:* ${currentPrefix}divorce
-│
-│ 📌 *¿Qué hace?*
-│ Termina tu matrimonio actual dentro del sistema.
-│
-│ 🧾 *Uso:*
-│ ${currentPrefix}divorce
-╰──────────────────────────────╯
+❌ *${currentPrefix}delbirth*:
+Elimina la fecha de nacimiento guardada en tu perfil.
 
-╭──────────〔 🔙 RETURN 〕──────────╮
-│ ⟐ ${currentPrefix}menu
-│ ⟡ ${currentPrefix}menutotal
-╰──────────────────────────────────╯`
 
-    await client.sendMessage(
-      m.chat,
-      {
-        text: textMenu,
-        contextInfo: {
-          externalAdReply: {
-            title: settings.nameid || 'RubyJX Bot',
-            body: 'Ver canal oficial',
-            thumbnailUrl: settings.icon || settings.banner || '',
-            sourceUrl: settings.link || 'https://whatsapp.com/channel/0029Vb7O3ugGZNCpbDTDhr3F',
-            mediaType: 1,
-            renderLargerThumbnail: true,
-            showAdAttribution: false
-          }
-        }
+
+ꕥ 📝 *DESCRIPCIÓN PERSONAL*
+
+📝 *${currentPrefix}setdescription* / *${currentPrefix}setdesc*:
+Establece una descripción personalizada para tu perfil.
+
+🧹 *${currentPrefix}deldescription* / *${currentPrefix}deldesc*:
+Elimina la descripción personalizada guardada en tu perfil.
+
+
+
+ꕥ ⚥ *GÉNERO*
+
+⚥ *${currentPrefix}setgenre*:
+Establece tu género dentro del perfil.
+
+❌ *${currentPrefix}delgenre*:
+Elimina el género guardado en tu perfil.
+
+
+
+ꕥ 🎯 *PASATIEMPO*
+
+🎯 *${currentPrefix}setpasatiempo* / *${currentPrefix}sethobby*:
+Establece tu pasatiempo favorito dentro del perfil.
+
+🧹 *${currentPrefix}delpasatiempo* / *${currentPrefix}removehobby*:
+Elimina el pasatiempo guardado en tu perfil.
+
+
+
+ꕥ 💍 *PAREJA*
+
+💍 *${currentPrefix}marry* / *${currentPrefix}casarse*:
+Envía una propuesta de matrimonio o pareja a otro usuario.
+
+💔 *${currentPrefix}divorce*:
+Termina la relación o pareja guardada dentro del sistema.
+
+
+
+        𓆩 🔙 *RETURN* 🔙 𓆪
+
+🏠 *${currentPrefix}menu*:
+Regresa al menú principal del bot.
+
+📋 *${currentPrefix}menutotal*:
+Abre el menú completo con todas las categorías.`
+
+     await client.sendMessage(
+  m.chat,
+  {
+    text: textMenu,
+    mentions: [m.sender],
+    contextInfo: {
+      mentionedJid: [m.sender],
+      forwardingScore: 999,
+      isForwarded: true,
+      forwardedNewsletterMessageInfo: {
+        newsletterJid: channelJid,
+        newsletterName: channelName,
+        serverMessageId: '1'
       },
-      { quoted: m }
-    )
+      externalAdReply: {
+        title: channelName,
+        body: 'Ver canal oficial',
+        thumbnailUrl: thumbnail,
+        sourceUrl: channelLink,
+        mediaType: 1,
+        renderLargerThumbnail: true,
+        showAdAttribution: false
+      }
+    }
+  },
+  { quoted: m }
+)
   }
 }

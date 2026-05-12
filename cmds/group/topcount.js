@@ -30,7 +30,7 @@ export default {
     const end = start + perPage
     const pageRanking = ranking.slice(start, end)
     const fechaActual = now.toLocaleString('es-CO', { 
-      timeZone: 'America/Bogota', 
+      timeZone: 'America/Lima', 
       day: 'numeric', 
       month: 'long', 
       year: 'numeric', 
