@@ -461,25 +461,7 @@ Vuelve a abrir el panel completo.`
   {
     text: textMenu,
     mentions: [m.sender],
-    contextInfo: {
-      mentionedJid: [m.sender],
-      forwardingScore: 999,
-      isForwarded: true,
-      forwardedNewsletterMessageInfo: {
-        newsletterJid: channelJid,
-        newsletterName: channelName,
-        serverMessageId: '1'
-      },
-      externalAdReply: {
-        title: channelName,
-        body: 'Ver canal oficial',
-        thumbnailUrl: thumbnail,
-        sourceUrl: channelLink,
-        mediaType: 1,
-        renderLargerThumbnail: true,
-        showAdAttribution: false
-      }
-    }
+
   },
   { quoted: m }
 )

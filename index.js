@@ -142,7 +142,7 @@ if (methodCodeQR) {
     phoneNumber = normalizePhoneForPairing(phoneInput);
   }
 }
-
+const BOT_START_TIME = Math.floor(Date.now() / 1000)-5
 async function startBot() {
 const { state, saveCreds } = await useMultiFileAuthState(global.sessionName)
 const logger = pino({ level: "silent" })
@@ -255,16 +255,7 @@ if (receivedPendingNotifications == "true") {
   });
 
 const liveQueue = []
-const backlogQueue = []
-
 let processingLive = false
-let processingBacklog = false
-let startupBacklogMode = true
-let backlogStarted = false
-let backlogProcessed = 0
-let lastBacklogActivity = Date.now()
-
-global.botStartTime ||= Math.floor(Date.now() / 1000)
 
 function getMsgTimestampSeconds(message) {
   const ts = message?.messageTimestamp
@@ -282,68 +273,32 @@ function getMsgTimestampSeconds(message) {
   return 0
 }
 
-function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms))
-}
-
-function isStartupOldMessage(msg, type) {
-  if (!startupBacklogMode) return false
-
-  const msgTime = getMsgTimestampSeconds(msg)
-  const startTime = global.botStartTime || 0
-
-  if (type && type !== 'notify') return true
-  if (msgTime && startTime && msgTime < startTime - 10) return true
-
-  return false
-}
-
-function markBacklogDetected() {
-  lastBacklogActivity = Date.now()
-
-  if (!backlogStarted) {
-    backlogStarted = true
-    console.log(chalk.yellow('[ ⌬ ] Leyendo mensajes antiguos en segundo plano...'))
-  }
-}
-
-function finishBacklogIfReady() {
-  if (!startupBacklogMode) return
-  if (backlogQueue.length > 0) return
-
-  const inactiveMs = Date.now() - lastBacklogActivity
-
-  if (backlogStarted && inactiveMs >= 4000) {
-    startupBacklogMode = false
-    console.log(chalk.green(`[ ⌬ ] Lectura inicial finalizada. Mensajes antiguos procesados: ${backlogProcessed}`))
-  }
-
-  if (!backlogStarted && inactiveMs >= 5000) {
-    startupBacklogMode = false
-  }
-}
-
 async function processOneMessage(client, rawMsg, allMessages) {
   try {
     let m = rawMsg
 
     if (!m?.message) return
-    if (m.key && m.key.remoteJid === "status@broadcast") return
+    if (m.key?.remoteJid === 'status@broadcast') return
 
-    m.message = Object.keys(m.message)[0] === "ephemeralMessage"
+    const msgTime = getMsgTimestampSeconds(m)
+
+    // NO LEER COMANDOS NI MENSAJES ANTIGUOS
+    if (msgTime && msgTime < BOT_START_TIME) return
+
+    m.message = Object.keys(m.message)[0] === 'ephemeralMessage'
       ? m.message.ephemeralMessage.message
       : m.message
 
     if (client.public === false && !m.key.fromMe) return
 
-m = await smsg(client, m, {
-  contacts: {},
-  loadMessage: async (jid, id) => {
-    return messageStore.get(`${jid}:${id}`) || null
-  }
-})
+    m = await smsg(client, m, {
+      contacts: {},
+      loadMessage: async (jid, id) => {
+        return messageStore.get(`${jid}:${id}`) || null
+      }
+    })
 
-await main(client, m, allMessages)
+    await main(client, m, allMessages)
   } catch (err) {
     console.log(err)
   }
@@ -362,61 +317,21 @@ async function processLiveQueue(client) {
   processingLive = false
 }
 
-async function processBacklogQueue(client) {
-  if (processingBacklog) return
-
-  processingBacklog = true
-
-  while (backlogQueue.length) {
-    if (liveQueue.length) {
-      await sleep(300)
-      continue
-    }
-
-    const item = backlogQueue.shift()
-    backlogProcessed++
-
-    await processOneMessage(client, item.message, item.allMessages)
-
-    await sleep(1500)
-  }
-
-  processingBacklog = false
-
-  setTimeout(() => {
-    finishBacklogIfReady()
-  }, 4000)
-}
-
-client.ev.on("messages.upsert", async ({ messages, type }) => {
+client.ev.on('messages.upsert', async ({ messages, type }) => {
   try {
+    if (type !== 'notify') return
     if (!Array.isArray(messages) || !messages.length) return
 
-for (const msg of messages) {
-  if (!msg?.message) continue
+    for (const msg of messages) {
+      if (!msg?.message) continue
+      if (msg.key?.remoteJid === 'status@broadcast') continue
 
-  messageStore.set(getMessageKey(msg.key), msg)
+      const msgTime = getMsgTimestampSeconds(msg)
 
-  const isOld = isStartupOldMessage(msg, type)
+      // Ignorar todo mensaje anterior al arranque del bot
+      if (msgTime && msgTime < BOT_START_TIME) continue
 
-      if (isOld) {
-        markBacklogDetected()
-
-        backlogQueue.push({
-          message: msg,
-          allMessages: messages
-        })
-
-        if (backlogQueue.length > 300) {
-          backlogQueue.shift()
-        }
-
-        continue
-      }
-
-      if (!startupBacklogMode && type && type !== 'notify') {
-        continue
-      }
+      messageStore.set(getMessageKey(msg.key), msg)
 
       liveQueue.push({
         message: msg,
@@ -425,7 +340,6 @@ for (const msg of messages) {
     }
 
     processLiveQueue(client)
-    processBacklogQueue(client)
   } catch (err) {
     console.log(err)
   }

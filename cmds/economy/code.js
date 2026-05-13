@@ -252,7 +252,7 @@ return m.reply(`╭━━━〔 🎟️ *CÓDIGO CREADO* 〕━━━╮
 ╰━━━━━━━━━━━━━━━━━━━━━━╯
 
 📌 *¿Como canjeo el codigo?:*
-*.canjear ${code}*`)
+.canjear ${code}`)
       }
 
       if (sub === 'list' || sub === 'lista') {

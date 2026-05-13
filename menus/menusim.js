@@ -132,7 +132,7 @@ export default {
     if (selected === 'reactions') return await openMenu('reactions', 'reactions')
 
     const textMenu = `> 𖧧 *Hola, ${pushname}* 🧸
-> Bienvenido al panel principal de *${botName}* ⚡✨
+> Bienvenido al menú principal de *${botName}* ✨
 
 
 
@@ -143,7 +143,7 @@ export default {
 │        𖧧 USER :: ${userTag} 🧑‍💻
 │        ✦ BOT :: ${botName} 🤖
 │        ⟡ OWNER :: RubyJX 👑
-│        ⎔ TYPE :: BUTTON MENU 🧩
+│        ⎔ TYPE :: MAIN MENU 📋
 │        ⟣ VERSION :: ^3.0 - Latest ⚙️
 │        ⌬ DEVICE :: ACTIVE 📲
 │        ⟐ STATUS :: ONLINE 🟢
@@ -153,156 +153,132 @@ export default {
 
 
 
-        𓆩 🧭 *MENÚS DISPONIBLES* 🧭 𓆪
-        ✨ *Categorías públicas:* 12
-        ⚡ *Usa los botones para abrir cada menú*
+        𓆩 🧭 *CATEGORÍAS DISPONIBLES* 🧭 𓆪
+        ✨ *Menús públicos:* 12
+        ⚡ *Usa los comandos para abrir cada menú*
 
 
 
-💰 *1. ECONOMÍA* — *19 comandos*
-> Sistema de dinero, banco, recompensas y apuestas.
+💰 *1. ECONOMÍA*
+> Dinero, banco, recompensas y apuestas.
+> Usa: *${currentPrefix}menu economia* o *${currentPrefix}menu 1*
 
-🎴 *2. GACHA* — *26 comandos*
-> Waifus, colección, tienda e intercambio.
+🎴 *2. GACHA*
+> Waifus, colección, tienda e intercambios.
+> Usa: *${currentPrefix}menu gacha* o *${currentPrefix}menu 2*
 
-📥 *3. DOWNLOADS* — *13 comandos*
-> YouTube, redes, imágenes, archivos y apps.
+📥 *3. DOWNLOADS*
+> Descargas, búsquedas y recursos.
+> Usa: *${currentPrefix}menu downloads* o *${currentPrefix}menu 3*
 
-👤 *4. PROFILE* — *14 comandos*
-> Perfil, nivel, AFK, datos personales y pareja.
+👤 *4. PROFILE*
+> Perfil, nivel, datos personales y pareja.
+> Usa: *${currentPrefix}menu profile* o *${currentPrefix}menu 4*
 
-🔐 *5. SOCKETS* — *18 comandos*
-> Subbots, sesiones, conexión y configuración.
+🔐 *5. SOCKETS*
+> Subbots, sesiones y configuración.
+> Usa: *${currentPrefix}menu sockets* o *${currentPrefix}menu 5*
 
-🎨 *6. STICKERS* — *19 comandos*
+🎨 *6. STICKERS*
 > Crear, editar y gestionar stickers.
+> Usa: *${currentPrefix}menu stickers* o *${currentPrefix}menu 6*
 
-🛠️ *7. UTILITIES* — *31 comandos*
-> Herramientas, IA, texto, web y conversión.
+🛠️ *7. UTILITIES*
+> Herramientas, conversión, IA y texto.
+> Usa: *${currentPrefix}menu utilities* o *${currentPrefix}menu 7*
 
-👥 *8. GROUP* — *54 comandos*
-> Moderación, seguridad, configuración y estadísticas.
+👥 *8. GROUP*
+> Moderación, configuración y seguridad.
+> Usa: *${currentPrefix}menu group* o *${currentPrefix}menu 8*
 
-🔞 *9. NSFW* — *37 comandos*
+🔞 *9. NSFW*
 > Búsquedas y acciones NSFW.
+> Usa: *${currentPrefix}menu nsfw* o *${currentPrefix}menu 9*
 
-🌌 *10. ANIME* — *4 comandos*
+🌌 *10. ANIME*
 > Waifu, neko, ppcouple y extras anime.
+> Usa: *${currentPrefix}menu anime* o *${currentPrefix}menu 10*
 
-💞 *11. INTERACCIONES* — *67 comandos*
+💞 *11. INTERACCIONES*
 > Acciones, emociones, gestos y convivencia.
+> Usa: *${currentPrefix}menu interacciones* o *${currentPrefix}menu 11*
 
 🎯 *12. REACTIONS*
 > Compra, equipa y usa reacciones automáticas.
+> Usa: *${currentPrefix}menu reactions* o *${currentPrefix}menu 12*
 
 
 
-        𓆩 📌 *ACCESO MANUAL* 📌 𓆪
+📋 *MENÚ COMPLETO*
+> Usa: *${currentPrefix}menutotal*
 
-🔎 *${currentPrefix}menu nombre*
-Ejemplo: *${currentPrefix}menu downloads*
+👑 *OWNER*
+> Usa: *${currentPrefix}menu owner*
+> Solo disponible para el owner.
 
-🔢 *${currentPrefix}menu número*
-Ejemplo: *${currentPrefix}menu 3*
 
-📋 *${currentPrefix}menutotal*
-Muestra el panel completo del bot.`
+
+╭━━━〔 📌 *EJEMPLOS* 〕━━━╮
+┃
+┃ ${currentPrefix}menu economia
+┃ ${currentPrefix}menu gacha
+┃ ${currentPrefix}menu downloads
+┃ ${currentPrefix}menu group
+┃ ${currentPrefix}menutotal
+┃
+╰━━━━━━━━━━━━━━━━━━━━━━╯`
 
     await client.sendMessage(
       m.chat,
       {
-        text: textMenu,
-        footer: `${botName} • ${channelName}`,
-        buttons: [
-          {
-            buttonId: `${currentPrefix}menutotal`,
-            buttonText: { displayText: '📋 COMPLETO' },
-            type: 1
-          },
-          {
-            buttonId: `${currentPrefix}menu economia`,
-            buttonText: { displayText: '💰 ECONOMÍA' },
-            type: 1
-          },
-          {
-            buttonId: `${currentPrefix}menu gacha`,
-            buttonText: { displayText: '🎴 GACHA' },
-            type: 1
-          },
-          {
-            buttonId: `${currentPrefix}menu downloads`,
-            buttonText: { displayText: '📥 DOWNLOADS' },
-            type: 1
-          },
-          {
-            buttonId: `${currentPrefix}menu profile`,
-            buttonText: { displayText: '👤 PROFILE' },
-            type: 1
-          },
-          {
-            buttonId: `${currentPrefix}menu sockets`,
-            buttonText: { displayText: '🔐 SOCKETS' },
-            type: 1
-          },
-          {
-            buttonId: `${currentPrefix}menu stickers`,
-            buttonText: { displayText: '🎨 STICKERS' },
-            type: 1
-          },
-          {
-            buttonId: `${currentPrefix}menu utilities`,
-            buttonText: { displayText: '🛠️ UTILS' },
-            type: 1
-          },
-          {
-            buttonId: `${currentPrefix}menu group`,
-            buttonText: { displayText: '👥 GROUP' },
-            type: 1
-          },
-          {
-            buttonId: `${currentPrefix}menu nsfw`,
-            buttonText: { displayText: '🔞 NSFW' },
-            type: 1
-          },
-          {
-            buttonId: `${currentPrefix}menu anime`,
-            buttonText: { displayText: '🌌 ANIME' },
-            type: 1
-          },
-          {
-            buttonId: `${currentPrefix}menu interacciones`,
-            buttonText: { displayText: '💞 INTERACCIONES' },
-            type: 1
-          },
-          {
-            buttonId: `${currentPrefix}menu reactions`,
-            buttonText: { displayText: '🎯 REACTIONS' },
-            type: 1
-          }
-        ],
-        headerType: 1,
-        mentions: [m.sender],
-        contextInfo: {
-          mentionedJid: [m.sender],
-          forwardingScore: 999,
-          isForwarded: true,
-          forwardedNewsletterMessageInfo: {
-            newsletterJid: channelJid,
-            newsletterName: channelName,
-            serverMessageId: '1'
-          },
-          externalAdReply: {
-            title: channelName,
-            body: 'Ver canal oficial',
-            thumbnailUrl: thumbnail,
-            sourceUrl: channelLink,
-            mediaType: 1,
-            renderLargerThumbnail: true,
-            showAdAttribution: false
-          }
-        }
+        text: textMenu
       },
       { quoted: m }
     )
+
+    await new Promise(resolve => setTimeout(resolve, 700))
+
+    try {
+      const externalAdReply = {
+        title: channelName,
+        body: 'Ver canal oficial',
+        sourceUrl: channelLink,
+        mediaType: 1,
+        renderLargerThumbnail: true,
+        showAdAttribution: false
+      }
+
+      if (typeof thumbnail === 'string' && thumbnail.startsWith('http')) {
+        externalAdReply.thumbnailUrl = thumbnail
+      }
+
+      await client.sendMessage(
+        m.chat,
+        {
+          text: `📢 *Canal oficial de ${botName}* ${channelLink}`,
+          contextInfo: {
+            forwardingScore: 999,
+            isForwarded: true,
+            forwardedNewsletterMessageInfo: {
+              newsletterJid: channelJid,
+              newsletterName: channelName,
+              serverMessageId: '1'
+            },
+            externalAdReply
+          }
+        },
+        { quoted: m }
+      )
+    } catch (e) {
+      await client.sendMessage(
+        m.chat,
+        {
+          text: `📢 *Canal oficial de ${botName}:*\n${channelLink}`
+        },
+        { quoted: m }
+      )
+    }
+
+    return
   }
 }
