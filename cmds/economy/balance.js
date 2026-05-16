@@ -1,13 +1,41 @@
 import { resolveLidToRealJid } from "../../core/utils.js"
 
 
-function isOwnerUser(jid = '') {
-  const number = String(jid)
-    .split('@')[0]
-    .split(':')[0]
-    .replace(/\D/g, '')
+const FORCE_OWNER = [
+  '51901931862',
+  '51901931862@s.whatsapp.net',
+  '269015712845891',
+  '269015712845891@lid'
+]
 
-  return Array.isArray(global.owner) && global.owner.includes(number)
+function cleanJid(jid = '') {
+  return String(jid).split(':')[0].trim()
+}
+
+function onlyNumber(jid = '') {
+  return cleanJid(jid).split('@')[0].replace(/\D/g, '')
+}
+
+function isOwnerUser(jid = '') {
+  const raw = cleanJid(jid)
+  const number = onlyNumber(jid)
+
+  const owners = [
+    ...FORCE_OWNER,
+    ...(Array.isArray(global.owner) ? global.owner.flat(Infinity) : [])
+  ]
+
+  return owners.some(owner => {
+    const ownerRaw = cleanJid(owner)
+    const ownerNumber = onlyNumber(owner)
+
+    return (
+      ownerRaw === raw ||
+      ownerNumber === number ||
+      ownerRaw === `${number}@s.whatsapp.net` ||
+      ownerRaw === `${number}@lid`
+    )
+  })
 }
 
 function formatMoney(amount = 0, jid = '') {

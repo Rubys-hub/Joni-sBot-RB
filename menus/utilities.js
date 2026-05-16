@@ -40,7 +40,7 @@ export default {
 
 
         𓆩 🛠️ *UTILITY SYSTEM* 🛠️ 𓆪
-        ✨ *Total disponible:* 31 comandos
+        ✨ *Total disponible:* 32 comandos
         ⚡ *Modo:* herramientas, conversión, IA y texto
 
 
@@ -55,6 +55,11 @@ Resume textos largos para obtener una versión más corta y entendible.
 
 🗣️ *${currentPrefix}say* / *${currentPrefix}decir*:
 Hace que el bot repita el texto que escribas.
+
+
+🎙️ *${currentPrefix}hablar* / *${currentPrefix}voz* / *${currentPrefix}tts* / *${currentPrefix}decir*:
+Convierte el texto que escribas en una nota de voz generada por el bot. También permite usar otros idiomas, por ejemplo *${currentPrefix}hablar en hello everyone*.
+
 
 
 

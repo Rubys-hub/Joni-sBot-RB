@@ -1,0 +1,23 @@
+{
+  "51930789552@s.whatsapp.net": {
+    "self": false,
+    "prefix": [
+      "/",
+      "!",
+      ".",
+      "#"
+    ],
+    "commandsejecut": 0,
+    "id": "120363424461852442@newsletter",
+    "nameid": "RubyJX Bot",
+    "type": "Sub",
+    "link": "https://chat.whatsapp.com/KtXac3mqt1zFv3FAfDkJ23",
+    "banner": "https://d.uguu.se/vUqOqVEQ.jpeg",
+    "icon": "https://h.uguu.se/QRqObVoA.jpeg",
+    "currency": "Soles",
+    "namebot": "RubyJX",
+    "botname": "RubyJX (JBot)",
+    "owner": "51901931862@s.whatsapp.net",
+    "cmdsejecut": 10230
+  }
+}

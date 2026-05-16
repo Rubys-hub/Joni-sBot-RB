@@ -1,98 +1,194 @@
-import path from 'path'
 import fs from 'fs'
+import path from 'path'
 import _ from 'lodash'
-import yargs from 'yargs/yargs'
 
-global.opts = Object(yargs(process.argv.slice(2)).exitProcess(false).parse())
+const DB_DIR = path.join(process.cwd(), 'core', 'database')
 
-const dbFile = path.join(process.cwd(), 'core', 'database.json')
+const FILES = {
+  users: 'users.json',
+  chats: 'chats.json',
+  stats: 'stats.json',
+  settings: 'settings.json',
+  characters: 'characters.json',
+  stickerspack: 'stickerspack.json',
+  logs: 'logs.json'
+}
 
-global.db = {
-  data: {
-    users: {},
-    chats: {},
-    settings: {},
-    characters: {},
-    stickerspack: {}
-  },
+const DEFAULT_DATA = {
+  users: {},
+  chats: {},
+  stats: {},
+  settings: {},
+  characters: {},
+  stickerspack: {},
+  logs: {}
+}
+
+const PRETTY_DATABASE = true
+const SAVE_INTERVAL_MS = 15000
+
+function ensureDir(dir) {
+  if (!fs.existsSync(dir)) {
+    fs.mkdirSync(dir, { recursive: true })
+  }
+}
+
+function ensureFile(filePath) {
+  ensureDir(path.dirname(filePath))
+
+  if (!fs.existsSync(filePath)) {
+    fs.writeFileSync(filePath, '{}', 'utf8')
+  }
+}
+
+function readJson(fileName) {
+  const filePath = path.join(DB_DIR, fileName)
+  ensureFile(filePath)
+
+  try {
+    const raw = fs.readFileSync(filePath, 'utf8').trim()
+    if (!raw) return {}
+    return JSON.parse(raw)
+  } catch (err) {
+    console.error(`[DATABASE] Error leyendo ${fileName}:`, err.message)
+    return {}
+  }
+}
+
+function stringify(data) {
+  return PRETTY_DATABASE
+    ? JSON.stringify(data || {}, null, 2)
+    : JSON.stringify(data || {})
+}
+
+function writeJsonAtomic(fileName, data) {
+  ensureDir(DB_DIR)
+
+  const filePath = path.join(DB_DIR, fileName)
+  const tempPath = `${filePath}.tmp`
+
+  try {
+    fs.writeFileSync(tempPath, stringify(data), 'utf8')
+    fs.renameSync(tempPath, filePath)
+  } catch (err) {
+    console.error(`[DATABASE] Error guardando ${fileName}:`, err.message)
+
+    try {
+      if (fs.existsSync(tempPath)) fs.rmSync(tempPath, { force: true })
+    } catch {}
+  }
+}
+
+function serializeAllData() {
+  try {
+    return JSON.stringify(global.db.data || {})
+  } catch {
+    return '{}'
+  }
+}
+
+global.db ||= {
+  data: structuredClone(DEFAULT_DATA),
   chain: null,
   READ: false,
   _snapshot: '{}'
 }
+
+global.db.data ||= structuredClone(DEFAULT_DATA)
+
+for (const key of Object.keys(DEFAULT_DATA)) {
+  global.db.data[key] ||= {}
+}
+
 global.DATABASE = global.db
-global.loadDatabase = function loadDatabase() {
+
+global.loadDatabase = async function loadDatabase() {
   if (global.db.READ) return global.db.data
+
   global.db.READ = true
-  
-  if (fs.existsSync(dbFile)) {
-    try {
-      const parsed = JSON.parse(fs.readFileSync(dbFile, 'utf8'))
-      global.db.data = Object.assign(global.db.data, parsed)
-    } catch {}
+  ensureDir(DB_DIR)
+
+  global.db.data = {
+    users: readJson(FILES.users),
+    chats: readJson(FILES.chats),
+    stats: readJson(FILES.stats),
+    settings: readJson(FILES.settings),
+    characters: readJson(FILES.characters),
+    stickerspack: readJson(FILES.stickerspack),
+    logs: readJson(FILES.logs)
   }
+
   global.db.chain = _.chain(global.db.data)
   global.db.READ = false
-  global.db._snapshot = JSON.stringify(global.db.data)
+  global.db._snapshot = serializeAllData()
+
   return global.db.data
 }
 
-let pendingSerialized = null
-let lastSave = Date.now()
+global.saveDatabase = function saveDatabase(force = false) {
+  if (!global.db?.data) return
 
-function serializeDatabase() {
-  try {
-    return JSON.stringify(global.db.data)
-  } catch {
-    return null
-  }
-}
+  const currentSnapshot = serializeAllData()
 
-function hasPendingChanges() {
-  const serialized = serializeDatabase()
-
-  if (!serialized) return false
-
-  if (global.db._snapshot !== serialized) {
-    pendingSerialized = serialized
-    return true
+  if (!force && global.db._snapshot === currentSnapshot) {
+    return
   }
 
-  return false
+  const data = global.db.data
+
+  writeJsonAtomic(FILES.users, data.users || {})
+  writeJsonAtomic(FILES.chats, data.chats || {})
+  writeJsonAtomic(FILES.stats, data.stats || {})
+  writeJsonAtomic(FILES.settings, data.settings || {})
+  writeJsonAtomic(FILES.characters, data.characters || {})
+  writeJsonAtomic(FILES.stickerspack, data.stickerspack || {})
+  writeJsonAtomic(FILES.logs, data.logs || {})
+
+  global.db._snapshot = currentSnapshot
 }
 
-global.saveDatabase = function saveDatabase() {
-  const serialized = pendingSerialized || serializeDatabase()
+global.writeDatabase = global.saveDatabase
 
-  if (!serialized) return
-  if (global.db._snapshot === serialized) return
+global.db.read = global.loadDatabase
+global.db.load = global.loadDatabase
+global.db.write = global.saveDatabase
+global.db.save = global.saveDatabase
 
-  fs.writeFileSync(dbFile, serialized)
-  global.db._snapshot = serialized
-  pendingSerialized = null
-  lastSave = Date.now()
+if (!global.__rubyjxSplitDatabaseAutosave) {
+  global.__rubyjxSplitDatabaseAutosave = setInterval(() => {
+    try {
+      global.saveDatabase()
+    } catch (err) {
+      console.error('[DATABASE] Error en autosave:', err.message)
+    }
+  }, SAVE_INTERVAL_MS)
 }
 
-setInterval(() => {
-  const now = Date.now()
+if (!global.__rubyjxSplitDatabaseExitSave) {
+  global.__rubyjxSplitDatabaseExitSave = true
 
-  if (now - lastSave < 15000) return
+  process.once('beforeExit', () => {
+    try {
+      global.saveDatabase(true)
+    } catch {}
+  })
 
-  if (hasPendingChanges()) {
-    global.saveDatabase()
-  }
-}, 5000)
+  process.once('SIGINT', () => {
+    try {
+      console.log('\n[DATABASE] Guardando database separada...')
+      global.saveDatabase(true)
+    } catch {}
 
-process.once('beforeExit', () => {
-  try {
-    if (hasPendingChanges()) global.saveDatabase()
-  } catch {}
-})
+    process.exit(0)
+  })
 
-process.once('SIGINT', () => {
-  try {
-    if (hasPendingChanges()) global.saveDatabase()
-  } catch {}
+  process.once('SIGTERM', () => {
+    try {
+      global.saveDatabase(true)
+    } catch {}
 
-  process.exit(0)
-})
+    process.exit(0)
+  })
+}
+
 export default global.db

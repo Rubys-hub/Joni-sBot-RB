@@ -400,6 +400,276 @@ m.quoted.fakeObj = proto.WebMessageInfo.create({
     }
   }  
 
+
+
+
+    // ============================================================
+  // SISTEMA PROFESIONAL DE BLOQUEO POR BAN DEL BOT
+  // - Bloquea comandos de usuarios baneados
+  // - Compatible con @s.whatsapp.net y @lid
+  // - Envía aviso la primera vez
+  // - Luego recuerda cada 10 comandos intentados
+  // - No bloquea al owner aunque tenga datos antiguos de ban
+  // ============================================================
+
+  try {
+    const BAN_SYSTEM_CONFIG = {
+      warnEvery: 10,
+      timezone: 'America/Lima',
+      allowedCommands: []
+    }
+
+    const FORCE_OWNER_BAN_CHECK = [
+      '51901931862',
+      '51901931862@s.whatsapp.net',
+      '269015712845891',
+      '269015712845891@lid'
+    ]
+
+    const cleanBanJid = (jid = '') => {
+      return String(jid || '').split(':')[0].trim()
+    }
+
+    const getBanNumber = (jid = '') => {
+      return cleanBanJid(jid).split('@')[0].replace(/\D/g, '')
+    }
+
+    const getBanOwnerList = () => {
+      const ownersFromGlobal = Array.isArray(global.owner)
+        ? global.owner.flat(Infinity)
+        : []
+
+      return [
+        ...FORCE_OWNER_BAN_CHECK,
+        ...ownersFromGlobal
+      ].filter(Boolean).map(String)
+    }
+
+    const isBanOwner = (jid = '') => {
+      const raw = cleanBanJid(jid)
+      const number = getBanNumber(jid)
+
+      if (!raw && !number) return false
+
+      return getBanOwnerList().some(owner => {
+        const ownerRaw = cleanBanJid(owner)
+        const ownerNumber = getBanNumber(owner)
+
+        return (
+          ownerRaw === raw ||
+          ownerNumber === number ||
+          ownerRaw === `${number}@s.whatsapp.net` ||
+          ownerRaw === `${number}@lid`
+        )
+      })
+    }
+
+    const getLimaBanDate = () => {
+      return new Intl.DateTimeFormat('es-PE', {
+        timeZone: BAN_SYSTEM_CONFIG.timezone,
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: false
+      }).format(new Date())
+    }
+
+    const ensureBanUserRecord = (jid = '') => {
+      if (!global.db) return null
+      if (!global.db.data) return null
+      if (!global.db.data.users) global.db.data.users = {}
+
+      const id = cleanBanJid(jid)
+      if (!id) return null
+
+      if (!global.db.data.users[id]) {
+        global.db.data.users[id] = {}
+      }
+
+      return global.db.data.users[id]
+    }
+
+    const buildBanAliases = (...jids) => {
+      const aliases = new Set()
+
+      for (const jid of jids) {
+        const raw = cleanBanJid(jid)
+        const number = getBanNumber(raw)
+
+        if (raw) aliases.add(raw)
+
+        if (number) {
+          aliases.add(number)
+          aliases.add(`${number}@s.whatsapp.net`)
+          aliases.add(`${number}@lid`)
+        }
+      }
+
+      return [...aliases].filter(Boolean)
+    }
+
+    const isRecordBanned = (record = {}) => {
+      return Boolean(
+        record?.banned === true ||
+        record?.ban === true ||
+        record?.isBanned === true ||
+        record?.banInfo?.active === true
+      )
+    }
+
+    const pickBestBanRecord = (records = []) => {
+      return records.find(isRecordBanned) || null
+    }
+
+    const syncBanRecord = (records = [], source = {}) => {
+      for (const record of records) {
+        if (!record) continue
+
+        record.banned = true
+        record.ban = true
+        record.isBanned = true
+
+        record.banReason = source.banReason || source.banInfo?.reason || 'No especificado'
+        record.banDate = source.banDate || source.banInfo?.date || 'Sin fecha'
+        record.banChat = source.banChat || source.banInfo?.chat || m.chat
+        record.bannedBy = source.bannedBy || source.banInfo?.by || 'Owner'
+        record.bannedByNumber = source.bannedByNumber || source.banInfo?.byNumber || 'Owner'
+
+        record.banWarnCount = Number(source.banWarnCount || 0)
+        record.banFirstWarned = Boolean(source.banFirstWarned)
+        record.banLastWarn = source.banLastWarn || ''
+        record.banWarnEvery = Number(source.banWarnEvery || BAN_SYSTEM_CONFIG.warnEvery)
+
+        record.banInfo = {
+          ...(source.banInfo || {}),
+          active: true,
+          reason: source.banReason || source.banInfo?.reason || 'No especificado',
+          date: source.banDate || source.banInfo?.date || 'Sin fecha',
+          chat: source.banChat || source.banInfo?.chat || m.chat,
+          by: source.bannedBy || source.banInfo?.by || 'Owner',
+          byNumber: source.bannedByNumber || source.banInfo?.byNumber || 'Owner',
+          warnEvery: Number(source.banWarnEvery || source.banInfo?.warnEvery || BAN_SYSTEM_CONFIG.warnEvery),
+          attempts: Number(source.banWarnCount || source.banInfo?.attempts || 0)
+        }
+      }
+    }
+
+    const updateBanAttempts = (records = [], attemptCount = 0, firstWarned = false) => {
+      for (const record of records) {
+        if (!record) continue
+
+        record.banWarnCount = attemptCount
+        record.banFirstWarned = firstWarned
+        record.banLastWarn = getLimaBanDate()
+
+        if (!record.banInfo) record.banInfo = {}
+
+        record.banInfo.active = true
+        record.banInfo.attempts = attemptCount
+        record.banInfo.lastAttempt = getLimaBanDate()
+      }
+    }
+
+    const commandNameForBan = String(m.command || '').toLowerCase().trim()
+
+    const messageHasCommand =
+      Boolean(commandNameForBan) &&
+      Boolean(m.usedPrefix)
+
+    if (messageHasCommand) {
+      const senderRealForBan = await resolveLidToRealJid(m.sender, client, m.chat)
+
+      const senderIsOwnerForBan =
+        isBanOwner(m.sender) ||
+        isBanOwner(senderRealForBan)
+
+      const commandAllowedForBanned =
+        BAN_SYSTEM_CONFIG.allowedCommands.includes(commandNameForBan)
+
+      if (!senderIsOwnerForBan && !commandAllowedForBanned) {
+        const aliases = buildBanAliases(m.sender, senderRealForBan)
+
+        const records = aliases
+          .map(jid => ensureBanUserRecord(jid))
+          .filter(Boolean)
+
+        const mainBanRecord = pickBestBanRecord(records)
+
+        if (mainBanRecord) {
+          syncBanRecord(records, mainBanRecord)
+
+          const currentAttempts = Number(mainBanRecord.banWarnCount || 0) + 1
+          const wasFirstWarned = Boolean(mainBanRecord.banFirstWarned)
+          const reason = mainBanRecord.banReason || mainBanRecord.banInfo?.reason || 'No especificado'
+          const banDate = mainBanRecord.banDate || mainBanRecord.banInfo?.date || 'Sin fecha'
+          const bannedBy = mainBanRecord.bannedByNumber || mainBanRecord.banInfo?.byNumber || 'Owner'
+          const warnEvery = Number(mainBanRecord.banWarnEvery || mainBanRecord.banInfo?.warnEvery || BAN_SYSTEM_CONFIG.warnEvery)
+
+          let shouldSendBanMessage = false
+          let banMessage = ''
+
+          if (!wasFirstWarned) {
+            shouldSendBanMessage = true
+
+            banMessage =
+              `╭─〔 ⛔ ACCESO DENEGADO 〕─╮\n` +
+              `│ Estado: BANEADO DEL BOT\n` +
+              `│ Comando bloqueado: ${m.usedPrefix}${commandNameForBan}\n` +
+              `│ Motivo: ${reason}\n` +
+              `│ Fecha del ban: ${banDate}\n` +
+              `│ Aplicado por: ${bannedBy}\n` +
+              `│\n` +
+              `│ No puedes usar comandos del bot\n` +
+              `│ porque tu acceso fue restringido.\n` +
+              `│\n` +
+              `│ Este aviso se mostrará ahora y luego\n` +
+              `│ cada ${warnEvery} comandos que intentes ejecutar.\n` +
+              `╰──────────────────────╯`
+          } else if (currentAttempts % warnEvery === 0) {
+            shouldSendBanMessage = true
+
+            banMessage =
+              `╭─〔 ⛔ RECORDATORIO DE BAN 〕─╮\n` +
+              `│ Estado: BANEADO DEL BOT\n` +
+              `│ Intentos bloqueados: ${currentAttempts}\n` +
+              `│ Último comando: ${m.usedPrefix}${commandNameForBan}\n` +
+              `│\n` +
+              `│ Estás baneado del bot y por eso\n` +
+              `│ no puedes usar sus comandos.\n` +
+              `│\n` +
+              `│ Mientras el owner no retire tu ban,\n` +
+              `│ todos tus comandos serán bloqueados.\n` +
+              `╰────────────────────────╯`
+          }
+
+          updateBanAttempts(records, currentAttempts, true)
+
+          if (shouldSendBanMessage) {
+            await m.reply(banMessage)
+          }
+
+          m.blockedByBan = true
+          m.isBannedFromBot = true
+          m.banBlockedCommand = commandNameForBan
+          m.banBlockedAt = getLimaBanDate()
+
+          m.command = ''
+          m.args = []
+          m.usedPrefix = ''
+          m.body = ''
+          m.text = ''
+        }
+      }
+    }
+  } catch (banCheckError) {
+    console.error('[BAN SYSTEM ERROR]', banCheckError)
+  }
+
+
+  
   client.getName = (jid, withoutContact = false) => {
     const id = client.decodeJid(jid)
     withoutContact = client.withoutContact || withoutContact
@@ -669,8 +939,18 @@ client.sendVideoAsSticker = async (jid, path, quoted, options = {}) => {
     const namebot2 = config.body || settings.namebot || ''
     const canalId = settings.newsletter_id || ''
     const canalName = settings.nameid || ''
-    const sourceUrl = typeof config.redes === 'string' ? config.redes : typeof settings.link === 'string' ? settings.link : 'https://github.com/iamDestroy'
-    const normalizeJid = (jid) => (jid.includes('@') ? jid : jid + '@s.whatsapp.net')
+    const sourceUrl = typeof config.redes === 'string' ? config.redes : typeof settings.link === 'string' ? settings.link : 'https://github.com/Rubys-hub/Joni-sBot-RB'
+    const normalizeJid = (jid = '') => {
+  if (!jid) return ''
+  if (typeof jid === 'object') {
+    jid = jid?.id || jid?.jid || jid?.user || jid?.participant || ''
+  }
+
+  jid = String(jid).trim()
+  if (!jid) return ''
+
+  return jid.includes('@') ? jid : `${jid.replace(/\D/g, '')}@s.whatsapp.net`
+}
     const mentions = Array.isArray(mentionedJid) ? mentionedJid.map(normalizeJid) : null
     const content = { extendedTextMessage: { text, contextInfo: { mentionedJid: mentions, forwardingScore: '0', isForwarded: false, forwardedNewsletterMessageInfo: { newsletterJid: canalId, serverMessageId: '0', newsletterName: canalName }, externalAdReply: { title: botnam, body: dev, mediaType: 1, renderLargerThumbnail: false, previewType: 'PHOTO', thumbnailUrl: banner, sourceUrl }}}}
     const prep = generateWAMessageFromContent(jid, content, useQuoted ? { quoted } : {})

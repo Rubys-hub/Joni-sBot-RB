@@ -114,6 +114,30 @@
         "51957494351@s.whatsapp.net": 1778647860319,
         "5219212539534@s.whatsapp.net": 1778647865506
       }
+    },
+    "LEI-ZZAG-M8KL": {
+      "code": "LEI-ZZAG-M8KL",
+      "coins": 500000,
+      "stock": 0,
+      "initialStock": 1,
+      "enabled": true,
+      "createdBy": "51901931862@s.whatsapp.net",
+      "createdAt": 1778684165184,
+      "redeemed": {
+        "56910137684@s.whatsapp.net": 1778684189047
+      }
+    },
+    "LEI-XN9X-KBQG": {
+      "code": "LEI-XN9X-KBQG",
+      "coins": 1,
+      "stock": 0,
+      "initialStock": 1,
+      "enabled": true,
+      "createdBy": "51901931862@s.whatsapp.net",
+      "createdAt": 1778691265707,
+      "redeemed": {
+        "51929588672@s.whatsapp.net": 1778691324170
+      }
     }
   }
 }

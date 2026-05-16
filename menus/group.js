@@ -40,7 +40,7 @@ export default {
 
 
         𓆩 👥 *GROUP SYSTEM* 👥 𓆪
-        ✨ *Total disponible:* 54 comandos
+        ✨ *Total disponible:* 59 comandos
         ⚡ *Modo:* moderación, configuración y seguridad
 
 
@@ -108,6 +108,24 @@ Invoca o menciona a todos los miembros del grupo.
 
 🧹 *${currentPrefix}delete* / *${currentPrefix}del* / *${currentPrefix}borrar*:
 Elimina un mensaje respondiendo al mensaje que deseas borrar.
+
+
+ꕥ 🛡️ *BAN DEL BOT*
+
+🚫 *${currentPrefix}ban*:
+Banea a un usuario del bot. El usuario baneado ya no podrá usar comandos hasta ser desbaneado. Debes mencionar o responder al usuario.
+
+✅ *${currentPrefix}unban*:
+Quita el ban de un usuario para que pueda volver a usar los comandos del bot normalmente.
+
+ℹ️ *${currentPrefix}baninfo*:
+Muestra información del ban de un usuario, como motivo, fecha, estado e intentos bloqueados.
+
+📋 *${currentPrefix}banlist*:
+Muestra la lista de usuarios baneados actualmente en el bot.
+
+🛠️ *${currentPrefix}banpanel* / *${currentPrefix}banadmin*:
+Panel exclusivo del owner para activar o desactivar permisos de ban/unban a admins del grupo.
 
 🧽 *${currentPrefix}purge* / *${currentPrefix}clearchat*:
 Limpia mensajes del chat según la función disponible.
