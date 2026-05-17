@@ -23,13 +23,22 @@ import db from "./core/system/database.js";
 import { startSubBot } from './core/subs.js';
 import seecmds from "./core/system/commandLoader.js";
 import { exec, execSync } from "child_process";
+import {
+  bootConsoleTheme,
+  consoleLogInfo,
+  consoleLogSuccess,
+  consoleLogWarn,
+  consoleLogError,
+  consoleLogSystem
+} from "./core/system/consoleTheme.js";
+
 
 const log = {
-  info: (msg) => console.log(chalk.bgBlue.white.bold(`INFO`), chalk.white(msg)),
-  success: (msg) => console.log(chalk.bgGreen.white.bold(`SUCCESS`), chalk.greenBright(msg)),
-  warn: (msg) => console.log(chalk.bgYellowBright.blueBright.bold(`WARNING`), chalk.yellow(msg)),
-  warning: (msg) => console.log(chalk.bgYellowBright.red.bold(`WARNING`), chalk.yellow(msg)),
-  error: (msg) => console.log(chalk.bgRed.white.bold(`ERROR`), chalk.redBright(msg)),
+  info: (msg) => consoleLogInfo(msg),
+  success: (msg) => consoleLogSuccess(msg),
+  warn: (msg) => consoleLogWarn(msg),
+  warning: (msg) => consoleLogWarn(msg),
+  error: (msg) => consoleLogError(msg)
 };
 
   let phoneNumber = global.botNumber || ""
@@ -55,15 +64,26 @@ const log = {
   }
   
 const { say } = cfonts
-console.log(chalk.magentaBright('\n⌬ Iniciando...'))
-  say('RUBYJX BOT', {
-  align: 'center',           
-  gradient: ['cyan', 'blue'] 
+
+console.clear()
+bootConsoleTheme('RUBYJX BOT')
+
+consoleLogSystem('RUBYJX • ARRANQUE', [
+  { label: 'ESTADO', value: '⌬ Iniciando sistema principal...' },
+  { label: 'MODO', value: methodCodeQR ? 'QR' : methodCode ? 'Código' : 'Normal' },
+  { label: 'PLATAFORMA', value: `${os.platform()} ${os.release()}` }
+])
+
+say('RUBYJX BOT', {
+  align: 'center',
+  font: 'block',
+  gradient: ['#7C3AED', '#D946EF']
 })
-  say('Hecho con mucho amor por J_Drsx', {
+
+say('Powered by J_Drsx', {
   font: 'console',
   align: 'center',
-  gradient: ['blue', 'magenta']
+  gradient: ['#A78BFA', '#F0ABFC']
 })
 
 const BOT_TYPES = [
@@ -119,7 +139,7 @@ function cleanTmp() {
     for (const file of files) {
       try { fs.rmSync('./tmp/' + file, { recursive: true, force: true }); } catch {}
     }
-    if (files.length > 0) console.log(chalk.gray(`[ ⌬ ]  Limpiados ${files.length} archivos temporales de tmp`));
+    if (files.length > 0) log.info(`[ ⌬ ] Limpiados ${files.length} archivos temporales de tmp`);
 
 } catch {}
 }
@@ -133,7 +153,7 @@ if (methodCodeQR) {
 } else if (!fs.existsSync("./Sessions/Owner/creds.json")) {
   opcion = readlineSync.question(chalk.bold.white("\nSeleccione una opción:\n") + chalk.blueBright("1. Con código QR\n") + chalk.cyan("2. Con código de texto de 8 dígitos\n--> "));
   while (!/^[1-2]$/.test(opcion)) {
-    console.log(chalk.bold.redBright(`No se permiten numeros que no sean 1 o 2, tampoco letras o símbolos especiales.`));
+    log.warn('[ ⌬ ] No se permiten números que no sean 1 o 2, tampoco letras o símbolos especiales.');
     opcion = readlineSync.question("--> ");
   }
   if (opcion === "2") {
@@ -204,10 +224,10 @@ client.ev.on("creds.update", saveCreds)
        if (!state.creds.registered) {
         const pairing = await global.client.requestPairingCode(phoneNumber)
         const codeBot = pairing?.match(/.{1,4}/g)?.join("-") || pairing
-        console.log(chalk.bold.white(chalk.bgMagenta(`Código de emparejamiento:`)), chalk.bold.white(chalk.white(codeBot)))
+        log.info(`[ ⌬ ] Código de emparejamiento: ${codeBot}`)
       }
     } catch (err) {
-      console.log(chalk.red("Error al generar código:"), err)
+      log.error(`[ ⌬ ] Error al generar código: ${err?.message || err}`)
     }
   }, 3000)
 }
@@ -222,7 +242,7 @@ client.ev.on('group-participants.update', async (update) => {
     if (qr != 0 && qr != undefined || methodCodeQR) {
     if (opcion == '1' || methodCodeQR) {
 
-      console.log(chalk.cyan.bold("[ ⌬ ] Escanea este código QR"));
+      log.info('[ ⌬ ] Escanea este código QR');
 
 qrcode.generate(qr, { small: true });
     }}
@@ -266,7 +286,7 @@ qrcode.generate(qr, { small: true });
     }
     if (connection == "open") {
          const userName = client.user.name || "Desconocido"
-console.log(chalk.green.bold(`[ ⌬ ]  Conectado a: ${userName}`))    }
+log.success(`[ ⌬ ] Conectado a: ${userName}`)    }
     if (isNewLogin) {
       log.info("Nuevo dispositivo detectado")
     }
@@ -321,7 +341,7 @@ async function processOneMessage(client, rawMsg, allMessages) {
 
     await main(client, m, allMessages)
   } catch (err) {
-    console.log(err)
+    log.error(err?.message || err)
   }
 }
 
@@ -362,26 +382,26 @@ client.ev.on('messages.upsert', async ({ messages, type }) => {
 
     processLiveQueue(client)
   } catch (err) {
-    console.log(err)
+    log.error(err?.message || err)
   }
 })
 
 try {
   await events(client)
 } catch (err) {
-  console.log(chalk.gray(`[ ⌬ BOT  ]  → ${err}`))
+  log.error(`[ ⌬ BOT ] ${err?.message || err}`)
 }
 
 }
 
 (async () => {
    await global.loadDatabase()
-console.log(chalk.blueBright('[ ⌬ ]  Base de datos cargada correctamente.'))
+log.info('[ ⌬ ] Base de datos cargada correctamente.')
 
 
-console.log(chalk.yellow('[ ⌬ ] Cargando comandos...'))
+log.info('[ ⌬ ] Cargando comandos...')
 await seecmds()
-console.log(chalk.green('[ ⌬ ] Comandos cargados correctamente.'))
+log.success('[ ⌬ ] Comandos cargados correctamente.')
 
 
 await startBot()

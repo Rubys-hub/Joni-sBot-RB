@@ -721,52 +721,37 @@ m.quoted.fakeObj = proto.WebMessageInfo.create({
     console.error('[BAN SYSTEM ERROR]', banCheckError)
   }
 
-
-  
   client.getName = (jid, withoutContact = false) => {
-  const id = client.decodeJid(safeJid(jid))
-  withoutContact = client.withoutContact || withoutContact
-
-  let v
-
-  if (!id) return ''
-
-  if (id.endsWith('@g.us')) {
-    return new Promise(async (resolve) => {
-      v = store.contacts[id] || {}
-      if (!(v.name || v.subject)) v = await client.groupMetadata(id).catch(() => ({}))
-      resolve(v.name || v.subject || id)
-    })
-  }
-
-  v =
-    id === '0@s.whatsapp.net'
-      ? { id, name: 'WhatsApp' }
-      : id === client.decodeJid(safeJid(client.user.id))
-        ? client.user
-        : store.contacts[id] || {}
-
-  return (
-    (withoutContact ? '' : v.name) ||
-    v.subject ||
-    v.verifiedName ||
-    PhoneNumber('+' + safeNumber(id)).getNumber('international') ||
-    safeNumber(id) ||
-    id
-  )
-}
-    const id = client.decodeJid(jid)
+    const id = client.decodeJid(safeJid(jid))
     withoutContact = client.withoutContact || withoutContact
+
     let v
-    if (id.endsWith('@g.us'))
+
+    if (!id) return ''
+
+    if (id.endsWith('@g.us')) {
       return new Promise(async (resolve) => {
         v = store.contacts[id] || {}
-        if (!(v.name || v.subject)) v = client.groupMetadata(id) || {}
-        resolve(v.name || v.subject || PhoneNumber('+' + id.replace('@s.whatsapp.net', '')).getNumber('international'))
+        if (!(v.name || v.subject)) v = await client.groupMetadata(id).catch(() => ({}))
+        resolve(v.name || v.subject || id)
       })
-    else
-      v = id === '0@s.whatsapp.net' ? { id, name: 'WhatsApp' } : id === client.decodeJid(client.user.id) ? client.user : store.contacts[id] || {}
-    return ((withoutContact ? '' : v.name) || v.subject || v.verifiedName || PhoneNumber('+' + jid.replace('@s.whatsapp.net', '')).getNumber('international'))
+    }
+
+    v =
+      id === '0@s.whatsapp.net'
+        ? { id, name: 'WhatsApp' }
+        : id === client.decodeJid(safeJid(client.user.id))
+          ? client.user
+          : store.contacts[id] || {}
+
+    return (
+      (withoutContact ? '' : v.name) ||
+      v.subject ||
+      v.verifiedName ||
+      PhoneNumber('+' + safeNumber(id)).getNumber('international') ||
+      safeNumber(id) ||
+      id
+    )
   }
 
   client.getFile = async (PATH, saveToFile = false) => {
@@ -1061,3 +1046,4 @@ client.sendVideoAsSticker = async (jid, path, quoted, options = {}) => {
   }
   
   return m
+}
