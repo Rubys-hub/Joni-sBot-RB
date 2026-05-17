@@ -1,6 +1,5 @@
 import { resolveLidToRealJid } from "../../core/utils.js"
 
-
 const FORCE_OWNER = [
   '51901931862',
   '51901931862@s.whatsapp.net',
@@ -43,7 +42,6 @@ function formatMoney(amount = 0, jid = '') {
   return Number(amount || 0).toLocaleString()
 }
 
-
 export default {
   command: ['balance', 'bal', 'coins', 'bank'],
   category: 'rpg',
@@ -51,30 +49,30 @@ export default {
     const db = global.db.data
     const chatId = m.chat
     const chatData = db.chats[chatId]
-    const botId = client.user.id.split(':')[0] + "@s.whatsapp.net"
+    const botId = client.user.id.split(':')[0] + '@s.whatsapp.net'
     const botSettings = db.settings[botId]
     const monedas = botSettings.currency
-    if (chatData.adminonly || !chatData.economy) return m.reply(`⌬ Los comandos de *Economía* están desactivados en este grupo.\n\nUn *administrador* puede activarlos con el comando:\n» *${usedPrefix}economy on*`)
-    const mentioned = m.mentionedJid
+
+    if (chatData.adminonly || !chatData.economy) return m.reply(`⚠️ ᴇᴄᴏɴᴏᴍíᴀ ᴏғғ ✦ Un admin puede activarla con *${usedPrefix}economy on*`)
+
+    const mentioned = m.mentionedJid || []
     const who2 = mentioned.length > 0 ? mentioned[0] : (m.quoted ? m.quoted.sender : m.sender)
-    const who = await resolveLidToRealJid(who2, client, m.chat);
+    const who = await resolveLidToRealJid(who2, client, m.chat)
+
     if (!(who in db.chats[m.chat].users)) {
-      return m.reply(`「✎」 El usuario mencionado no está registrado en el bot.`)
+      return m.reply(`👤 ᴜsᴜᴀʀɪᴏ ✦ No está registrado en el bot.`)
     }
-const user = chatData.users[who]
-const total = (user.coins || 0) + (user.bank || 0)
 
-const walletText = formatMoney(user.coins, who)
-const bankText = formatMoney(user.bank, who)
-const totalText = formatMoney(total, who)
+    const user = chatData.users[who]
+    const total = (user.coins || 0) + (user.bank || 0)
 
-const bal = `✿ Usuario \`<${global.db.data.users[who].name}>\`
+    const walletText = formatMoney(user.coins, who)
+    const bankText = formatMoney(user.bank, who)
+    const totalText = formatMoney(total, who)
+    const name = global.db.data.users[who]?.name || who.split('@')[0]
 
-⛀ Cartera › *S/${walletText} ${monedas}*
-⚿ Banco › *S/${bankText} ${monedas}*
-⛁ Total › *S/${totalText} ${monedas}*
+    const bal = `💰 ʙᴀʟᴀɴᴄᴇ ✦ Usuario: *${name}* ✦ 🪙 Cartera: *S/${walletText} ${monedas}* ✦ 🏦 Banco: *S/${bankText} ${monedas}* ✦ 💎 Total: *S/${totalText} ${monedas}*`
 
-> _Para proteger tu dinero, ¡depósitalo en el banco usando ${usedPrefix}deposit!_`
     await client.sendMessage(chatId, { text: bal }, { quoted: m })
   }
-};
+}

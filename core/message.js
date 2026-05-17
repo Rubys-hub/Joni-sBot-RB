@@ -38,6 +38,42 @@ const { imageToWebp, videoToWebp, writeExifImg, writeExifVid } = exif;
 
 const unixTimestampSeconds = (date = new Date()) => Math.floor(date.getTime() / 1000)
 
+
+function safeJidValue(value = '') {
+  if (!value) return ''
+
+  if (typeof value === 'object') {
+    value =
+      value?.id ||
+      value?.jid ||
+      value?.user ||
+      value?.participant ||
+      value?.remoteJid ||
+      value?.lid ||
+      value?.phoneNumber ||
+      ''
+  }
+
+  return String(value).trim()
+}
+
+function safeJid(value = '') {
+  let jid = safeJidValue(value)
+  if (!jid) return ''
+
+  if (jid.includes('@')) {
+    const [left, server] = jid.split('@')
+    return `${left.split(':')[0]}@${server}`
+  }
+
+  const number = jid.replace(/\D/g, '')
+  return number ? `${number}@s.whatsapp.net` : ''
+}
+
+function safeNumber(value = '') {
+  return safeJid(value).split('@')[0].replace(/\D/g, '')
+}
+
 export { unixTimestampSeconds };
 
 export function generateMessageTag(epoch) {
@@ -195,7 +231,9 @@ export function pickRandom(list) {
 }
 
 export function parseMention(text = '') {
-  return [...text.matchAll(/@([0-9]{5,16}|0)/g)].map((v) => v[1] + '@s.whatsapp.net')
+  return [...String(text || '').matchAll(/@([0-9]{5,16}|0)/g)]
+    .map((v) => safeJid(v[1]))
+    .filter(Boolean)
 }
 
 export function getGroupAdmins(participants) {
@@ -207,15 +245,29 @@ export function getGroupAdmins(participants) {
 }
 
 export async function fixLid(client, m) {
-  const decodedJid = client.decodeJid((m.fromMe && client.user.id) || m.key.participant || m.chat || '')
+  const raw =
+    (m.fromMe && client?.user?.id) ||
+    m?.key?.participant ||
+    m?.participant ||
+    m?.sender ||
+    m?.chat ||
+    ''
+
+  const decodedJid = client.decodeJid(safeJid(raw))
   const realJid = await resolveLidToRealJid(decodedJid, client, m.chat)
-  return realJid
+  return safeJid(realJid || decodedJid || raw)
 }
 
 export async function fixLid2(client, m) {
-  const decodedJid = client.decodeJid(m.msg.contextInfo.participant)
+  const raw =
+    m?.msg?.contextInfo?.participant ||
+    m?.quoted?.sender ||
+    m?.sender ||
+    ''
+
+  const decodedJid = client.decodeJid(safeJid(raw))
   const realJid = await resolveLidToRealJid(decodedJid, client, m.chat)
-  return realJid
+  return safeJid(realJid || decodedJid || raw)
 }
 
 export async function smsg(client, m, store) {
@@ -238,8 +290,9 @@ export async function smsg(client, m, store) {
     return buffer
   }
 
-  const botLid = client.decodeJid(client.user.lid)
-  const botNumber = client.decodeJid(client.user.id)
+const botLid = client.decodeJid(safeJid(client?.user?.lid || ''))
+const botNumber = client.decodeJid(safeJid(client?.user?.id || ''))
+
   let fix = ''
   if (!m) return m
   if (m.key) {
@@ -671,6 +724,37 @@ m.quoted.fakeObj = proto.WebMessageInfo.create({
 
   
   client.getName = (jid, withoutContact = false) => {
+  const id = client.decodeJid(safeJid(jid))
+  withoutContact = client.withoutContact || withoutContact
+
+  let v
+
+  if (!id) return ''
+
+  if (id.endsWith('@g.us')) {
+    return new Promise(async (resolve) => {
+      v = store.contacts[id] || {}
+      if (!(v.name || v.subject)) v = await client.groupMetadata(id).catch(() => ({}))
+      resolve(v.name || v.subject || id)
+    })
+  }
+
+  v =
+    id === '0@s.whatsapp.net'
+      ? { id, name: 'WhatsApp' }
+      : id === client.decodeJid(safeJid(client.user.id))
+        ? client.user
+        : store.contacts[id] || {}
+
+  return (
+    (withoutContact ? '' : v.name) ||
+    v.subject ||
+    v.verifiedName ||
+    PhoneNumber('+' + safeNumber(id)).getNumber('international') ||
+    safeNumber(id) ||
+    id
+  )
+}
     const id = client.decodeJid(jid)
     withoutContact = client.withoutContact || withoutContact
     let v
@@ -927,7 +1011,10 @@ client.sendVideoAsSticker = async (jid, path, quoted, options = {}) => {
   const canalNam = botSetting.nameid || ''
   const link = botSetting.link || ''
   client.sendContextInfo = async (jid, text = '', options, quoted) => {
-    let prep = generateWAMessageFromContent(jid, { extendedTextMessage: { text: text, contextInfo: { mentionedJid: null, forwardingScore: 1, isForwarded: true, forwardedNewsletterMessageInfo: { newsletterJid: canalI, serverMessageId: '0', newsletterName: canalNam }, externalAdReply: { title: namebugsito, body: dev, mediaType: 1, renderLargerThumbnail: false, previewType: `PHOTO`, thumbnailUrl: pfp, sourceUrl: link }}}}, { quoted: m })
+      jid = safeJid(jid)
+  if (!jid) return
+
+    let prep = generateWAMessageFromContent(jid,  { extendedTextMessage: { text: text, contextInfo: { mentionedJid: null, forwardingScore: 1, isForwarded: true, forwardedNewsletterMessageInfo: { newsletterJid: canalI, serverMessageId: '0', newsletterName: canalNam }, externalAdReply: { title: namebugsito, body: dev, mediaType: 1, renderLargerThumbnail: false, previewType: `PHOTO`, thumbnailUrl: pfp, sourceUrl: link }}}}, { quoted: m })
     return client.relayMessage(jid, prep.message, { messageId: prep.key.id })
   }
 
@@ -941,17 +1028,29 @@ client.sendVideoAsSticker = async (jid, path, quoted, options = {}) => {
     const canalName = settings.nameid || ''
     const sourceUrl = typeof config.redes === 'string' ? config.redes : typeof settings.link === 'string' ? settings.link : 'https://github.com/Rubys-hub/Joni-sBot-RB'
     const normalizeJid = (jid = '') => {
-  if (!jid) return ''
-  if (typeof jid === 'object') {
-    jid = jid?.id || jid?.jid || jid?.user || jid?.participant || ''
-  }
+      if (!jid) return ''
+      if (typeof jid === 'object') {
+        jid = jid?.id || jid?.jid || jid?.user || jid?.participant || jid?.remoteJid || jid?.lid || jid?.phoneNumber || ''
+      }
 
-  jid = String(jid).trim()
-  if (!jid) return ''
+      jid = String(jid).trim()
+      if (!jid) return ''
 
-  return jid.includes('@') ? jid : `${jid.replace(/\D/g, '')}@s.whatsapp.net`
-}
-    const mentions = Array.isArray(mentionedJid) ? mentionedJid.map(normalizeJid) : null
+      if (jid.includes('@')) {
+        const [left, server] = jid.split('@')
+        return `${left.split(':')[0]}@${server}`
+      }
+
+      const number = jid.replace(/\D/g, '')
+      return number ? `${number}@s.whatsapp.net` : ''
+    }
+
+    jid = normalizeJid(jid)
+    if (!jid) return
+
+    const mentions = Array.isArray(mentionedJid)
+      ? mentionedJid.map(normalizeJid).filter(Boolean)
+      : []
     const content = { extendedTextMessage: { text, contextInfo: { mentionedJid: mentions, forwardingScore: '0', isForwarded: false, forwardedNewsletterMessageInfo: { newsletterJid: canalId, serverMessageId: '0', newsletterName: canalName }, externalAdReply: { title: botnam, body: dev, mediaType: 1, renderLargerThumbnail: false, previewType: 'PHOTO', thumbnailUrl: banner, sourceUrl }}}}
     const prep = generateWAMessageFromContent(jid, content, useQuoted ? { quoted } : {})
     return client.relayMessage(jid, prep.message, { quoted: useQuoted ? prep.key.quoted : undefined, messageId: prep.key.id })
@@ -962,4 +1061,3 @@ client.sendVideoAsSticker = async (jid, path, quoted, options = {}) => {
   }
   
   return m
-}

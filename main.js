@@ -64,7 +64,34 @@ Promise.resolve(automod(client, m)).catch(err => {
 })
 
 const from = m.key.remoteJid
-const botJid = client.user.id.split(':')[0] + '@s.whatsapp.net' || client.user.lid
+const safeJid = (value = '') => {
+  if (!value) return ''
+
+  if (typeof value === 'object') {
+    value =
+      value?.id ||
+      value?.jid ||
+      value?.user ||
+      value?.participant ||
+      value?.remoteJid ||
+      value?.lid ||
+      value?.phoneNumber ||
+      ''
+  }
+
+  value = String(value).trim()
+  if (!value) return ''
+
+  if (value.includes('@')) {
+    const [left, server] = value.split('@')
+    return `${left.split(':')[0]}@${server}`
+  }
+
+  const number = value.replace(/\D/g, '')
+  return number ? `${number}@s.whatsapp.net` : ''
+}
+
+const botJid = safeJid(client?.user?.id || client?.user?.lid)
 
 global.db.data.chats ||= {}
 global.db.data.chats[m.chat] ||= {}

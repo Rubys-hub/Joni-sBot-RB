@@ -1,7 +1,7 @@
 export default {
   command: ['ppt'],
   category: 'rpg',
-  run: async (client, m, args, usedPrefix, command) => {
+  run: async (client, m, args, usedPrefix) => {
     const db = global.db.data
     const chatId = m.chat
     const botId = client.user.id.split(':')[0] + '@s.whatsapp.net'
@@ -9,26 +9,33 @@ export default {
     const monedas = botSettings.currency
     const botname = botSettings.namebot
     const chatData = db.chats[chatId]
-    if (chatData.adminonly || !chatData.economy) return m.reply(`⌬ Los comandos de *Economía* están desactivados en este grupo.\n\nUn *administrador* puede activarlos con el comando:\n» *${usedPrefix}economy on*`)
+
+    if (chatData.adminonly || !chatData.economy) return m.reply(`⚠️ ᴇᴄᴏɴᴏᴍíᴀ ᴏғғ ✦ Un admin puede activarla con *${usedPrefix}economy on*`)
+
     const user = chatData.users[m.sender]
     user.lastppt ||= 0
+
     const remainingTime = user.lastppt - Date.now()
-    if (remainingTime > 0)
-      return m.reply(`⌬ Debes esperar *${msToTime(remainingTime)}* antes de jugar nuevamente.`)
+    if (remainingTime > 0) return m.reply(`⏳ ᴇsᴘᴇʀᴀ ✦ Debes esperar *${msToTime(remainingTime)}* antes de jugar otra vez.`)
+
     const options = ['piedra', 'papel', 'tijera']
     const userChoice = args[0]?.trim().toLowerCase()
-    if (!options.includes(userChoice)) return m.reply(`《✧》 Usa el comando así:\n› *${usedPrefix}ppt piedra*, *papel* o *tijera*`)
+
+    if (!options.includes(userChoice)) return m.reply(`✊ ᴘᴘᴛ ✦ Usa: *${usedPrefix}ppt piedra*, *papel* o *tijera*.`)
+
     const botChoice = options[Math.floor(Math.random() * options.length)]
     const result = determineWinner(userChoice, botChoice)
     const reward = Math.floor(Math.random() * (5500 - 3000 + 1)) + 3000
     const loss = Math.floor(Math.random() * (3000 - 1000 + 1)) + 1000
     const tieReward = Math.floor(Math.random() * (1500 - 800 + 1)) + 800
+
     if (result === 'win') {
       user.coins += reward
-      await client.sendMessage(chatId, { text: `⌬ Ganaste.\n\n> ✿ *Tu elección ›* ${userChoice}\n> ✿ *${botname} eligió ›* ${botChoice}\n> ✿ *${monedas} ›* S/${reward.toLocaleString()}` }, { quoted: m })
+      await client.sendMessage(chatId, { text: `✊ ᴘᴘᴛ ✦ Ganaste ✦ Tú: *${userChoice}* ✦ ${botname}: *${botChoice}* ✦ +S/${reward.toLocaleString()} ${monedas}` }, { quoted: m })
     } else if (result === 'lose') {
       const total = user.coins + user.bank
       const actualLoss = Math.min(loss, total)
+
       if (user.coins >= actualLoss) {
         user.coins -= actualLoss
       } else {
@@ -36,19 +43,20 @@ export default {
         user.coins = 0
         user.bank = Math.max(0, user.bank - remaining)
       }
-      await client.sendMessage(chatId, { text: `⌬ Perdiste.\n\n> ✿ *Tu elección ›* ${userChoice}\n> ✿ *${botname} eligió ›* ${botChoice}\n> ✿ *${monedas} ›* -S/${actualLoss.toLocaleString()}` }, { quoted: m })
+
+      await client.sendMessage(chatId, { text: `✊ ᴘᴘᴛ ✦ Perdiste ✦ Tú: *${userChoice}* ✦ ${botname}: *${botChoice}* ✦ -S/${actualLoss.toLocaleString()} ${monedas}` }, { quoted: m })
     } else {
       user.coins += tieReward
-      await client.sendMessage(chatId, { text: `⌬ Empate.\n\n> ✿ *Tu elección ›* ${userChoice}\n> ✿ *${botname} eligió ›* ${botChoice}\n> ✿ *${monedas} ›* +S/${tieReward.toLocaleString()}` }, { quoted: m })
+      await client.sendMessage(chatId, { text: `✊ ᴘᴘᴛ ✦ Empate ✦ Tú: *${userChoice}* ✦ ${botname}: *${botChoice}* ✦ +S/${tieReward.toLocaleString()} ${monedas}` }, { quoted: m })
     }
+
     user.lastppt = Date.now() + 1 * 60 * 1000
-  },
-};
+  }
+}
 
 function determineWinner(user, bot) {
   if (user === bot) return 'tie'
-  if ((user === 'piedra' && bot === 'tijera') || (user === 'papel' && bot === 'piedra') || (user === 'tijera' && bot === 'papel'))
-  return 'win'
+  if ((user === 'piedra' && bot === 'tijera') || (user === 'papel' && bot === 'piedra') || (user === 'tijera' && bot === 'papel')) return 'win'
   return 'lose'
 }
 

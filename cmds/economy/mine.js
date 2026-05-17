@@ -6,47 +6,56 @@ export default {
     const botSettings = global.db.data.settings[botId]
     const monedas = botSettings?.currency || 'Coins'
     const chat = global.db.data.chats[m.chat]
-    if (chat.adminonly || !chat.economy) return m.reply(`⌬ Los comandos de *Economía* están desactivados en este grupo.\n\nUn *administrador* puede activarlos con el comando:\n» *${usedPrefix}economy on*`)
+
+    if (chat.adminonly || !chat.economy) return m.reply(`⚠️ ᴇᴄᴏɴᴏᴍíᴀ ᴏғғ ✦ Un admin puede activarla con *${usedPrefix}economy on*`)
+
     const user = chat.users[m.sender]
-    if (user.health < 5) return m.reply(`⌬ No tienes suficiente salud para volver a *cazar*.\n> Usa *"${usedPrefix}heal"* para curarte.`)
+    user.health ??= 100
+    user.lastmine ||= 0
+
+    if (user.health < 5) return m.reply(`❤️ sᴀʟᴜᴅ ʙᴀᴊᴀ ✦ No tienes suficiente salud para volver a *minar*. ✦ Usa *${usedPrefix}heal* para curarte.`)
+
     const remaining = user.lastmine - Date.now()
-    if (remaining > 0) {
-      return m.reply(`⌬ Debes esperar *${msToTime(remaining)}* para minar de nuevo.`)
-    }
+    if (remaining > 0) return m.reply(`⏳ ᴇsᴘᴇʀᴀ ✦ Debes esperar *${msToTime(remaining)}* para minar de nuevo.`)
+
     user.lastmine = Date.now() + 10 * 60 * 1000
-    let isLegendary = Math.random() < 0.02
-    let reward, narration, bonusMsg = ''
+
+    const isLegendary = Math.random() < 0.02
+    let reward
+    let narration
+    let bonusMsg = ''
+
     if (isLegendary) {
       reward = Math.floor(Math.random() * (13000 - 11000 + 1)) + 11000
-      narration = '¡DESCUBRISTE UN TESORO LEGENDARIO!\n\n'
-      bonusMsg = '\n⌬ Recompensa ÉPICA obtenida!'
+      narration = 'descubriste un tesoro legendario'
+      bonusMsg = ' ✦ 🏆 Recompensa épica.'
     } else {
       reward = Math.floor(Math.random() * (9500 - 7000 + 1)) + 7000
-      const scenario = pickRandom(escenarios)
-      narration = `En ${scenario}, ${pickRandom(mineria)}`
+      narration = `En ${pickRandom(escenarios)}, ${pickRandom(mineria)}`
+
       if (Math.random() < 0.1) {
         const bonus = Math.floor(Math.random() * (4500 - 2500 + 1)) + 2500
         reward += bonus
-        bonusMsg = `\n「✿」 ¡Bonus de minería! Ganaste *${bonus.toLocaleString()}* ${monedas} extra`
+        bonusMsg = ` ✦ Bonus: *S/${bonus.toLocaleString()} ${monedas}*`
       }
     }
+
     user.coins += reward
+
     const salud = Math.floor(Math.random() * (15 - 5 + 1)) + 5
-    user.health = (user.health || 100) - salud
-    if (user.health < 0) user.health = 0
-    let msg = `「✿」 ${narration} *${reward.toLocaleString()} ${monedas}*`
-    if (bonusMsg) msg += `\n${bonusMsg}`
+    user.health = Math.max(0, user.health - salud)
+
+    let msg = `⛏️ ᴍɪɴᴀ ✦ ${narration} ✦ Ganaste *S/${reward.toLocaleString()} ${monedas}*`
+    if (bonusMsg) msg += bonusMsg
+
     await client.reply(m.chat, msg, m)
-  },
-};
+  }
+}
 
 function msToTime(duration) {
-  let seconds = Math.floor((duration / 1000) % 60)
-  let minutes = Math.floor((duration / (1000 * 60)) % 60)
-  minutes = minutes < 10 ? '0' + minutes : minutes
-  seconds = seconds < 10 ? '0' + seconds : seconds
-  if (minutes === '00') return `${seconds} segundo${seconds > 1 ? 's' : ''}`
-  return `${minutes} minuto${minutes > 1 ? 's' : ''}, ${seconds} segundo${seconds > 1 ? 's' : ''}`
+  const seconds = Math.floor((duration / 1000) % 60)
+  const minutes = Math.floor((duration / (1000 * 60)) % 60)
+  return minutes <= 0 ? `${seconds} segundo${seconds !== 1 ? 's' : ''}` : `${minutes} minuto${minutes !== 1 ? 's' : ''}, ${seconds} segundo${seconds !== 1 ? 's' : ''}`
 }
 
 function pickRandom(list) {
@@ -54,27 +63,19 @@ function pickRandom(list) {
 }
 
 const escenarios = [
-  'una cueva oscura y húmeda',
-  'la cima de una montaña nevada',
-  'un bosque misterioso lleno de raíces',
-  'un río cristalino y caudaloso',
-  'una mina abandonada de carbón',
-  'las ruinas de un antiguo castillo',
-  'una playa desierta con arena dorada',
-  'un valle escondido entre colinas',
-  'un arbusto espinoso al borde del camino',
-  'un tronco hueco en medio del bosque',
+  'una cueva oscura',
+  'una mina abandonada',
+  'un bosque misterioso',
+  'un río cristalino',
+  'unas ruinas antiguas',
+  'un valle escondido'
 ]
 
 const mineria = [
-  'encontraste un antiguo cofre con',
-  'hallaste una bolsa llena de',
-  'descubriste un saco de',
-  'desenterraste monedas antiguas que contienen',
-  'rompiste una roca y adentro estaba',
-  'cavando profundo, hallaste',
-  'entre las raíces, encontraste',
-  'dentro de una caja olvidada, hallaste',
-  'bajo unas piedras, descubriste',
-  'entre los escombros de un lugar viejo, encontraste',
+  'encontraste un cofre con monedas',
+  'hallaste una bolsa de oro',
+  'rompiste una roca llena de gemas',
+  'desenterraste monedas antiguas',
+  'encontraste un saco de tesoros',
+  'descubriste minerales brillantes'
 ]

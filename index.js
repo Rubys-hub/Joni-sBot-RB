@@ -165,12 +165,33 @@ const clientt = makeWASocket({
 global.client = clientt;
 const client = clientt
 
-client.decodeJid = (jid) => {
-  if (!jid) return jid
-  if (/:\d+@/gi.test(jid)) {
-    const decode = jidDecode(jid) || {}
-    return (decode.user && decode.server && decode.user + '@' + decode.server) || jid
+client.decodeJid = (jid = '') => {
+  if (!jid) return ''
+
+  if (typeof jid === 'object') {
+    jid =
+      jid?.id ||
+      jid?.jid ||
+      jid?.user ||
+      jid?.participant ||
+      jid?.remoteJid ||
+      jid?.lid ||
+      jid?.phoneNumber ||
+      ''
   }
+
+  jid = String(jid).trim()
+  if (!jid) return ''
+
+  try {
+    if (/:\d+@/gi.test(jid)) {
+      const decode = jidDecode(jid) || {}
+      return (decode.user && decode.server && `${decode.user}@${decode.server}`) || jid
+    }
+  } catch (e) {
+    return jid
+  }
+
   return jid
 }
 

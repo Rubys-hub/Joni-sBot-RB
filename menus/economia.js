@@ -42,7 +42,7 @@ export default {
 
 
         𓆩 💰 *ECONOMY SYSTEM* 💰 𓆪
-        ✨ *Total disponible:* 19 comandos
+        ✨ *Total disponible:* 20 comandos
         ⚡ *Modo:* dinero, banco, recompensas y apuestas
 
 
@@ -54,6 +54,10 @@ Muestra tu dinero disponible, el saldo guardado en banco y tu progreso económic
 
 🎁 *${currentPrefix}daily* / *${currentPrefix}diario*:
 Reclama tu recompensa diaria de economía. Solo puede usarse cuando el tiempo de espera haya terminado.
+
+
+🧰 *${currentPrefix}cofre* / *${currentPrefix}coffer* / *${currentPrefix}chest* / *${currentPrefix}tesoro* / *${currentPrefix}caja*:
+Abre un cofre de suerte. Puedes ganar dinero, no recibir nada o tener mala suerte con una bomba.
 
 💼 *${currentPrefix}work* / *${currentPrefix}w* / *${currentPrefix}chambear* / *${currentPrefix}chamba* / *${currentPrefix}trabajar*:
 Trabaja para ganar ${coinsName}. Es una forma segura de generar dinero dentro del sistema.

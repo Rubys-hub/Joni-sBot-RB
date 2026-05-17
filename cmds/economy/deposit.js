@@ -7,30 +7,26 @@ export default {
     const idBot = client.user.id.split(':')[0] + '@s.whatsapp.net'
     const settings = global.db.data.settings[idBot]
     const monedas = settings.currency
-    if (chatData.adminonly || !chatData.economy) return m.reply(`⌬ Los comandos de *Economía* están desactivados en este grupo.\n\nUn *administrador* puede activarlos con el comando:\n» *${usedPrefix}economy on*`)
-    if (!args[0]) {
-      return m.reply(`《✧》 Ingresa la cantidad de *${monedas}* que quieras *depositar*.`)
-    }
-    if (args[0] < 1 && args[0].toLowerCase() !== 'all') {
-      return m.reply('✎ Ingresa una cantidad *válida* para depositar')
-    }
+
+    if (chatData.adminonly || !chatData.economy) return m.reply(`⚠️ ᴇᴄᴏɴᴏᴍíᴀ ᴏғғ ✦ Un admin puede activarla con *${usedPrefix}economy on*`)
+
+    if (!args[0]) return m.reply(`🏦 ᴅᴇᴘᴏsɪᴛ ✦ Ingresa una cantidad o usa *all*.`)
+
     if (args[0].toLowerCase() === 'all') {
-      if (user.coins <= 0) return m.reply(`✎ No tienes *${monedas}* para depositar en tu *banco*`)
+      if (user.coins <= 0) return m.reply(`💸 sᴀʟᴅᴏ ɪɴsᴜғɪᴄɪᴇɴᴛᴇ ✦ No tienes *${monedas}* para depositar.`)
       const count = user.coins
       user.coins = 0
       user.bank += count
-      await m.reply(`⌬ Has depositado *S/${count.toLocaleString()} ${monedas}* en tu Banco`)
-      return true
+      return m.reply(`🏦 ᴅᴇᴘᴏsɪᴛ ✦ Guardaste *S/${count.toLocaleString()} ${monedas}* en tu banco.`)
     }
-    if (!Number(args[0]) || parseInt(args[0]) < 1) {
-      return m.reply('《✧》 Ingresa una cantidad *válida* para depositar')
-    }
+
     const count = parseInt(args[0])
-    if (user.coins <= 0 || user.coins < count) {
-      return m.reply('❀ No tienes suficientes *${monedas}* para depositar')
-    }
+    if (!count || count < 1) return m.reply(`✎ ᴀᴠɪsᴏ ✦ Ingresa una cantidad válida.`)
+    if (user.coins < count) return m.reply(`💸 sᴀʟᴅᴏ ɪɴsᴜғɪᴄɪᴇɴᴛᴇ ✦ No tienes suficientes *${monedas}* para depositar.`)
+
     user.coins -= count
     user.bank += count
-    await m.reply(`⌬ Has depositado *S/${count.toLocaleString()} ${monedas}* en tu Banco`)
-  },
-};
+
+    await m.reply(`🏦 ᴅᴇᴘᴏsɪᴛ ✦ Guardaste *S/${count.toLocaleString()} ${monedas}* en tu banco.`)
+  }
+}

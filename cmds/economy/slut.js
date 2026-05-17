@@ -8,58 +8,49 @@ export default {
     const botId = client.user.id.split(':')[0] + '@s.whatsapp.net'
     const botSettings = db.settings[botId]
     const chatData = db.chats[chatId]
-    if (chatData.adminonly || !chatData.economy) return m.reply(`⌬ Los comandos de *Economía* están desactivados en este grupo.\n\nUn *administrador* puede activarlos con el comando:\n» *${usedPrefix}economy on*`)
+
+    if (chatData.adminonly || !chatData.economy) return m.reply(`⚠️ ᴇᴄᴏɴᴏᴍíᴀ ᴏғғ ✦ Un admin puede activarla con *${usedPrefix}economy on*`)
+
     const user = chatData.users[m.sender]
     const cooldown = 5 * 60 * 1000
     const now = Date.now()
     const remaining = (user.lastslut || 0) - now
     const currency = botSettings.currency || 'Monedas'
-    if (remaining > 0)
-      return m.reply(`✿ Debes esperar *${msToTime(remaining)}* antes de intentar nuevamente.`)
+
+    if (remaining > 0) return m.reply(`⏳ ᴇsᴘᴇʀᴀ ✦ Debes esperar *${msToTime(remaining)}* antes de intentar nuevamente.`)
+
     const success = Math.random() < 0.5
-    const amount = success ? Math.floor(Math.random() * (6000 - 3500 + 1)) + 3500 : Math.floor(Math.random() * (4000 - 2000 + 1)) + 2000
+    const amount = success
+      ? Math.floor(Math.random() * (6000 - 3500 + 1)) + 3500
+      : Math.floor(Math.random() * (4000 - 2000 + 1)) + 2000
+
     user.lastslut = now + cooldown
+
     const winMessages = [
-      `Le acaricias el pene a un cliente habitual y ganaste *S/${amount.toLocaleString()} ${currency}*!`,
-      `El admin se viene en tu boca, ganaste *S/${amount.toLocaleString()} ${currency}*!`,
-      `El admin te manosea las tetas, ganaste *S/${amount.toLocaleString()} ${currency}*!`,
-      `Te vistieron de neko kwai en publico, ganaste *S/${amount.toLocaleString()} ${currency}*!`,
-      `Te haces la Loli del admin por un día, ganaste *S/${amount.toLocaleString()} ${currency}*!`,
-      `Te dejas manosear por un extraño por dinero, ganaste *S/${amount.toLocaleString()} ${currency}*!`,
-      `Eres la maid del admin por un día, ganaste *S/${amount.toLocaleString()} ${currency}*!`,
-      `Un gay te paga para que lo hagas con el, ganaste *S/${amount.toLocaleString()} ${currency}*!`,
-      `Tu SuggarMommy muere, ganaste *S/${amount.toLocaleString()} ${currency}*!`,
-      `Tu SuggarDaddy muere, ganaste *S/${amount.toLocaleString()} ${currency}*!`,
-      `Dejaste que un extraño te toque el culo por dinero, ganaste *S/${amount.toLocaleString()} ${currency}*!`,
-      `Alguien te pone una correa y eres su mascota sexual por una hora, ganaste *S/${amount.toLocaleString()} ${currency}*!`,
-      `Te vistieron de colegiala en público, ganaste *S/${amount.toLocaleString()} ${currency}*!`,
-      `Te vistieron de una milf en público, ganaste *S/${amount.toLocaleString()} ${currency}*!`,
-      `Los integrantes del grupo te usaron como saco de cum, ganaste *S/${amount.toLocaleString()} ${currency}*!`,
-      `Eres la perra de los admins por un día, ganaste *S/${amount.toLocaleString()} ${currency}*!`,
-      `Unos Aliens te secuestraron y te usaron cómo objeto sexual, ganaste *S/${amount.toLocaleString()} ${currency}*!`,
-      `Un enano se culio tu pierna, ganaste *S/${amount.toLocaleString()} ${currency}*!`,
+      `Hiciste un show privado y ganaste *S/${amount.toLocaleString()} ${currency}*.`,
+      `Tu actuación fue un éxito y ganaste *S/${amount.toLocaleString()} ${currency}*.`,
+      `Te contrataron para un evento elegante y ganaste *S/${amount.toLocaleString()} ${currency}*.`,
+      `Vendiste contenido exclusivo y ganaste *S/${amount.toLocaleString()} ${currency}*.`,
+      `Tu presentación se volvió popular y ganaste *S/${amount.toLocaleString()} ${currency}*.`
     ]
+
     const loseMessages = [
-      `Tu energía se fue y no brillaste, perdiendo *S/${amount.toLocaleString()} ${currency}*.`,
-      `Cometiste un error en tu actuación y perdiste *S/${amount.toLocaleString()} ${currency}*.`,
-      `Un cliente malhumorado te causó problemas y perdiste *S/${amount.toLocaleString()} ${currency}*.`,
-      `Tu atuendo no fue bien recibido y perdiste *S/${amount.toLocaleString()} ${currency}*.`,
-      `El sonido falló en medio de tu actuación y perdiste *S/${amount.toLocaleString()} ${currency}*.`,
-      `Un mal día en el club resultó en una pérdida de *S/${amount.toLocaleString()} ${currency}*.`,
-      `Intentaste cobrarle al cliente equivocado y te denunciaron, perdiste *S/${amount.toLocaleString()} ${currency}*.`,
-      `El admin te bloqueó después del servicio, perdiste *S/${amount.toLocaleString()} ${currency}*.`,
-      `Te disfrazaste sin que nadie te pagara, perdiste *S/${amount.toLocaleString()} ${currency}*.`,
-      `La SuggarMommy te dejó por una waifu nueva, perdiste *S/${amount.toLocaleString()} ${currency}*.`,
-      `Un extraño te robó el cosplay antes del evento, perdiste *S/${amount.toLocaleString()} ${currency}*.`,
-      `Te manosearon sin pagar nada, perdiste *S/${amount.toLocaleString()} ${currency}*.`,
-      `El gay se arrepintió en el último segundo, perdiste *S/${amount.toLocaleString()} ${currency}*.`,
-      `Los Aliens te devolvieron con trauma, perdiste *S/${amount.toLocaleString()} ${currency}*.`,
+      `Tu show salió mal y perdiste *S/${amount.toLocaleString()} ${currency}*.`,
+      `Cancelaron el evento y perdiste *S/${amount.toLocaleString()} ${currency}*.`,
+      `Invertiste en vestuario y no recuperaste nada, perdiste *S/${amount.toLocaleString()} ${currency}*.`,
+      `Tu actuación no convenció y perdiste *S/${amount.toLocaleString()} ${currency}*.`,
+      `Un mal día te dejó pérdidas de *S/${amount.toLocaleString()} ${currency}*.`
     ]
-    const message = success ? winMessages[Math.floor(Math.random() * winMessages.length)] : loseMessages[Math.floor(Math.random() * loseMessages.length)]
+
+    const message = success
+      ? winMessages[Math.floor(Math.random() * winMessages.length)]
+      : loseMessages[Math.floor(Math.random() * loseMessages.length)]
+
     if (success) {
       user.coins = (user.coins || 0) + amount
     } else {
       const total = (user.coins || 0) + (user.bank || 0)
+
       if (total >= amount) {
         if (user.coins >= amount) {
           user.coins -= amount
@@ -73,8 +64,9 @@ export default {
         user.bank = 0
       }
     }
-    await client.sendMessage(chatId, { text: `「✿」 ${message}`, mentions: [senderId] }, { quoted: m })
-  },
+
+    await client.sendMessage(chatId, { text: `💋 ʀɪᴇsɢᴏ ✦ ${message}`, mentions: [senderId] }, { quoted: m })
+  }
 }
 
 const msToTime = (duration) => {

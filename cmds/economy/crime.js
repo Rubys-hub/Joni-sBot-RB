@@ -1,29 +1,33 @@
 export default {
   command: ['crime', 'crimen'],
   category: 'rpg',
-  run: async (client, m, args, usedPrefix, command) => {
+  run: async (client, m, args, usedPrefix) => {
     const chat = global.db.data.chats[m.chat]
     const user = chat.users[m.sender]
     const botId = client.user.id.split(':')[0] + '@s.whatsapp.net'
     const monedas = global.db.data.settings[botId].currency
-    if (chat.adminonly || !chat.economy) return m.reply(`⌬ Los comandos de *Economía* están desactivados en este grupo.\n\nUn *administrador* puede activarlos con el comando:\n» *${usedPrefix}economy on*`)
-    if (!user.lastcrime) user.lastcrime = 0
+
+    if (chat.adminonly || !chat.economy) return m.reply(`⚠️ ᴇᴄᴏɴᴏᴍíᴀ ᴏғғ ✦ Un admin puede activarla con *${usedPrefix}economy on*`)
+
+    user.lastcrime ||= 0
+
     const remainingTime = user.lastcrime - Date.now()
-    if (remainingTime > 0) {
-      return m.reply(`⌬ Debes esperar *${msToTime(remainingTime)}* antes de intentar nuevamente.`)
-    }
-    const éxito = Math.random() < 0.4
+    if (remainingTime > 0) return m.reply(`⏳ ᴇsᴘᴇʀᴀ ✦ Debes esperar *${msToTime(remainingTime)}* antes de intentar nuevamente.`)
+
+    const exito = Math.random() < 0.4
     let cantidad
-    if (éxito) {
+
+    if (exito) {
       cantidad = Math.floor(Math.random() * (7500 - 5500 + 1)) + 5500
       user.coins += cantidad
     } else {
       cantidad = Math.floor(Math.random() * (6000 - 4000 + 1)) + 4000
+      user.bank ||= 0
+
       const total = user.coins + user.bank
       if (total >= cantidad) {
-        if (user.coins >= cantidad) {
-          user.coins -= cantidad
-        } else {
+        if (user.coins >= cantidad) user.coins -= cantidad
+        else {
           const restante = cantidad - user.coins
           user.coins = 0
           user.bank -= restante
@@ -34,48 +38,32 @@ export default {
         user.bank = 0
       }
     }
+
     user.lastcrime = Date.now() + 7 * 60 * 1000
+
     const successMessages = [
-      `Hackeaste un cajero automático usando un exploit del sistema y retiraste efectivo sin alertas, ganaste *S/${cantidad.toLocaleString()} ${monedas}*!`,
-      `Te infiltraste como técnico en una mansión y robaste joyas mientras inspeccionabas la red, ganaste *S/${cantidad.toLocaleString()} ${monedas}*!`,
-      `Simulaste una transferencia bancaria falsa y obtuviste fondos antes de que cancelaran la operación, ganaste *S/${cantidad.toLocaleString()} ${monedas}*!`,
-      `Interceptaste un paquete de lujo en una recepción corporativa y lo revendiste, ganaste *S/${cantidad.toLocaleString()} ${monedas}*!`,
-      `Vaciaste una cartera olvidada en un restaurante sin que nadie lo notara, ganaste *S/${cantidad.toLocaleString()} ${monedas}*!`,
-      `Accediste al servidor de una tienda digital y aplicaste descuentos fraudulentos para obtener productos gratis, ganaste *S/${cantidad.toLocaleString()} ${monedas}*!`,
-      `Te hiciste pasar por repartidor y sustrajiste un paquete de colección sin levantar sospechas, ganaste *S/${cantidad.toLocaleString()} ${monedas}*!`,
-      `Copiaste la llave maestra de una galería de arte y vendiste una escultura sin registro, ganaste *S/${cantidad.toLocaleString()} ${monedas}*!`,
-      `Creaste un sitio falso de caridad y lograste que cientos de personas donaran, ganaste *S/${cantidad.toLocaleString()} ${monedas}*!`,
-      `Manipulaste un lector de tarjetas en una tienda local y vaciaste cuentas privadas, ganaste *S/${cantidad.toLocaleString()} ${monedas}*!`,
-      `Falsificaste entradas VIP para un evento y accediste a un área con objetos exclusivos, ganaste *S/${cantidad.toLocaleString()} ${monedas}*!`,
-      `Engañaste a un coleccionista vendiéndole una réplica como pieza original, ganaste *S/${cantidad.toLocaleString()} ${monedas}*!`,
-      `Capturaste la contraseña de un empresario en un café y transferiste fondos a tu cuenta, ganaste *S/${cantidad.toLocaleString()} ${monedas}*!`,
-      `Convenciste a un anciano de participar en una inversión falsa y retiraste sus ahorros, ganaste *S/${cantidad.toLocaleString()} ${monedas}*!`
+      `Hiciste un movimiento arriesgado y ganaste *S/${cantidad.toLocaleString()} ${monedas}*.`,
+      `Lograste escapar sin ser visto y ganaste *S/${cantidad.toLocaleString()} ${monedas}*.`,
+      `Tu plan salió perfecto y ganaste *S/${cantidad.toLocaleString()} ${monedas}*.`,
+      `Con mucha suerte conseguiste *S/${cantidad.toLocaleString()} ${monedas}*.`
     ]
+
     const failMessages = [
-      `Intentaste vender un reloj falso, pero el comprador notó el engaño y te denunció, perdiste *S/${cantidad.toLocaleString()} ${monedas}*.`,
-      `Hackeaste una cuenta bancaria, pero olvidaste ocultar tu IP y fuiste rastreado, perdiste *S/${cantidad.toLocaleString()} ${monedas}*.`,
-      `Robaste una mochila en un evento, pero una cámara oculta capturó todo el acto, perdiste *S/${cantidad.toLocaleString()} ${monedas}*.`,
-      `Te infiltraste en una tienda de lujo, pero el sistema silencioso activó la alarma, perdiste *S/${cantidad.toLocaleString()} ${monedas}*.`,
-      `Simulaste ser técnico en una mansión, pero el dueño te reconoció y llamó a seguridad, perdiste *S/${cantidad.toLocaleString()} ${monedas}*.`,
-      `Intentaste vender documentos secretos, pero eran falsos y nadie quiso comprarlos, perdiste *S/${cantidad.toLocaleString()} ${monedas}*.`,
-      `Planeaste un robo en una joyería, pero el guardia nocturno te descubrió, perdiste *S/${cantidad.toLocaleString()} ${monedas}*.`,
-      `Hackeaste un servidor corporativo, pero tu conexión se cayó y rastrearon tu ubicación, perdiste *S/${cantidad.toLocaleString()} ${monedas}*.`,
-      `Intentaste robar un coche de lujo, pero el GPS alertó a la policía, perdiste *S/${cantidad.toLocaleString()} ${monedas}*.`,
-      `Engañaste a un cliente con un contrato falso, pero lo revisó y te demandó, perdiste *S/${cantidad.toLocaleString()} ${monedas}*.`,
-      `Trataste de escapar con mercancía robada, pero tropezaste y te atraparon, perdiste *S/${cantidad.toLocaleString()} ${monedas}*.`,
-      `Hackeaste una tarjeta de crédito, pero el banco bloqueó la transacción, perdiste *S/${cantidad.toLocaleString()} ${monedas}*.`
+      `Tu plan salió mal y perdiste *S/${cantidad.toLocaleString()} ${monedas}*.`,
+      `Te atraparon en el intento y perdiste *S/${cantidad.toLocaleString()} ${monedas}*.`,
+      `Fallaste la jugada y perdiste *S/${cantidad.toLocaleString()} ${monedas}*.`,
+      `La suerte no estuvo de tu lado y perdiste *S/${cantidad.toLocaleString()} ${monedas}*.`
     ]
-    const message = éxito ? pickRandom(successMessages) : pickRandom(failMessages)
-    await client.sendMessage(m.chat, { text: `「✿」 ${message}` }, { quoted: m })
-  },
+
+    const message = exito ? pickRandom(successMessages) : pickRandom(failMessages)
+    await client.sendMessage(m.chat, { text: `🕵️ ᴄʀɪᴍᴇ ✦ ${message}` }, { quoted: m })
+  }
 }
 
 function msToTime(duration) {
   const seconds = Math.floor((duration / 1000) % 60)
   const minutes = Math.floor((duration / (1000 * 60)) % 60)
-  const min = minutes < 10 ? '0' + minutes : minutes
-  const sec = seconds < 10 ? '0' + seconds : seconds
-  return min === '00' ? `${sec} segundo${sec > 1 ? 's' : ''}` : `${min} minuto${min > 1 ? 's' : ''}, ${sec} segundo${sec > 1 ? 's' : ''}`
+  return minutes <= 0 ? `${seconds} segundo${seconds !== 1 ? 's' : ''}` : `${minutes} minuto${minutes !== 1 ? 's' : ''}, ${seconds} segundo${seconds !== 1 ? 's' : ''}`
 }
 
 function pickRandom(list) {

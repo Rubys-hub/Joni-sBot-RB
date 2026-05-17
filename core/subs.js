@@ -20,7 +20,26 @@ const msgRetryCounterCache = new NodeCache({ stdTTL: 0, checkperiod: 0 });
 const userDevicesCache = new NodeCache({ stdTTL: 0, checkperiod: 0 });
 const groupCache = new NodeCache({ stdTTL: 3600, checkperiod: 300 });
 let reintentos = {}
-const cleanJid = (jid = '') => jid.replace(/:\d+/, '').split('@')[0]
+const cleanJid = (jid = '') => {
+  if (!jid) return ''
+
+  if (typeof jid === 'object') {
+    jid =
+      jid?.id ||
+      jid?.jid ||
+      jid?.user ||
+      jid?.participant ||
+      jid?.remoteJid ||
+      jid?.lid ||
+      jid?.phoneNumber ||
+      ''
+  }
+
+  return String(jid)
+    .replace(/:\d+@/g, '@')
+    .replace(/:\d+/, '')
+    .trim()
+}
 
 
 const messageStore = global.baileysMessageStore ||= new Map()
@@ -36,7 +55,7 @@ async function getMessageFromStore(key) {
 
 
 export async function startSubBot(m, client, caption = '', isCode = false, phone = '', chatId = '', commandFlags = {}, isCommand = false) {
-  const id = phone || (m?.sender || '').split('@')[0]
+  const id = cleanJid(phone || m?.sender).split('@')[0]
   const sessionFolder = `./Sessions/Subs/${id}`
   const senderId = m?.sender
 
@@ -76,7 +95,7 @@ const sock = makeWASocket({
     if (connection === 'open') {
       sock.uptime = Date.now();
       sock.isInit = true
-      sock.userId = cleanJid(sock.user?.id?.split('@')[0])
+      sock.userId = cleanJid(sock.user?.id).split('@')[0]
       const botDir = sock.userId + '@s.whatsapp.net'
       if (!global.db.data.settings[botDir]) {
         global.db.data.settings[botDir] = {}

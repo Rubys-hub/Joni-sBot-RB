@@ -2,6 +2,41 @@ import fetch from 'node-fetch'
 import { WAMessageStubType } from 'baileys'
 import chalk from 'chalk'
 
+
+
+function safeJid(value = '') {
+  if (!value) return ''
+
+  if (typeof value === 'object') {
+    value =
+      value?.id ||
+      value?.jid ||
+      value?.user ||
+      value?.participant ||
+      value?.remoteJid ||
+      value?.lid ||
+      value?.phoneNumber ||
+      value?.phone ||
+      ''
+  }
+
+  value = String(value).trim()
+  if (!value) return ''
+
+  if (value.includes('@')) {
+    const [left, server] = value.split('@')
+    return `${left.split(':')[0]}@${server}`
+  }
+
+  const number = value.replace(/\D/g, '')
+  return number ? `${number}@s.whatsapp.net` : ''
+}
+
+function onlyNumber(value = '') {
+  return safeJid(value).split('@')[0].replace(/\D/g, '')
+}
+
+
 function normalizeText(text = '') {
   return String(text)
     .toLowerCase()
@@ -87,11 +122,10 @@ client.ev.on('group-participants.update', async (anu) => {
       const isSelf = global.db.data.settings[botId]?.self ?? false
       if (isSelf) return
 
-      for (const p of anu.participants) {
-        const jid = p.phoneNumber || p
-        const phone = p.phoneNumber?.split('@')[0] || jid.split('@')[0]
-        const pp = await client.profilePictureUrl(jid, 'image').catch(_ => 'https://cdn.yuki-wabot.my.id/files/2PVh.jpeg')
-
+for (const p of anu.participants) {
+  const jid = safeJid(p?.phoneNumber || p?.id || p?.jid || p?.lid || p)
+  const phone = onlyNumber(p?.phoneNumber || jid || p)
+  const pp = await client.profilePictureUrl(jid, 'image').catch(_ => 'https://cdn.yuki-wabot.my.id/files/2PVh.jpeg')
         const mensajes = {
           add: chat.sWelcome
             ? `\n┊➤ ${chat.sWelcome
@@ -177,7 +211,7 @@ client.ev.on('group-participants.update', async (anu) => {
 
           const usuario = anu.author
           await client.sendMessage(anu.id, {
-            text: `「✎」 *@${phone}* ha sido promovido a Administrador por *@${usuario.split('@')[0]}.*`,
+            text: `「✎」 *@${phone}* ha sido promovido a Administrador por *@${onlyNumber(usuario)}.*`,
             mentions: [jid, usuario, ...groupAdmins.map(v => v.id)]
           })
         }
@@ -188,7 +222,7 @@ client.ev.on('group-participants.update', async (anu) => {
 
           const usuario = anu.author
           await client.sendMessage(anu.id, {
-            text: `「✎」 *@${phone}* ha sido degradado de Administrador por *@${usuario.split('@')[0]}.*`,
+            text: `「✎」 *@${phone}* ha sido degradado de Administrador por *@${onlyNumber(usuario)}.*`,
             mentions: [jid, usuario, ...groupAdmins.map(v => v.id)]
           })
         }
@@ -223,7 +257,7 @@ client.ev.on('messages.upsert', async ({ messages, type }) => {
     // Alertas del grupo por cambios
     if (msg.messageStubType && chat?.alerts && (!primaryBotId || primaryBotId === botId)) {
       const actor = msg.key?.participant || msg.participant || msg.key?.remoteJid
-      const phone = actor.split('@')[0]
+      const phone = onlyNumber(actor)
       const groupMetadata = await client.groupMetadata(id).catch(() => null)
       const groupAdmins = groupMetadata?.participants.filter(p => (p.admin === 'admin' || p.admin === 'superadmin')) || []
 
@@ -290,7 +324,7 @@ client.ev.on('messages.upsert', async ({ messages, type }) => {
       if (now - last < 45000) return
       chat.lastGreetingReply[sender] = now
 
-      const phone = sender.split('@')[0]
+      const phone = onlyNumber(sender)
 
       await client.sendMessage(id, {
         text: getRandomGreetingReply(phone),

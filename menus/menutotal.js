@@ -212,7 +212,7 @@ Envía reportes o sugerencias al owner.
 
 
 
-ꕥ 💰 *ECONOMÍA* — *19 comandos*
+ꕥ 💰 *ECONOMÍA* — *20 comandos*
 > Acceso: *${currentPrefix}menu economia*
 
 💰 *${currentPrefix}balance* / *${currentPrefix}bal* / *${currentPrefix}coins* / *${currentPrefix}bank*:
@@ -220,6 +220,10 @@ Muestra tu dinero, banco y progreso económico.
 
 🎁 *${currentPrefix}daily* / *${currentPrefix}diario*:
 Reclama tu recompensa diaria.
+
+
+🧰 *${currentPrefix}cofre* / *${currentPrefix}coffer* / *${currentPrefix}chest* / *${currentPrefix}tesoro* / *${currentPrefix}caja*:
+Abre un cofre de suerte. Puedes ganar dinero, no recibir nada o perder dinero si aparece una bomba.
 
 💼 *${currentPrefix}work* / *${currentPrefix}w* / *${currentPrefix}chambear* / *${currentPrefix}chamba* / *${currentPrefix}trabajar*:
 Trabaja para ganar monedas.

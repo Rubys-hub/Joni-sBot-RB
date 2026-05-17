@@ -6,66 +6,59 @@ export default {
   run: async (client, m, args, usedPrefix, command) => {
     const db = global.db.data
     const chat = db.chats[m.chat]
-    if (chat.adminonly || !chat.economy) return m.reply(`⌬ Los comandos de *Economía* están desactivados en este grupo.\n\nUn *administrador* puede activarlos con el comando:\n» *${usedPrefix}economy on*`)
+
+    if (chat.adminonly || !chat.economy) return m.reply(`⚠️ ᴇᴄᴏɴᴏᴍíᴀ ᴏғғ ✦ Un admin puede activarla con *${usedPrefix}economy on*`)
+
     const botId = client.user.id.split(':')[0] + '@s.whatsapp.net'
     const bot = db.settings[botId]
     const currency = bot.currency
     const user = db.chats[m.chat].users[m.sender]
+
     user.lastslot ||= 0
+
     if (!args[0] || isNaN(args[0]) || parseInt(args[0]) <= 0) {
-      return m.reply(`❀ Por favor, ingresa la cantidad que deseas apostar.`)
+      return m.reply(`🎰 sʟᴏᴛ ✦ Ingresa una cantidad válida. Ejemplo: *${usedPrefix + command} 500*`)
     }
+
     const apuesta = parseInt(args[0])
+
     if (Date.now() - user.lastslot < 30000) {
       const restante = user.lastslot + 30000 - Date.now()
-      return m.reply(`⌬ Debes esperar *${formatTime(restante)}* para usar *${usedPrefix + command}* nuevamente.`)
+      return m.reply(`⏳ ᴇsᴘᴇʀᴀ ✦ Debes esperar *${formatTime(restante)}* para usar *${usedPrefix + command}* otra vez.`)
     }
-    if (apuesta < 100) return m.reply(`⌬ El mínimo para apostar es de 100 *${currency}*.`)
-    if (user.coins < apuesta) return m.reply(`⌬ Tus *${currency}* no son suficientes para apostar esa cantidad.`)
-    const emojis = ['✾', '❃', '❁']
-    const getRandomEmojis = () => {
-      const x = Array.from({ length: 3 }, () => emojis[Math.floor(Math.random() * emojis.length)])
-      const y = Array.from({ length: 3 }, () => emojis[Math.floor(Math.random() * emojis.length)])
-      const z = Array.from({ length: 3 }, () => emojis[Math.floor(Math.random() * emojis.length)])
-      return { x, y, z }
+
+    if (apuesta < 100) return m.reply(`🎰 sʟᴏᴛ ✦ Apuesta mínima: *100 ${currency}*.`)
+    if (user.coins < apuesta) return m.reply(`💸 sᴀʟᴅᴏ ɪɴsᴜғɪᴄɪᴇɴᴛᴇ ✦ No tienes suficientes *${currency}*.`)
+
+    const emojis = ['🍒', '🍋', '💎', '⭐', '7️⃣']
+    const spin = () => Array.from({ length: 3 }, () => emojis[Math.floor(Math.random() * emojis.length)])
+
+    const { key } = await client.sendMessage(m.chat, { text: `🎰 sʟᴏᴛ ✦ Girando...` }, { quoted: m })
+
+    for (let i = 0; i < 5; i++) {
+      const r = spin()
+      await client.sendMessage(m.chat, { text: `🎰 sʟᴏᴛ ✦ ${r[0]} ${r[1]} ${r[2]} ✦ Girando...`, edit: key }, { quoted: m })
+      await delay(300)
     }
-    const initialText = '「✿」| *SLOTS* \n────────\n'
-    let { key } = await client.sendMessage(m.chat, { text: initialText }, { quoted: m })
-    const animateSlots = async () => {
-      for (let i = 0; i < 5; i++) {
-        const { x, y, z } = getRandomEmojis()
-        const animationText = `「✿」| *SLOTS* 
-────────
-${x[0]} : ${y[0]} : ${z[0]}
-${x[1]} : ${y[1]} : ${z[1]}
-${x[2]} : ${y[2]} : ${z[2]}
-────────`
-        await client.sendMessage(m.chat, { text: animationText, edit: key }, { quoted: m })
-        await delay(300)
-      }
-    }
-    await animateSlots()
-    const { x, y, z } = getRandomEmojis()
-    let resultado
-    if (x[0] === y[0] && y[0] === z[0]) {
-      resultado = `❀ Ganaste! *S/${(apuesta * 2).toLocaleString()} ${currency}*.`
+
+    const r = spin()
+    let resultado = ''
+
+    if (r[0] === r[1] && r[1] === r[2]) {
+      const win = apuesta * 2
       user.coins += apuesta
-    } else if (x[0] === y[0] || x[0] === z[0] || y[0] === z[0]) {
-      resultado = `❀ Casi lo logras. *Toma S/10 ${currency}* por intentarlo.`
+      resultado = `💎 Jackpot ✦ Ganaste *S/${win.toLocaleString()} ${currency}*.`
+    } else if (r[0] === r[1] || r[0] === r[2] || r[1] === r[2]) {
       user.coins += 10
+      resultado = `✨ Casi ✦ Recuperaste *S/10 ${currency}*.`
     } else {
-      resultado = `❀ Perdiste *S/${apuesta.toLocaleString()} ${currency}*.`
       user.coins -= apuesta
+      resultado = `💔 Mala suerte ✦ Perdiste *S/${apuesta.toLocaleString()} ${currency}*.`
     }
+
     user.lastslot = Date.now()
-    const finalText = `「✿」| *SLOTS* 
-────────
-${x[0]} : ${y[0]} : ${z[0]}
-${x[1]} : ${y[1]} : ${z[1]}
-${x[2]} : ${y[2]} : ${z[2]}
-────────
-${resultado}`
-    await client.sendMessage(m.chat, { text: finalText, edit: key }, { quoted: m })
+
+    await client.sendMessage(m.chat, { text: `🎰 sʟᴏᴛ ✦ ${r[0]} ${r[1]} ${r[2]} ✦ ${resultado}`, edit: key }, { quoted: m })
   }
 }
 

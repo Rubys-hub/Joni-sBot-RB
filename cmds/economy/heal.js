@@ -6,37 +6,52 @@ export default {
   run: async (client, m, args, usedPrefix) => {
     const db = global.db.data
     const chatData = db.chats[m.chat]
-    if (chatData.adminonly || !chatData.economy) return m.reply(`⌬ Los comandos de *Economía* están desactivados en este grupo.\n\nUn *administrador* puede activarlos con el comando:\n» *${usedPrefix}economy on*`)
+
+    if (chatData.adminonly || !chatData.economy) return m.reply(`⚠️ ᴇᴄᴏɴᴏᴍíᴀ ᴏғғ ✦ Un admin puede activarla con *${usedPrefix}economy on*`)
+
     const botId = client.user.id.split(':')[0] + '@s.whatsapp.net'
     const bot = db.settings[botId]
     const currency = bot.currency
+
     const mentioned = m.mentionedJid || []
     const who2 = mentioned[0] || (m.quoted ? m.quoted.sender : null)
-    const who = await resolveLidToRealJid(who2, client, m.chat)
+    const who = who2 ? await resolveLidToRealJid(who2, client, m.chat) : null
+
     const healer = chatData.users[m.sender]
     const target = who ? chatData.users[who] : healer
-    if (!target) return m.reply(`⌬ El usuario no se encuentra en la base de Datos.`)
+
+    if (!target) return m.reply(`👤 ᴜsᴜᴀʀɪᴏ ✦ El usuario no se encuentra en la base de datos.`)
+
+    target.health ??= 100
+    healer.coins ??= 0
+    healer.bank ??= 0
+
     if (target.health >= 100) {
-      const maximo = who ? `⌬ La salud de *${db.users[who]?.name || who.split('@')[0]}* ya está al máximo, Salud actual: ${target.health}` : `⌬ Tu salud ya está al máximo, Salud actual: ${target.health}`
+      const maximo = who ? `❤️ sᴀʟᴜᴅ ✦ La salud de *${db.users[who]?.name || who.split('@')[0]}* ya está al máximo. ✦ Salud: *${target.health}*` : `❤️ sᴀʟᴜᴅ ✦ Tu salud ya está al máximo. ✦ Salud: *${target.health}*`
       return m.reply(maximo)
     }
+
     const faltante = 100 - target.health
     const bloques = Math.ceil(faltante / 10)
     const costo = bloques * 500
-    const totalFondos = healer.coins + (healer.bank || 0)
+    const totalFondos = healer.coins + healer.bank
+
     if (totalFondos < costo) {
-      const fondos = who ? `⌬ No tienes suficientes ${currency} para curar a *${db.users[who]?.name || who.split('@')[0]}*.\n> Necesitas *S/${costo.toLocaleString()} ${currency}* para curar ${faltante} puntos de salud.` : `⌬ No tienes suficientes ${currency} para curarte.\n> Necesitas *S/${costo.toLocaleString()} ${currency}* para curar ${faltante} puntos de salud.`
+      const fondos = who ? `💸 sᴀʟᴅᴏ ɪɴsᴜғɪᴄɪᴇɴᴛᴇ ✦ Necesitas *S/${costo.toLocaleString()} ${currency}* para curar a *${db.users[who]?.name || who.split('@')[0]}*.` : `💸 sᴀʟᴅᴏ ɪɴsᴜғɪᴄɪᴇɴᴛᴇ ✦ Necesitas *S/${costo.toLocaleString()} ${currency}* para curarte.`
       return m.reply(fondos)
     }
+
     if (healer.coins >= costo) {
       healer.coins -= costo
     } else {
       const restante = costo - healer.coins
       healer.coins = 0
-      healer.bank = Math.max(0, (healer.bank || 0) - restante)
+      healer.bank = Math.max(0, healer.bank - restante)
     }
+
     target.health = 100
-    const info = who ? `⌬ Has curado a *${db.users[who]?.name || who.split('@')[0]}* hasta el máximo nivel de salud.` : `⌬ Te has curado hasta el máximo nivel de salud.`
+
+    const info = who ? `✅ ʟɪsᴛᴏ ✦ Curaste a *${db.users[who]?.name || who.split('@')[0]}* al máximo. ✦ Costo: *S/${costo.toLocaleString()} ${currency}*` : `✅ ʟɪsᴛᴏ ✦ Te curaste al máximo. ✦ Costo: *S/${costo.toLocaleString()} ${currency}*`
     m.reply(info)
-  },
+  }
 }

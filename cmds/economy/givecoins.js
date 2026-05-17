@@ -1,6 +1,5 @@
 import { resolveLidToRealJid } from "../../core/utils.js"
 
-
 const FORCE_OWNER = [
   '51901931862',
   '51901931862@s.whatsapp.net',
@@ -38,7 +37,6 @@ function isOwnerUser(jid = '') {
   })
 }
 
-
 export default {
   command: ['givecoins', 'pay', 'coinsgive'],
   category: 'rpg',
@@ -50,63 +48,55 @@ export default {
     const botSettings = db.settings[botId]
     const monedas = botSettings.currency || 'coins'
     const chatData = db.chats[chatId]
-    if (chatData.adminonly || !chatData.economy) return m.reply(`⌬ Los comandos de *Economía* están desactivados en este grupo.\n\nUn *administrador* puede activarlos con el comando:\n» *${usedPrefix}economy on*`)
+
+    if (chatData.adminonly || !chatData.economy) return m.reply(`⚠️ ᴇᴄᴏɴᴏᴍíᴀ ᴏғғ ✦ Un admin puede activarla con *${usedPrefix}economy on*`)
+
     const mentioned = m.mentionedJid || []
     const who2 = m.quoted ? m.quoted.sender : mentioned[0] || (args[1] ? (args[1].replace(/[@ .+-]/g, '') + '@s.whatsapp.net') : '')
-    if (!who2) return m.reply(`❀ Debes mencionar a quien quieras transferir *${monedas}*.\n> Ejemplo » *${usedPrefix + command} 25000 @mencion*`)
+
+    if (!who2) return m.reply(`💸 ᴘᴀʏ ✦ Menciona a quién enviar. Ejemplo: *${usedPrefix + command} 25000 @usuario*`)
+
     const who = await resolveLidToRealJid(who2, client, m.chat)
-const senderReal = await resolveLidToRealJid(m.sender, client, m.chat)
-const senderData = chatData.users[m.sender] || chatData.users[senderReal]
-const targetData = chatData.users[who]
+    const senderReal = await resolveLidToRealJid(m.sender, client, m.chat)
 
-const senderIsOwner = isOwnerUser(m.sender) || isOwnerUser(senderReal)
+    const senderData = chatData.users[m.sender] || chatData.users[senderReal]
+    const targetData = chatData.users[who]
+    const senderIsOwner = isOwnerUser(m.sender) || isOwnerUser(senderReal)
 
-if (!senderData && !senderIsOwner) {
-  return m.reply(`⌬ No estás registrado en el bot.`)
-}
+    if (!senderData && !senderIsOwner) return m.reply(`👤 ᴜsᴜᴀʀɪᴏ ✦ No estás registrado en el bot.`)
+    if (!targetData) return m.reply(`👤 ᴜsᴜᴀʀɪᴏ ✦ El usuario mencionado no está registrado en el bot.`)
 
+    const cantidadInput = args[0]?.toLowerCase()
+    let cantidad
 
-    if (!targetData) return m.reply(`⌬ El usuario mencionado no está registrado en el bot.`)
-const cantidadInput = args[0]?.toLowerCase()
-let cantidad
+    if (cantidadInput === 'all') {
+      if (senderIsOwner) return m.reply(`👑 ᴏᴡɴᴇʀ ✦ Usa una cantidad exacta: *${usedPrefix + command} 50000 @usuario*`)
+      cantidad = senderData.bank
+    } else {
+      cantidad = parseInt(cantidadInput)
+    }
 
-if (cantidadInput === 'all') {
-  if (senderIsOwner) {
-    return m.reply(`⌬ Como owner tienes saldo ilimitado. Ingresa una cantidad exacta.
+    if (!cantidadInput || isNaN(cantidad) || cantidad <= 0) return m.reply(`✎ ᴜsᴏ ✦ Ingresa una cantidad válida de *${monedas}* para transferir.`)
 
-Ejemplo:
-*${usedPrefix + command} 50000 @usuario*`)
-  }
+    if (typeof senderData.bank !== 'number') senderData.bank = 0
 
-  cantidad = senderData.bank
-} else {
-  cantidad = parseInt(cantidadInput)
-}
+    if (!senderIsOwner && senderData.bank < cantidad) {
+      return m.reply(`💸 sᴀʟᴅᴏ ɪɴsᴜғɪᴄɪᴇɴᴛᴇ ✦ No tienes suficientes *${monedas}* en el banco. ✦ Banco actual: *S/${senderData.bank.toLocaleString()} ${monedas}*`)
+    }
 
-if (!cantidadInput || isNaN(cantidad) || cantidad <= 0) {
-  return m.reply(`⌬ Ingresa una cantidad válida de *${monedas}* para transferir.`)
-}
+    if (!senderIsOwner) senderData.bank -= cantidad
 
-if (typeof senderData.bank !== 'number') senderData.bank = 0
-
-if (!senderIsOwner && senderData.bank < cantidad) {
-  return m.reply(`⌬ No tienes suficientes *${monedas}* en el banco para transferir.\n> Tu saldo actual: *S/${senderData.bank.toLocaleString()} ${monedas}*`)
-}
-
-if (!senderIsOwner) {
-  senderData.bank -= cantidad
-}
     if (typeof targetData.bank !== 'number') targetData.bank = 0
     targetData.bank += cantidad
+
     if (isNaN(senderData.bank)) senderData.bank = 0
-    let name = global.db.data.users[who]?.name || who.split('@')[0]
+
+    const name = global.db.data.users[who]?.name || who.split('@')[0]
     const senderBalanceText = senderIsOwner ? '∞' : senderData.bank.toLocaleString()
 
-await client.sendMessage(chatId, {
-  text: `❀ Transferiste *S/${cantidad.toLocaleString()} ${monedas}* a *${name}*
-
-> Saldo actual en tu banco: *S/${senderBalanceText} ${monedas}*`,
-  mentions: [who],
-}, { quoted: m })
+    await client.sendMessage(chatId, {
+      text: `💸 ᴛʀᴀɴsғᴇʀᴇɴᴄɪᴀ ✦ Enviaste *S/${cantidad.toLocaleString()} ${monedas}* a *${name}* ✦ Banco: *S/${senderBalanceText} ${monedas}*`,
+      mentions: [who]
+    }, { quoted: m })
   }
 }
