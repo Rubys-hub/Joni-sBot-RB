@@ -1,3 +1,5 @@
+import { applyEventoEconomyMultiplier } from '../adminabuse/eventoEconomy.js'
+
 export default {
   command: ['ppt'],
   category: 'rpg',
@@ -10,18 +12,32 @@ export default {
     const botname = botSettings.namebot
     const chatData = db.chats[chatId]
 
-    if (chatData.adminonly || !chatData.economy) return m.reply(`⚠️ ᴇᴄᴏɴᴏᴍíᴀ ᴏғғ ✦ Un admin puede activarla con *${usedPrefix}economy on*`)
+    if (chatData.adminonly || !chatData.economy) {
+      return m.reply(`⚠️ ᴇᴄᴏɴᴏᴍíᴀ ᴏғғ ✦ Un admin puede activarla con *${usedPrefix}economy on*`)
+    }
 
     const user = chatData.users[m.sender]
     user.lastppt ||= 0
+    user.coins ||= 0
+    user.bank ||= 0
 
     const remainingTime = user.lastppt - Date.now()
-    if (remainingTime > 0) return m.reply(`⏳ ᴇsᴘᴇʀᴀ ✦ Debes esperar *${msToTime(remainingTime)}* antes de jugar otra vez.`)
+    if (remainingTime > 0) {
+      return m.reply(`⏳ ᴇsᴘᴇʀᴀ ✦ Debes esperar *${msToTime(remainingTime)}* antes de jugar otra vez.`)
+    }
 
     const options = ['piedra', 'papel', 'tijera']
     const userChoice = args[0]?.trim().toLowerCase()
 
-    if (!options.includes(userChoice)) return m.reply(`✊ ᴘᴘᴛ ✦ Usa: *${usedPrefix}ppt piedra*, *papel* o *tijera*.`)
+    if (!options.includes(userChoice)) {
+      return m.reply(
+        `> *[ ⌬ ] ✊ PPT*\n\n` +
+        `📌 *Uso:*\n` +
+        `• ${usedPrefix}ppt piedra\n` +
+        `• ${usedPrefix}ppt papel\n` +
+        `• ${usedPrefix}ppt tijera`
+      )
+    }
 
     const botChoice = options[Math.floor(Math.random() * options.length)]
     const result = determineWinner(userChoice, botChoice)
@@ -29,9 +45,21 @@ export default {
     const loss = Math.floor(Math.random() * (3000 - 1000 + 1)) + 1000
     const tieReward = Math.floor(Math.random() * (1500 - 800 + 1)) + 800
 
+    let text = ''
+
     if (result === 'win') {
-      user.coins += reward
-      await client.sendMessage(chatId, { text: `✊ ᴘᴘᴛ ✦ Ganaste ✦ Tú: *${userChoice}* ✦ ${botname}: *${botChoice}* ✦ +S/${reward.toLocaleString()} ${monedas}` }, { quoted: m })
+      const eventMult = await applyEventoEconomyMultiplier(chatId, reward, {
+        currency: monedas
+      })
+
+      user.coins += eventMult.amount
+
+      text =
+        `> *[ ⌬ ] ✊ PPT — GANASTE*\n\n` +
+        `👤 *Tú:* ${userChoice}\n` +
+        `🤖 *${botname}:* ${botChoice}\n` +
+        `💰 *Premio:* +S/${eventMult.amount.toLocaleString()} ${monedas}` +
+        `${eventMult.text || ''}`
     } else if (result === 'lose') {
       const total = user.coins + user.bank
       const actualLoss = Math.min(loss, total)
@@ -44,13 +72,29 @@ export default {
         user.bank = Math.max(0, user.bank - remaining)
       }
 
-      await client.sendMessage(chatId, { text: `✊ ᴘᴘᴛ ✦ Perdiste ✦ Tú: *${userChoice}* ✦ ${botname}: *${botChoice}* ✦ -S/${actualLoss.toLocaleString()} ${monedas}` }, { quoted: m })
+      text =
+        `> *[ ⌬ ] ✊ PPT — PERDISTE*\n\n` +
+        `👤 *Tú:* ${userChoice}\n` +
+        `🤖 *${botname}:* ${botChoice}\n` +
+        `💸 *Pérdida:* -S/${actualLoss.toLocaleString()} ${monedas}`
     } else {
-      user.coins += tieReward
-      await client.sendMessage(chatId, { text: `✊ ᴘᴘᴛ ✦ Empate ✦ Tú: *${userChoice}* ✦ ${botname}: *${botChoice}* ✦ +S/${tieReward.toLocaleString()} ${monedas}` }, { quoted: m })
+      const eventMult = await applyEventoEconomyMultiplier(chatId, tieReward, {
+        currency: monedas
+      })
+
+      user.coins += eventMult.amount
+
+      text =
+        `> *[ ⌬ ] ✊ PPT — EMPATE*\n\n` +
+        `👤 *Tú:* ${userChoice}\n` +
+        `🤖 *${botname}:* ${botChoice}\n` +
+        `💰 *Recompensa:* +S/${eventMult.amount.toLocaleString()} ${monedas}` +
+        `${eventMult.text || ''}`
     }
 
     user.lastppt = Date.now() + 1 * 60 * 1000
+
+    await client.sendMessage(chatId, { text }, { quoted: m })
   }
 }
 

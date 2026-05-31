@@ -40,7 +40,7 @@ export default {
 
 
         𓆩 🎨 *STICKER SYSTEM* 🎨 𓆪
-        ✨ *Total disponible:* 19 comandos
+        ✨ *Total disponible:* 24 comandos
         ⚡ *Modo:* crear, editar y gestionar stickers
 
 
@@ -94,6 +94,23 @@ Lista los packs de stickers disponibles.
 🗑️ *${currentPrefix}delpack*:
 Elimina un pack de stickers.
 
+
+🩸 *EFECTOS DE STICKER*
+
+💓 *${currentPrefix}pulse* / *${currentPrefix}pulse1*:
+Aplica efecto de latido al sticker.
+
+😡 *${currentPrefix}rage* / *${currentPrefix}rage1*:
+Aplica efecto de rabia al sticker.
+
+🌀 *${currentPrefix}spin* / *${currentPrefix}spin1*:
+Aplica efecto de giro al sticker.
+
+🤏 *${currentPrefix}shake* / *${currentPrefix}shake1*:
+Aplica efecto de temblor al sticker.
+
+🔍 *${currentPrefix}zoom* / *${currentPrefix}zoom1*:
+Aplica efecto de acercamiento al sticker.
 
 
 ꕥ ➕ *GESTIÓN DE STICKERS*

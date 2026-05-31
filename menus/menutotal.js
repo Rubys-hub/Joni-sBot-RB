@@ -367,6 +367,9 @@ Elimina un personaje según permisos.
 ꕥ 📥 *DOWNLOADS* — *13 comandos*
 > Acceso: *${currentPrefix}menu downloads*
 
+🎵 *${currentPrefix}audiomp3* / *${currentPrefix}mp3*:
+Convierte enlaces, videos o archivos de audio a MP3 enviable por WhatsApp.
+
 🎧 *${currentPrefix}play* / *${currentPrefix}mp3* / *${currentPrefix}ytmp3* / *${currentPrefix}ytaudio* / *${currentPrefix}playaudio*:
 Busca música en YouTube y la descarga en audio.
 
@@ -537,6 +540,21 @@ Crea sticker estilo brat.
 
 🎥 *${currentPrefix}bratv*:
 Crea sticker/video estilo brat.
+
+💓 *${currentPrefix}pulse* / *${currentPrefix}pulse1*:
+Aplica efecto de latido al sticker.
+
+😡 *${currentPrefix}rage* / *${currentPrefix}rage1*:
+Aplica efecto de rabia al sticker.
+
+🌀 *${currentPrefix}spin* / *${currentPrefix}spin1*:
+Aplica efecto de giro al sticker.
+
+🤏 *${currentPrefix}shake* / *${currentPrefix}shake1*:
+Aplica efecto de temblor al sticker.
+
+🔍 *${currentPrefix}zoom* / *${currentPrefix}zoom1*:
+Aplica efecto de acercamiento al sticker.
 
 🏷️ *${currentPrefix}stickername* / *${currentPrefix}sname* / *${currentPrefix}sn* / *${currentPrefix}sn1*:
 Cambia nombre o autor del sticker.

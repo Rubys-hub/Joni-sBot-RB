@@ -7,47 +7,95 @@ const FRAMES = [
   'ᕕ( •ω• )ᕗ',
   'ᕗ( •ω• )ᕕ',
   'ᕕ( ᐛ )ᕗ',
-  'ᕗ( ᐛ )ᕕ'
+  'ᕗ( ᐛ )ᕕ',
+  '♪┏(・o･)┛',
+  '┗(･o･)┓♪'
 ]
 
 let frameIndex = 0
 let started = false
 
+const WIDTH = 96
+const BRAND = '[ ⌬ ]'
+
 const THEMES = {
   info: {
-    border: ['#6D28D9', '#C77DFF'],
-    label: chalk.hex('#D8B4FE').bold,
-    value: chalk.hex('#F5F3FF')
+    border: ['#7C3AED', '#38BDF8'],
+    brand: '#C084FC',
+    value: '#E0F2FE'
   },
   success: {
-    border: ['#6D28D9', '#4ADE80'],
-    label: chalk.hex('#86EFAC').bold,
-    value: chalk.hex('#F0FDF4')
+    border: ['#7C3AED', '#22C55E'],
+    brand: '#C084FC',
+    value: '#DCFCE7'
   },
   warn: {
-    border: ['#7E22CE', '#F59E0B'],
-    label: chalk.hex('#FCD34D').bold,
-    value: chalk.hex('#FFFBEB')
+    border: ['#7C3AED', '#F59E0B'],
+    brand: '#F0ABFC',
+    value: '#FEF3C7'
   },
   error: {
-    border: ['#7E22CE', '#FB7185'],
-    label: chalk.hex('#FDA4AF').bold,
-    value: chalk.hex('#FFF1F2')
+    border: ['#7C3AED', '#FB7185'],
+    brand: '#FDA4AF',
+    value: '#FFE4E6'
   },
   command: {
     border: ['#7C3AED', '#D946EF'],
-    label: chalk.hex('#E9C6FF').bold,
-    value: chalk.hex('#FFFFFF')
+    brand: '#D8B4FE',
+    value: '#F8FAFC'
   },
   system: {
-    border: ['#6D28D9', '#60A5FA'],
-    label: chalk.hex('#BFDBFE').bold,
-    value: chalk.hex('#EFF6FF')
+    border: ['#7C3AED', '#60A5FA'],
+    brand: '#C4B5FD',
+    value: '#EFF6FF'
   }
 }
 
-const WIDTH = 96
-const BRAND = '[ ⌬ ]'
+const LABEL_COLORS = {
+  BOT: '#67E8F9',
+  'BOT NUMERO': '#93C5FD',
+  FECHA: '#FDE68A',
+  USUARIO: '#F9A8D4',
+  NUMERO: '#C4B5FD',
+  REMITENTE: '#A7F3D0',
+  GRUPO: '#86EFAC',
+  PRIVADO: '#86EFAC',
+  'GRUPO ID': '#A5B4FC',
+  'CHAT ID': '#93C5FD',
+  MIEMBROS: '#FDA4AF',
+  PREFIJO: '#F0ABFC',
+  COMANDO: '#FDE047',
+  MENSAJE: '#FDBA74',
+  ARGS: '#CBD5E1',
+  DETALLE: '#DDD6FE',
+  ESTADO: '#86EFAC',
+  MODO: '#F0ABFC',
+  PLATAFORMA: '#93C5FD',
+  INFO: '#DDD6FE'
+}
+
+const VALUE_COLORS = {
+  BOT: '#E0F2FE',
+  'BOT NUMERO': '#DBEAFE',
+  FECHA: '#FEF9C3',
+  USUARIO: '#FCE7F3',
+  NUMERO: '#EDE9FE',
+  REMITENTE: '#D1FAE5',
+  GRUPO: '#DCFCE7',
+  PRIVADO: '#DCFCE7',
+  'GRUPO ID': '#E0E7FF',
+  'CHAT ID': '#DBEAFE',
+  MIEMBROS: '#FFE4E6',
+  PREFIJO: '#FAE8FF',
+  COMANDO: '#FEF9C3',
+  MENSAJE: '#FFEDD5',
+  ARGS: '#E2E8F0',
+  DETALLE: '#F5F3FF',
+  ESTADO: '#DCFCE7',
+  MODO: '#FAE8FF',
+  PLATAFORMA: '#DBEAFE',
+  INFO: '#F5F3FF'
+}
 
 function stripAnsi(text = '') {
   return String(text).replace(/\x1B\[[0-?]*[ -/]*[@-~]/g, '')
@@ -71,6 +119,10 @@ function nullText(value = '') {
   return text ? text : 'null'
 }
 
+function onlyNumber(value = '') {
+  return String(value || '').split('@')[0].replace(/\D/g, '') || 'null'
+}
+
 function currentDateTime() {
   return new Intl.DateTimeFormat('es-PE', {
     timeZone: 'America/Lima',
@@ -84,8 +136,30 @@ function currentDateTime() {
   }).format(new Date())
 }
 
-function onlyNumber(value = '') {
-  return String(value || '').split('@')[0].replace(/\D/g, '') || 'null'
+function borderText(text = '', themeKey = 'system') {
+  const theme = THEMES[themeKey] || THEMES.system
+  return gradient(theme.border[0], theme.border[1])(text)
+}
+
+function brandText(themeKey = 'system') {
+  const theme = THEMES[themeKey] || THEMES.system
+  return chalk.hex(theme.brand).bold(BRAND)
+}
+
+function pipeText(themeKey = 'system') {
+  const theme = THEMES[themeKey] || THEMES.system
+  return chalk.hex(theme.brand)('│')
+}
+
+function labelColor(label = '') {
+  const clean = normalizeText(label || 'INFO').toUpperCase()
+  return LABEL_COLORS[clean] || '#DDD6FE'
+}
+
+function valueColor(label = '', themeKey = 'system') {
+  const clean = normalizeText(label || 'INFO').toUpperCase()
+  const theme = THEMES[themeKey] || THEMES.system
+  return VALUE_COLORS[clean] || theme.value || '#F8FAFC'
 }
 
 export function getMascot() {
@@ -105,50 +179,57 @@ export function bootConsoleTheme(title = 'RUBYJX BOT') {
     try {
       process.stdout.write(`\x1b]0;${BRAND} ${global.__rubyConsoleMascot}  ${title}  •  ${currentDateTime()}\x07`)
     } catch {}
-  }, 280)
+  }, 300)
 
   if (typeof timer.unref === 'function') timer.unref()
 }
 
 function topBorder(title, themeKey = 'system') {
-  const theme = THEMES[themeKey] || THEMES.system
-  const grad = gradient(theme.border[0], theme.border[1])
   const mascot = getMascot()
-  const content = ` ${BRAND} ${mascot}  ${title} `
-  const fill = '─'.repeat(Math.max(10, WIDTH - stripAnsi(content).length))
-  return grad(`╭${content}${fill}╮`)
+  const contentRaw = ` ${BRAND} ${mascot}  ${title} `
+  const fill = '─'.repeat(Math.max(10, WIDTH - stripAnsi(contentRaw).length))
+
+  const theme = THEMES[themeKey] || THEMES.system
+  const brand = chalk.hex(theme.brand).bold(BRAND)
+  const mascotText = chalk.hex('#F0ABFC').bold(mascot)
+  const titleText = chalk.hex('#E9D5FF').bold(title)
+
+  const content = ` ${brand} ${mascotText}  ${titleText} `
+
+  return `${borderText('╭', themeKey)}${content}${borderText(fill + '╮', themeKey)}`
 }
 
 function bottomBorder(themeKey = 'system') {
-  const theme = THEMES[themeKey] || THEMES.system
-  const grad = gradient(theme.border[0], theme.border[1])
-  return grad(`╰${'─'.repeat(WIDTH + 2)}╯`)
+  return borderText(`╰${'─'.repeat(WIDTH + 2)}╯`, themeKey)
 }
 
 function line(text = '', themeKey = 'system') {
   const theme = THEMES[themeKey] || THEMES.system
   const clean = truncate(text, WIDTH)
-  return `${chalk.hex('#8B5CF6')('│')} ${chalk.hex('#D8B4FE').bold(BRAND)} ${theme.value(clean)}`
+  return `${pipeText(themeKey)} ${brandText(themeKey)} ${chalk.hex(theme.value)(clean)}`
 }
 
 function pair(label, value, themeKey = 'system') {
-  const theme = THEMES[themeKey] || THEMES.system
-  const left = theme.label(`${BRAND} ${label}:`)
-  const right = theme.value(truncate(nullText(value), WIDTH - stripAnsi(label).length - BRAND.length - 5))
-  return `${chalk.hex('#8B5CF6')('│')} ${left} ${right}`
+  const cleanLabel = normalizeText(label || 'INFO').toUpperCase()
+  const cleanValue = truncate(nullText(value), WIDTH - cleanLabel.length - BRAND.length - 5)
+
+  const labelStyled = chalk.hex(labelColor(cleanLabel)).bold(`${cleanLabel}:`)
+  const valueStyled = chalk.hex(valueColor(cleanLabel, themeKey))(cleanValue)
+
+  return `${pipeText(themeKey)} ${brandText(themeKey)} ${labelStyled} ${valueStyled}`
 }
 
 export function panelLog(title = 'RUBYJX', rows = [], themeKey = 'system') {
   console.log('')
   console.log(topBorder(title, themeKey))
 
-  for (const row of rows) {
+  rows.forEach((row) => {
     if (typeof row === 'string') {
       console.log(line(row, themeKey))
     } else {
       console.log(pair(row.label || 'INFO', row.value ?? 'null', themeKey))
     }
-  }
+  })
 
   console.log(bottomBorder(themeKey))
 }

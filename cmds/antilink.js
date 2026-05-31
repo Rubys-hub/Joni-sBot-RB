@@ -112,11 +112,19 @@ export default async function antilink(client, m) {
     const senderRaw = normalizeJid(m.sender)
     const senderDigits = digitsOnly(m.sender)
 
-    const isOwner =
-      senderRaw === OWNER_JID ||
-      senderDigits === digitsOnly(OWNER_JID)
+// =======================
+// IGNORAR LINKS PARA OWNER
+// =======================
+const OWNER_JIDS = [
+  '51901931862@s.whatsapp.net',
+  '51901931862@lid',       // si usas sub-bots o lid
+  '269015712845891@s.whatsapp.net',
+  '269015712845891@lid'
+]
 
-    if (isOwner) return
+const isOwner = OWNER_JIDS.includes(senderRaw) || OWNER_JIDS.includes(`${digitsOnly(senderRaw)}@s.whatsapp.net`)
+
+if (isOwner) return
     if (senderRaw === botId || senderDigits === digitsOnly(botId)) return
 
     const isSelf = global.db.data.settings?.[botId]?.self ?? false

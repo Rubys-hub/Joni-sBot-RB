@@ -1,59 +1,93 @@
+import {
+  getEconomyContext,
+  economyOffText,
+  applyGainBonus,
+  formatMoney,
+  formatTime,
+  saveDB,
+  vipBenefitLine,
+  vipReminder
+} from '../../core/vipNormalBonus.js'
+import { applyEventoEconomyMultiplier } from '../adminabuse/eventoEconomy.js'
+
+const DAY = 24 * 60 * 60 * 1000
+const MAX_STREAK = 200
+
 export default {
   command: ['daily', 'diario'],
   category: 'rpg',
-  run: async (client, m, args, usedPrefix) => {
-    const chat = global.db.data.chats[m.chat]
-    if (chat.adminonly || !chat.economy) return m.reply(`⚠️ ᴇᴄᴏɴᴏᴍíᴀ ᴏғғ ✦ Un admin puede activarla con *${usedPrefix}economy on*`)
+  group: true,
 
-    const botId = client.user.id.split(':')[0] + '@s.whatsapp.net'
-    const bot = global.db.data.settings[botId]
-    const monedas = bot.currency
-    const user = global.db.data.chats[m.chat].users[m.sender]
-    const users = global.db.data.users[m.sender]
+  run: async (client, m, args = [], usedPrefix = '.') => {
+    try {
+      const { chatData, user, globalUser, currency, vipBonus } = await getEconomyContext(client, m, usedPrefix)
 
-    const now = Date.now()
-    const oneDay = 24 * 60 * 60 * 1000
-    const maxStreak = 200
+      if (chatData.adminonly || !chatData.economy) {
+        return m.reply(economyOffText(usedPrefix))
+      }
 
-    users.streak ??= 0
-    users.lastDailyGlobal ??= 0
-    user.coins ??= 0
-    user.lastdaily ??= 0
+      const now = Date.now()
 
-    if (now < user.lastdaily) {
-      const restante = formatRemainingTime(user.lastdaily - now)
-      return m.reply(`⏳ ᴇsᴘᴇʀᴀ ✦ Ya reclamaste tu *Daily* de hoy ✦ Vuelve en *${restante}*`)
+      globalUser.streak ??= 0
+      globalUser.lastDailyGlobal ??= 0
+      user.lastdaily ??= 0
+      user.coins ??= 0
+
+      if (now < user.lastdaily) {
+        return m.reply(
+          `⏳ ᴅᴀɪʟʏ — ʏᴀ ʀᴇᴄʟᴀᴍᴀᴅᴏ\n\n` +
+          `Vuelve en: *${formatTime(user.lastdaily - now)}*` +
+          vipReminder(vipBonus, usedPrefix)
+        )
+      }
+
+      const lost = globalUser.streak >= 1 && now - globalUser.lastDailyGlobal > DAY * 1.5
+      if (lost) globalUser.streak = 0
+
+      const canClaimGlobal = now - globalUser.lastDailyGlobal >= DAY
+      if (canClaimGlobal) {
+        globalUser.streak = Math.min(globalUser.streak + 1, MAX_STREAK)
+        globalUser.lastDailyGlobal = now
+      }
+
+      const baseReward = Math.min(20000 + (globalUser.streak - 1) * 5000, 1015000)
+      const reward = applyGainBonus(baseReward, vipBonus)
+      const eventMult = await applyEventoEconomyMultiplier(m.chat, reward.total, { currency })
+
+user.coins = Number(user.coins || 0) + eventMult.amount
+      user.lastdaily = now + DAY
+
+      const nextBase = Math.min(20000 + globalUser.streak * 5000, 1015000)
+
+      saveDB()
+
+      const text = vipBonus.active
+        ? (
+          `🎁 ᴅᴀɪʟʏ — ʀᴇᴄᴏᴍᴘᴇɴsᴀ ᴠɪᴘ\n\n` +
+          `Racha actual: Día ${globalUser.streak}\n` +
+          (lost ? `Perdiste tu racha anterior por inactividad.\n\n` : `Tu racha sigue activa.\n\n`) +
+          vipBenefitLine(vipBonus, reward, currency) +
+          `Reclamaste: ${formatMoney(eventMult.amount, currency)}
+          ${eventMult.text || ''}
+          \n` +
+          
+          `Próximo base: ${formatMoney(nextBase, currency)}\n` +
+          `Cartera: ${formatMoney(user.coins, currency)}` +
+          vipReminder(vipBonus, usedPrefix)
+        )
+        : (
+          `🎁 ᴅᴀɪʟʏ — ʀᴇᴄʟᴀᴍᴀᴅᴏ\n\n` +
+          `Racha actual: Día ${globalUser.streak}\n` +
+          (lost ? `Perdiste tu racha anterior por inactividad.\n\n` : `Tu racha sigue activa.\n\n`) +
+          `Reclamaste: ${formatMoney(eventMult.amount, currency)}
+          ${eventMult.text || ''}\n` +
+          `Próximo: ${formatMoney(nextBase, currency)}\n` +
+          `Cartera: ${formatMoney(user.coins, currency)}`
+        )
+
+      return m.reply(text)
+    } catch (error) {
+      return m.reply(`Error: ${error?.message || String(error)}`)
     }
-
-    const lost = users.streak >= 1 && now - users.lastDailyGlobal > oneDay * 1.5
-    if (lost) users.streak = 0
-
-    const canClaimGlobal = now - users.lastDailyGlobal >= oneDay
-    if (canClaimGlobal) {
-      users.streak = Math.min(users.streak + 1, maxStreak)
-      users.lastDailyGlobal = now
-    }
-
-    const recompensa = Math.min(20000 + (users.streak - 1) * 5000, 1015000)
-    user.coins += recompensa
-    user.lastdaily = now + oneDay
-
-    const siguiente = Math.min(20000 + users.streak * 5000, 1015000).toLocaleString()
-    let msg = `🎁 ᴅᴀɪʟʏ ✦ Reclamaste *S/${recompensa.toLocaleString()} ${monedas}* ✦ Día *${users.streak}* ✦ Próximo: *+S/${siguiente}*`
-    if (lost) msg += ` ✦ ⚠️ Perdiste tu racha.`
-
-    await m.reply(msg)
   }
-}
-
-function formatRemainingTime(ms) {
-  const s = Math.floor(ms / 1000)
-  const h = Math.floor((s % 86400) / 3600)
-  const m = Math.floor((s % 3600) / 60)
-  const seg = s % 60
-  const partes = []
-  if (h) partes.push(`${h} ${h === 1 ? 'hora' : 'horas'}`)
-  if (m) partes.push(`${m} ${m === 1 ? 'minuto' : 'minutos'}`)
-  if (seg || partes.length === 0) partes.push(`${seg} ${seg === 1 ? 'segundo' : 'segundos'}`)
-  return partes.join(' ')
 }

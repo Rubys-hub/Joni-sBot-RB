@@ -18,6 +18,28 @@
     "namebot": "RubyJX",
     "botname": "RubyJX (JBot)",
     "owner": "51901931862@s.whatsapp.net",
-    "cmdsejecut": 10587
+    "cmdsejecut": 15972,
+    "vipMenu": ""
+  },
+  "50240263424@s.whatsapp.net": {
+    "type": "Sub",
+    "self": false,
+    "prefix": [
+      "/",
+      "!",
+      ".",
+      "#"
+    ],
+    "commandsejecut": 0,
+    "cmdsejecut": 57,
+    "id": "120363424461852442@newsletter",
+    "nameid": "RubyJX Bot",
+    "link": "https://chat.whatsapp.com/KtXac3mqt1zFv3FAfDkJ23",
+    "banner": "https://d.uguu.se/vUqOqVEQ.jpeg",
+    "icon": "https://h.uguu.se/QRqObVoA.jpeg",
+    "currency": "Soles",
+    "namebot": "RubyJX",
+    "botname": "RubyJX (JBot)",
+    "owner": "51901931862@s.whatsapp.net"
   }
 }

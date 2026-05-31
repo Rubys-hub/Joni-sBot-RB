@@ -1,6 +1,9 @@
+import { applyEventoEconomyMultiplier } from '../adminabuse/eventoEconomy.js'
+
 export default {
   command: ['adventure', 'aventura'],
   category: 'rpg',
+  
   run: async (client, m, args, usedPrefix) => {
     const chat = global.db.data.chats[m.chat]
     const user = chat.users[m.sender]
@@ -21,9 +24,18 @@ export default {
     let cantidad = 0
     let salud = Math.floor(Math.random() * (20 - 10 + 1)) + 10
     let message
+    let eventLine = ''
 
     if (rand < 0.4) {
       cantidad = Math.floor(Math.random() * (18000 - 14000 + 1)) + 14000
+
+      const eventMult = await applyEventoEconomyMultiplier(m.chat, cantidad, {
+        currency
+      })
+
+      cantidad = eventMult.amount
+      eventLine = eventMult.text || ''
+
       user.coins += cantidad
       user.health -= salud
 
@@ -77,7 +89,17 @@ export default {
     }
 
     user.lastadventure = Date.now() + 20 * 60 * 1000
-    await client.sendMessage(m.chat, { text: `⚔️ ᴀᴠᴇɴᴛᴜʀᴀ ✦ ${message}` }, { quoted: m })
+
+    await client.sendMessage(
+      m.chat,
+      {
+        text:
+          `> *[ ⌬ ] ⚔️ AVENTURA*\n\n` +
+          `${message}` +
+          `${eventLine}`
+      },
+      { quoted: m }
+    )
   }
 }
 

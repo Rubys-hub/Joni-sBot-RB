@@ -1,3 +1,5 @@
+import { applyEventoEconomyMultiplier } from '../adminabuse/eventoEconomy.js'
+
 export default {
   command: ['mine', 'minar'],
   category: 'rpg',
@@ -40,13 +42,23 @@ export default {
       }
     }
 
+    const eventMult = await applyEventoEconomyMultiplier(m.chat, reward, {
+      currency: monedas
+    })
+
+    reward = eventMult.amount
     user.coins += reward
 
     const salud = Math.floor(Math.random() * (15 - 5 + 1)) + 5
     user.health = Math.max(0, user.health - salud)
 
-    let msg = `⛏️ ᴍɪɴᴀ ✦ ${narration} ✦ Ganaste *S/${reward.toLocaleString()} ${monedas}*`
+    let msg =
+      `> *[ ⌬ ] ⛏️ MINA*\n\n` +
+      `📍 ${narration}\n` +
+      `💰 *Ganaste:* S/${reward.toLocaleString()} ${monedas}`
+
     if (bonusMsg) msg += bonusMsg
+    msg += eventMult.text || ''
 
     await client.reply(m.chat, msg, m)
   }

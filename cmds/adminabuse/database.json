@@ -1,0 +1,887 @@
+{
+  "version": 1,
+  "settings": {
+    "sorteosGroup": "120363425370570775@g.us",
+    "maxClaimsGlobal": 30,
+    "claimPerUser": 1,
+    "maxVipTrials": 2,
+    "maxJackpotWins": 1,
+    "baseJackpot": 1000000,
+    "jackpotAddPerClaim": 50000,
+    "jackpotChanceNormal": 0.6,
+    "jackpotChanceSorteos": 1.2,
+    "minGroupParticipants": 50,
+    "maxBroadcastGroups": 30,
+    "broadcastDelayMs": 30000,
+    "globalNoticeCooldownMs": 30000,
+    "lastGlobalNoticeAt": 0,
+    "autoDropsEnabled": true,
+    "autoDropCooldownMs": 30000,
+    "byeMessage": "Fue una pequeña prueba del sistema, gracias por participar. Pronto se viene algo más grande.",
+    "byeNoticeBeforeMs": 60000
+  },
+  "active": {
+    "enabled": false,
+    "id": "",
+    "mode": "global",
+    "startedBy": "",
+    "startedAt": 0,
+    "endsAt": 0,
+    "announcedGroups": [],
+    "claims": {},
+    "tickets": {},
+    "drops": {},
+    "lastAutoDropAt": 0,
+    "byeNoticeSent": false,
+    "jackpot": {
+      "base": 1000000,
+      "current": 1000000,
+      "won": false,
+      "winner": "",
+      "wonAt": 0
+    },
+    "rewardsGiven": {
+      "soles": 0,
+      "fragments": 0,
+      "boxes": 0,
+      "tickets": 0,
+      "vipTrials": 0,
+      "jackpotWins": 0
+    },
+    "multipliers": {
+      "global": null,
+      "groups": {}
+    }
+  },
+  "groups": {
+    "120363425370570775@g.us": {
+      "name": "Grupo de sorteos",
+      "enabled": true,
+      "totalClaims": 0,
+      "totalBoxes": 0,
+      "lastEventAt": 0,
+      "lastRainAt": 0,
+      "lastMultiplierAt": 0
+    },
+    "120363407781521054@g.us": {
+      "name": "Grupo",
+      "enabled": true,
+      "totalClaims": 1,
+      "totalBoxes": 0,
+      "lastEventAt": 0,
+      "lastRainAt": 0,
+      "lastMultiplierAt": 1779306032742
+    },
+    "120363283369637392@g.us": {
+      "name": "",
+      "enabled": true,
+      "totalClaims": 0,
+      "totalBoxes": 1,
+      "lastEventAt": 0,
+      "lastRainAt": 1779306215713,
+      "lastMultiplierAt": 1779306082158
+    },
+    "120363427149052395@g.us": {
+      "name": "",
+      "enabled": true,
+      "totalClaims": 0,
+      "totalBoxes": 1,
+      "lastEventAt": 0,
+      "lastRainAt": 1779306244316,
+      "lastMultiplierAt": 1779306116371
+    },
+    "120363423874172083@g.us": {
+      "name": "",
+      "enabled": true,
+      "totalClaims": 0,
+      "totalBoxes": 0,
+      "lastEventAt": 0,
+      "lastRainAt": 0,
+      "lastMultiplierAt": 1779306300588
+    }
+  },
+  "users": {
+    "5219212539534@s.whatsapp.net": {
+      "fragments": 0,
+      "totalTickets": 4,
+      "totalClaims": 1,
+      "lastClaim": 1779305894655,
+      "wonFinals": 0,
+      "vipTrialsWon": 0
+    },
+    "573205194898@s.whatsapp.net": {
+      "fragments": 0,
+      "totalTickets": 16,
+      "totalClaims": 0,
+      "lastClaim": 0,
+      "wonFinals": 0,
+      "vipTrialsWon": 0
+    }
+  },
+  "sharedGroupsCache": {
+    "updatedAt": 1779423033368,
+    "groups": {
+      "120363425370570775@g.us": {
+        "id": "120363425370570775@g.us",
+        "name": "SORTEOS",
+        "participants": 9,
+        "eligible": true,
+        "isSorteos": true
+      },
+      "120363407867326565@g.us": {
+        "id": "120363407867326565@g.us",
+        "name": "🔊🔥FULL CAR AUDIO🔥🔊",
+        "participants": 51,
+        "eligible": true,
+        "isSorteos": false
+      },
+      "120363407820797260@g.us": {
+        "id": "120363407820797260@g.us",
+        "name": "CAR AUDIO 🔥",
+        "participants": 62,
+        "eligible": true,
+        "isSorteos": false
+      },
+      "120363406261205907@g.us": {
+        "id": "120363406261205907@g.us",
+        "name": "♥ {Hentai y más} ♥",
+        "participants": 70,
+        "eligible": true,
+        "isSorteos": false
+      },
+      "120363427149052395@g.us": {
+        "id": "120363427149052395@g.us",
+        "name": "🌹🌷GRUPO DE MEN AND WOMEN🌷🌹            (ORIGINAL)💓",
+        "participants": 71,
+        "eligible": true,
+        "isSorteos": false
+      },
+      "120363422511481547@g.us": {
+        "id": "120363422511481547@g.us",
+        "name": "SCRIPTS",
+        "participants": 80,
+        "eligible": true,
+        "isSorteos": false
+      },
+      "120363425471886018@g.us": {
+        "id": "120363425471886018@g.us",
+        "name": "Trades/ general :v",
+        "participants": 87,
+        "eligible": true,
+        "isSorteos": false
+      },
+      "120363359399266051@g.us": {
+        "id": "120363359399266051@g.us",
+        "name": "🌟El Jardín De Cazador✨",
+        "participants": 90,
+        "eligible": true,
+        "isSorteos": false
+      },
+      "120363424805824355@g.us": {
+        "id": "120363424805824355@g.us",
+        "name": "Tradess e intercambios",
+        "participants": 105,
+        "eligible": true,
+        "isSorteos": false
+      },
+      "120363424193563425@g.us": {
+        "id": "120363424193563425@g.us",
+        "name": "‧͙⁺˚*･༓☾⃢ General ☽༓･*˚⁺‧͙",
+        "participants": 115,
+        "eligible": true,
+        "isSorteos": false
+      },
+      "120363409030726401@g.us": {
+        "id": "120363409030726401@g.us",
+        "name": "STEEL A BRAINROTS PERU Y ARGENTINA COMUNIDAD",
+        "participants": 119,
+        "eligible": true,
+        "isSorteos": false
+      },
+      "120363406441685717@g.us": {
+        "id": "120363406441685717@g.us",
+        "name": "GMSAB: Trades,Pvps,Ventas💱👀",
+        "participants": 134,
+        "eligible": true,
+        "isSorteos": false
+      },
+      "120363422655002352@g.us": {
+        "id": "120363422655002352@g.us",
+        "name": ",◦•●◉✿ 𝐹𝑒𝑚𝑏𝑜𝑦𝑠 𝑃𝑟𝑜𝑓𝑎𝑛𝑜𝑠 ✿◉●•◦",
+        "participants": 142,
+        "eligible": true,
+        "isSorteos": false
+      },
+      "120363406858989228@g.us": {
+        "id": "120363406858989228@g.us",
+        "name": "Dragón trades",
+        "participants": 184,
+        "eligible": true,
+        "isSorteos": false
+      },
+      "120363283369637392@g.us": {
+        "id": "120363283369637392@g.us",
+        "name": "💕 CHAT FREE FIRE /  \nROBLOX / ETC. CAMI BLINK",
+        "participants": 247,
+        "eligible": true,
+        "isSorteos": false
+      },
+      "120363298843412978@g.us": {
+        "id": "120363298843412978@g.us",
+        "name": "C/V Libre",
+        "participants": 436,
+        "eligible": true,
+        "isSorteos": false
+      },
+      "120363427622049744@g.us": {
+        "id": "120363427622049744@g.us",
+        "name": "Unan a todo el mundo",
+        "participants": 582,
+        "eligible": true,
+        "isSorteos": false
+      }
+    }
+  },
+  "logs": [
+    {
+      "time": 1779507478134,
+      "action": "EVENT_STOP",
+      "chat": "120363423874172083@g.us",
+      "jid": "269015712845891@lid",
+      "amount": 0,
+      "reward": "stop",
+      "detail": "EV-MPHSSZNI-O41S",
+      "by": "269015712845891@lid"
+    },
+    {
+      "time": 1779507478134,
+      "action": "EVENT_STOP_NO_TICKETS",
+      "chat": "120363423874172083@g.us",
+      "jid": "269015712845891@lid",
+      "amount": 0,
+      "reward": "stop",
+      "detail": "EV-MPHSSZNI-O41S",
+      "by": "269015712845891@lid"
+    },
+    {
+      "time": 1779507475328,
+      "action": "EVENT_START_NO_NOTICE",
+      "chat": "120363423874172083@g.us",
+      "jid": "269015712845891@lid",
+      "amount": 900000,
+      "reward": "start",
+      "detail": "",
+      "by": "269015712845891@lid"
+    },
+    {
+      "time": 1779424881804,
+      "action": "AUTO_DROP",
+      "chat": "120363427622049744@g.us",
+      "jid": "",
+      "amount": 3600000,
+      "reward": "viptrial",
+      "detail": "RJX-K84H-5PIG",
+      "by": "51901931862@s.whatsapp.net"
+    },
+    {
+      "time": 1779424851523,
+      "action": "BYE_NOTICE_SENT",
+      "chat": "120363425370570775@g.us",
+      "jid": "",
+      "amount": 0,
+      "reward": "bye",
+      "detail": "Mensaje de cierre enviado",
+      "by": "51901931862@s.whatsapp.net"
+    },
+    {
+      "time": 1779424790959,
+      "action": "AUTO_DROP",
+      "chat": "120363427149052395@g.us",
+      "jid": "",
+      "amount": 5,
+      "reward": "tickets",
+      "detail": "RJX-IEPA-ZO4N",
+      "by": "51901931862@s.whatsapp.net"
+    },
+    {
+      "time": 1779424760370,
+      "action": "AUTO_DROP",
+      "chat": "120363425370570775@g.us",
+      "jid": "",
+      "amount": 10800000,
+      "reward": "viptrial",
+      "detail": "RJX-8YA9-JRH1",
+      "by": "51901931862@s.whatsapp.net"
+    },
+    {
+      "time": 1779424699799,
+      "action": "AUTO_DROP",
+      "chat": "120363406858989228@g.us",
+      "jid": "",
+      "amount": 1,
+      "reward": "tickets",
+      "detail": "RJX-QRL4-BGN3",
+      "by": "51901931862@s.whatsapp.net"
+    },
+    {
+      "time": 1779424638232,
+      "action": "AUTO_DROP",
+      "chat": "120363427622049744@g.us",
+      "jid": "",
+      "amount": 3,
+      "reward": "tickets",
+      "detail": "RJX-NIJY-4TG9",
+      "by": "51901931862@s.whatsapp.net"
+    },
+    {
+      "time": 1779424606818,
+      "action": "AUTO_DROP",
+      "chat": "120363425370570775@g.us",
+      "jid": "",
+      "amount": 3,
+      "reward": "tickets",
+      "detail": "RJX-VVSR-ZIEK",
+      "by": "51901931862@s.whatsapp.net"
+    },
+    {
+      "time": 1779424546026,
+      "action": "AUTO_DROP",
+      "chat": "120363422655002352@g.us",
+      "jid": "",
+      "amount": 3600000,
+      "reward": "viptrial",
+      "detail": "RJX-QMZO-LO9A",
+      "by": "51901931862@s.whatsapp.net"
+    },
+    {
+      "time": 1779424485088,
+      "action": "AUTO_DROP",
+      "chat": "120363298843412978@g.us",
+      "jid": "",
+      "amount": 3600000,
+      "reward": "viptrial",
+      "detail": "RJX-VUBO-5E4A",
+      "by": "51901931862@s.whatsapp.net"
+    },
+    {
+      "time": 1779424454162,
+      "action": "AUTO_DROP",
+      "chat": "120363425370570775@g.us",
+      "jid": "",
+      "amount": 7,
+      "reward": "tickets",
+      "detail": "RJX-YNNA-9A78",
+      "by": "51901931862@s.whatsapp.net"
+    },
+    {
+      "time": 1779424393707,
+      "action": "AUTO_DROP",
+      "chat": "120363427622049744@g.us",
+      "jid": "",
+      "amount": 5,
+      "reward": "fragments",
+      "detail": "RJX-2SA7-6H1O",
+      "by": "51901931862@s.whatsapp.net"
+    },
+    {
+      "time": 1779424332998,
+      "action": "AUTO_DROP",
+      "chat": "120363425471886018@g.us",
+      "jid": "",
+      "amount": 32522,
+      "reward": "soles",
+      "detail": "RJX-T7DL-7RGW",
+      "by": "51901931862@s.whatsapp.net"
+    },
+    {
+      "time": 1779424302559,
+      "action": "AUTO_DROP",
+      "chat": "120363425370570775@g.us",
+      "jid": "",
+      "amount": 215726,
+      "reward": "soles",
+      "detail": "RJX-AC3Z-OZ7Z",
+      "by": "51901931862@s.whatsapp.net"
+    },
+    {
+      "time": 1779424241458,
+      "action": "AUTO_DROP",
+      "chat": "120363407867326565@g.us",
+      "jid": "",
+      "amount": 102631,
+      "reward": "soles",
+      "detail": "RJX-RC3O-XPY7",
+      "by": "51901931862@s.whatsapp.net"
+    },
+    {
+      "time": 1779424180388,
+      "action": "AUTO_DROP",
+      "chat": "120363427622049744@g.us",
+      "jid": "",
+      "amount": 72344,
+      "reward": "soles",
+      "detail": "RJX-3591-KGW1",
+      "by": "51901931862@s.whatsapp.net"
+    },
+    {
+      "time": 1779424148544,
+      "action": "AUTO_DROP",
+      "chat": "120363425370570775@g.us",
+      "jid": "",
+      "amount": 155056,
+      "reward": "soles",
+      "detail": "RJX-DYU2-E2VM",
+      "by": "51901931862@s.whatsapp.net"
+    },
+    {
+      "time": 1779424087948,
+      "action": "AUTO_DROP",
+      "chat": "120363406441685717@g.us",
+      "jid": "",
+      "amount": 97804,
+      "reward": "soles",
+      "detail": "RJX-8F9O-PP0Q",
+      "by": "51901931862@s.whatsapp.net"
+    },
+    {
+      "time": 1779424027037,
+      "action": "AUTO_DROP",
+      "chat": "120363298843412978@g.us",
+      "jid": "",
+      "amount": 6,
+      "reward": "fragments",
+      "detail": "RJX-C3L5-JAM7",
+      "by": "51901931862@s.whatsapp.net"
+    },
+    {
+      "time": 1779423996695,
+      "action": "AUTO_DROP",
+      "chat": "120363425370570775@g.us",
+      "jid": "",
+      "amount": 18,
+      "reward": "fragments",
+      "detail": "RJX-6DSP-45QB",
+      "by": "51901931862@s.whatsapp.net"
+    },
+    {
+      "time": 1779423935959,
+      "action": "AUTO_DROP",
+      "chat": "120363409030726401@g.us",
+      "jid": "",
+      "amount": 111571,
+      "reward": "soles",
+      "detail": "RJX-U4OD-HJYG",
+      "by": "51901931862@s.whatsapp.net"
+    },
+    {
+      "time": 1779423875449,
+      "action": "AUTO_DROP",
+      "chat": "120363409030726401@g.us",
+      "jid": "",
+      "amount": 108589,
+      "reward": "soles",
+      "detail": "RJX-7FVL-EGHA",
+      "by": "51901931862@s.whatsapp.net"
+    },
+    {
+      "time": 1779423844793,
+      "action": "AUTO_DROP",
+      "chat": "120363425370570775@g.us",
+      "jid": "",
+      "amount": 7200000,
+      "reward": "viptrial",
+      "detail": "RJX-GC1G-DSCV",
+      "by": "51901931862@s.whatsapp.net"
+    },
+    {
+      "time": 1779423784244,
+      "action": "AUTO_DROP",
+      "chat": "120363407867326565@g.us",
+      "jid": "",
+      "amount": 57471,
+      "reward": "soles",
+      "detail": "RJX-CDWA-UGXG",
+      "by": "51901931862@s.whatsapp.net"
+    },
+    {
+      "time": 1779423722517,
+      "action": "AUTO_DROP",
+      "chat": "120363298843412978@g.us",
+      "jid": "",
+      "amount": 5,
+      "reward": "fragments",
+      "detail": "RJX-T0NP-R36C",
+      "by": "51901931862@s.whatsapp.net"
+    },
+    {
+      "time": 1779423690303,
+      "action": "AUTO_DROP",
+      "chat": "120363425370570775@g.us",
+      "jid": "",
+      "amount": 188543,
+      "reward": "soles",
+      "detail": "RJX-99EJ-AK74",
+      "by": "51901931862@s.whatsapp.net"
+    },
+    {
+      "time": 1779423659829,
+      "action": "EVENT_START_NO_NOTICE",
+      "chat": "120363423874172083@g.us",
+      "jid": "51901931862@s.whatsapp.net",
+      "amount": 1200000,
+      "reward": "start",
+      "detail": "",
+      "by": "51901931862@s.whatsapp.net"
+    },
+    {
+      "time": 1779415914154,
+      "action": "AUTO_DROP",
+      "chat": "120363422655002352@g.us",
+      "jid": "",
+      "amount": 19508,
+      "reward": "soles",
+      "detail": "RJX-RH35-6GIB",
+      "by": "269015712845891@lid"
+    },
+    {
+      "time": 1779415851440,
+      "action": "AUTO_DROP",
+      "chat": "120363283369637392@g.us",
+      "jid": "",
+      "amount": 7555,
+      "reward": "soles",
+      "detail": "RJX-W9LE-SJGL",
+      "by": "269015712845891@lid"
+    },
+    {
+      "time": 1779415818785,
+      "action": "AUTO_DROP",
+      "chat": "120363425370570775@g.us",
+      "jid": "",
+      "amount": 4,
+      "reward": "tickets",
+      "detail": "RJX-4WSD-RPC8",
+      "by": "269015712845891@lid"
+    },
+    {
+      "time": 1779415757351,
+      "action": "AUTO_DROP",
+      "chat": "120363359399266051@g.us",
+      "jid": "",
+      "amount": 1,
+      "reward": "tickets",
+      "detail": "RJX-QA8K-R2FL",
+      "by": "269015712845891@lid"
+    },
+    {
+      "time": 1779415695763,
+      "action": "AUTO_DROP",
+      "chat": "120363424193563425@g.us",
+      "jid": "",
+      "amount": 18376,
+      "reward": "soles",
+      "detail": "RJX-8W1O-QST7",
+      "by": "269015712845891@lid"
+    },
+    {
+      "time": 1779415664063,
+      "action": "AUTO_DROP",
+      "chat": "120363425370570775@g.us",
+      "jid": "",
+      "amount": 8,
+      "reward": "fragments",
+      "detail": "RJX-7GGK-TNHD",
+      "by": "269015712845891@lid"
+    },
+    {
+      "time": 1779415633348,
+      "action": "EVENT_START_NO_NOTICE",
+      "chat": "120363423874172083@g.us",
+      "jid": "269015712845891@lid",
+      "amount": 300000,
+      "reward": "start",
+      "detail": "",
+      "by": "269015712845891@lid"
+    },
+    {
+      "time": 1779396859652,
+      "action": "AUTO_DROP",
+      "chat": "120363359399266051@g.us",
+      "jid": "",
+      "amount": 17733,
+      "reward": "soles",
+      "detail": "RJX-1SJ4-M87G",
+      "by": "51901931862@s.whatsapp.net"
+    },
+    {
+      "time": 1779396799115,
+      "action": "AUTO_DROP",
+      "chat": "120363409030726401@g.us",
+      "jid": "",
+      "amount": 2,
+      "reward": "fragments",
+      "detail": "RJX-8F7W-PDSZ",
+      "by": "51901931862@s.whatsapp.net"
+    },
+    {
+      "time": 1779396768563,
+      "action": "AUTO_DROP",
+      "chat": "120363425370570775@g.us",
+      "jid": "",
+      "amount": 80867,
+      "reward": "soles",
+      "detail": "RJX-O83N-OEL1",
+      "by": "51901931862@s.whatsapp.net"
+    },
+    {
+      "time": 1779396707885,
+      "action": "AUTO_DROP",
+      "chat": "120363407867326565@g.us",
+      "jid": "",
+      "amount": 18125,
+      "reward": "soles",
+      "detail": "RJX-VFUU-WU11",
+      "by": "51901931862@s.whatsapp.net"
+    },
+    {
+      "time": 1779396646997,
+      "action": "AUTO_DROP",
+      "chat": "120363422511481547@g.us",
+      "jid": "",
+      "amount": 1,
+      "reward": "fragments",
+      "detail": "RJX-DBD1-2Q23",
+      "by": "51901931862@s.whatsapp.net"
+    },
+    {
+      "time": 1779396616396,
+      "action": "AUTO_DROP",
+      "chat": "120363425370570775@g.us",
+      "jid": "",
+      "amount": 3600000,
+      "reward": "viptrial",
+      "detail": "RJX-9DIL-HD7C",
+      "by": "51901931862@s.whatsapp.net"
+    },
+    {
+      "time": 1779396585981,
+      "action": "EVENT_START_NO_NOTICE",
+      "chat": "120363423874172083@g.us",
+      "jid": "51901931862@s.whatsapp.net",
+      "amount": 300000,
+      "reward": "start",
+      "detail": "",
+      "by": "51901931862@s.whatsapp.net"
+    },
+    {
+      "time": 1779385834447,
+      "action": "AUTO_DROP",
+      "chat": "120363425370570775@g.us",
+      "jid": "",
+      "amount": 5,
+      "reward": "tickets",
+      "detail": "RJX-ID2L-VFYU",
+      "by": "51901931862@s.whatsapp.net"
+    },
+    {
+      "time": 1779385773431,
+      "action": "AUTO_DROP",
+      "chat": "120363407820797260@g.us",
+      "jid": "",
+      "amount": 123245,
+      "reward": "soles",
+      "detail": "RJX-00AP-P9EQ",
+      "by": "51901931862@s.whatsapp.net"
+    },
+    {
+      "time": 1779385711102,
+      "action": "AUTO_DROP",
+      "chat": "120363298843412978@g.us",
+      "jid": "",
+      "amount": 5,
+      "reward": "tickets",
+      "detail": "RJX-GTGK-5EPD",
+      "by": "51901931862@s.whatsapp.net"
+    },
+    {
+      "time": 1779385680255,
+      "action": "AUTO_DROP",
+      "chat": "120363425370570775@g.us",
+      "jid": "",
+      "amount": 1143748,
+      "reward": "soles",
+      "detail": "RJX-R9JI-ANH5",
+      "by": "51901931862@s.whatsapp.net"
+    },
+    {
+      "time": 1779385650208,
+      "action": "EVENT_START_NO_NOTICE",
+      "chat": "120363423874172083@g.us",
+      "jid": "51901931862@s.whatsapp.net",
+      "amount": 600000,
+      "reward": "start",
+      "detail": "",
+      "by": "51901931862@s.whatsapp.net"
+    },
+    {
+      "time": 1779342583499,
+      "action": "EVENT_START",
+      "chat": "120363423874172083@g.us",
+      "jid": "51901931862@s.whatsapp.net",
+      "amount": 180000,
+      "reward": "start",
+      "detail": "",
+      "by": "51901931862@s.whatsapp.net"
+    },
+    {
+      "time": 1779306300588,
+      "action": "MULTIPLIER",
+      "chat": "120363423874172083@g.us",
+      "jid": "51901931862@s.whatsapp.net",
+      "amount": 2,
+      "reward": "x2",
+      "detail": "",
+      "by": "51901931862@s.whatsapp.net"
+    },
+    {
+      "time": 1779306293493,
+      "action": "BOX_CLAIM",
+      "chat": "120363427149052395@g.us",
+      "jid": "573205194898@s.whatsapp.net",
+      "amount": 16,
+      "reward": "tickets",
+      "detail": "",
+      "by": ""
+    },
+    {
+      "time": 1779306270381,
+      "action": "BOX_CLAIM",
+      "chat": "120363283369637392@g.us",
+      "jid": "51929625664@s.whatsapp.net",
+      "amount": 306073,
+      "reward": "soles",
+      "detail": "",
+      "by": ""
+    },
+    {
+      "time": 1779306244316,
+      "action": "BOX_RAIN",
+      "chat": "120363427149052395@g.us",
+      "jid": "51901931862@s.whatsapp.net",
+      "amount": 10,
+      "reward": "boxes",
+      "detail": "",
+      "by": "51901931862@s.whatsapp.net"
+    },
+    {
+      "time": 1779306215714,
+      "action": "BOX_RAIN",
+      "chat": "120363283369637392@g.us",
+      "jid": "51901931862@s.whatsapp.net",
+      "amount": 10,
+      "reward": "boxes",
+      "detail": "",
+      "by": "51901931862@s.whatsapp.net"
+    },
+    {
+      "time": 1779306116371,
+      "action": "MULTIPLIER",
+      "chat": "120363427149052395@g.us",
+      "jid": "51901931862@s.whatsapp.net",
+      "amount": 2,
+      "reward": "x2",
+      "detail": "",
+      "by": "51901931862@s.whatsapp.net"
+    },
+    {
+      "time": 1779306082158,
+      "action": "MULTIPLIER",
+      "chat": "120363283369637392@g.us",
+      "jid": "51901931862@s.whatsapp.net",
+      "amount": 2,
+      "reward": "x2",
+      "detail": "",
+      "by": "51901931862@s.whatsapp.net"
+    },
+    {
+      "time": 1779306071863,
+      "action": "MULTIPLIER",
+      "chat": "120363283369637392@g.us",
+      "jid": "51901931862@s.whatsapp.net",
+      "amount": 2,
+      "reward": "x2",
+      "detail": "",
+      "by": "51901931862@s.whatsapp.net"
+    },
+    {
+      "time": 1779306053794,
+      "action": "MULTIPLIER",
+      "chat": "120363283369637392@g.us",
+      "jid": "51901931862@s.whatsapp.net",
+      "amount": 2,
+      "reward": "x2",
+      "detail": "",
+      "by": "51901931862@s.whatsapp.net"
+    },
+    {
+      "time": 1779306032743,
+      "action": "MULTIPLIER",
+      "chat": "120363407781521054@g.us",
+      "jid": "51901931862@s.whatsapp.net",
+      "amount": 2,
+      "reward": "x2",
+      "detail": "",
+      "by": "51901931862@s.whatsapp.net"
+    },
+    {
+      "time": 1779305894658,
+      "action": "CLAIM_TICKETS",
+      "chat": "120363407781521054@g.us",
+      "jid": "5219212539534@s.whatsapp.net",
+      "amount": 4,
+      "reward": "tickets",
+      "detail": "",
+      "by": ""
+    },
+    {
+      "time": 1779305754362,
+      "action": "EVENT_START",
+      "chat": "120363423874172083@g.us",
+      "jid": "51901931862@s.whatsapp.net",
+      "amount": 900000,
+      "reward": "start",
+      "detail": "",
+      "by": "51901931862@s.whatsapp.net"
+    },
+    {
+      "time": 1779304010807,
+      "action": "EVENT_START",
+      "chat": "120363423874172083@g.us",
+      "jid": "51901931862@s.whatsapp.net",
+      "amount": 900000,
+      "reward": "start",
+      "detail": "",
+      "by": "51901931862@s.whatsapp.net"
+    },
+    {
+      "time": 1779303326857,
+      "action": "EVENT_START",
+      "chat": "120363423874172083@g.us",
+      "jid": "51901931862@s.whatsapp.net",
+      "amount": 900000,
+      "reward": "start",
+      "detail": "",
+      "by": "51901931862@s.whatsapp.net"
+    },
+    {
+      "time": 1779303188347,
+      "action": "SET_SORTEOS",
+      "chat": "120363425370570775@g.us",
+      "jid": "51901931862@s.whatsapp.net",
+      "amount": 0,
+      "reward": "settings",
+      "detail": "",
+      "by": "51901931862@s.whatsapp.net"
+    }
+  ]
+}

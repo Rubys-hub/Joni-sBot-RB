@@ -4,6 +4,36 @@ function ensureNumber(value, fallback = 0) {
   return isNumber(value) ? value : fallback
 }
 
+function cleanJid(jid = '') {
+  return String(jid || '').split(':')[0].trim()
+}
+
+function onlyNumber(jid = '') {
+  return cleanJid(jid).split('@')[0].replace(/\D/g, '')
+}
+
+function sameUser(a = '', b = '') {
+  const rawA = cleanJid(a)
+  const rawB = cleanJid(b)
+
+  if (rawA && rawB && rawA === rawB) return true
+
+  const numA = onlyNumber(rawA)
+  const numB = onlyNumber(rawB)
+
+  return !!numA && !!numB && numA === numB
+}
+
+function findUserKey(users = {}, jid = '') {
+  const clean = cleanJid(jid)
+
+  if (users[clean]) return clean
+
+  const found = Object.keys(users).find(key => sameUser(key, clean))
+
+  return found || clean
+}
+
 function initDB(m, client) {
   global.db.data ||= {}
   global.db.data.users ||= {}

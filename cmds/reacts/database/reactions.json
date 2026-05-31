@@ -64,7 +64,7 @@
     "🪽": {
       "name": "Reacción 🪽",
       "price": 250000,
-      "stock": 8,
+      "stock": 7,
       "rarity": "legendaria",
       "vip": false,
       "enabled": true
@@ -88,7 +88,7 @@
     "🔥": {
       "name": "Reacción 🔥",
       "price": 300000,
-      "stock": 20,
+      "stock": 19,
       "rarity": "epica",
       "vip": false,
       "enabled": true
@@ -144,7 +144,7 @@
     "👑": {
       "name": "Reacción 👑",
       "price": 1000000,
-      "stock": 10,
+      "stock": 9,
       "rarity": "legendaria",
       "vip": false,
       "enabled": true
@@ -180,11 +180,12 @@
         "💠",
         "🪽",
         "💎",
-        "🪬"
+        "🪬",
+        "👑"
       ],
-      "active": "🪬",
+      "active": "👑",
       "vip": false,
-      "lastReact": 1778990740195
+      "lastReact": 1780201999510
     },
     "573123836181@s.whatsapp.net": {
       "owned": [
@@ -192,7 +193,7 @@
       ],
       "active": "💠",
       "vip": false,
-      "lastReact": 1778718363571
+      "lastReact": 1779761000285
     },
     "51936062921@s.whatsapp.net": {
       "owned": [
@@ -208,7 +209,7 @@
       ],
       "active": "💠",
       "vip": false,
-      "lastReact": 1778990530392
+      "lastReact": 1779555598483
     },
     "51949449279@s.whatsapp.net": {
       "owned": [
@@ -217,7 +218,7 @@
       ],
       "active": "💠",
       "vip": false,
-      "lastReact": 1778952965266
+      "lastReact": 1780202503874
     },
     "5493868409963@s.whatsapp.net": {
       "owned": [
@@ -241,7 +242,7 @@
       ],
       "active": "💠",
       "vip": false,
-      "lastReact": 1778717167208
+      "lastReact": 1779566468402
     },
     "51929625664@s.whatsapp.net": {
       "owned": [
@@ -259,7 +260,7 @@
       ],
       "active": "💠",
       "vip": false,
-      "lastReact": 1778992726571
+      "lastReact": 1779841262456
     },
     "573205194898@s.whatsapp.net": {
       "owned": [
@@ -267,15 +268,16 @@
       ],
       "active": "🪽",
       "vip": false,
-      "lastReact": 1778996752120
+      "lastReact": 1780202951809
     },
     "34614341273@s.whatsapp.net": {
       "owned": [
-        "🤍"
+        "🤍",
+        "🔥"
       ],
-      "active": "🤍",
+      "active": "🔥",
       "vip": false,
-      "lastReact": 1778822237504
+      "lastReact": 1780171523914
     },
     "34615600302@s.whatsapp.net": {
       "owned": [
@@ -283,15 +285,16 @@
       ],
       "active": "😎",
       "vip": false,
-      "lastReact": 1778777893615
+      "lastReact": 1779034393400
     },
     "5219212539534@s.whatsapp.net": {
       "owned": [
-        "🫏"
+        "🫏",
+        "🪽"
       ],
-      "active": "🫏",
+      "active": "🪽",
       "vip": false,
-      "lastReact": 1778648160513
+      "lastReact": 1780032602720
     },
     "34643244581@s.whatsapp.net": {
       "owned": [
@@ -299,7 +302,7 @@
       ],
       "active": "🫏",
       "vip": false,
-      "lastReact": 1778648330788
+      "lastReact": 1780170239943
     },
     "51905938911@s.whatsapp.net": {
       "owned": [
@@ -308,7 +311,7 @@
       ],
       "active": "🥶",
       "vip": false,
-      "lastReact": 1778958491929
+      "lastReact": 1780204499306
     }
   }
 }

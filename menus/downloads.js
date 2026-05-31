@@ -39,7 +39,7 @@ export default {
 
 
         𓆩 📥 *DOWNLOAD SYSTEM* 📥 𓆪
-        ✨ *Total disponible:* 13 comandos
+        ✨ *Total disponible:* 14 comandos
         ⚡ *Modo:* descargas, búsquedas y recursos
 
 
@@ -97,14 +97,8 @@ Descarga archivos desde Google Drive. También puedes usar el alias *${currentPr
 📲 *${currentPrefix}apk* _nombre de app_:
 Busca y descarga aplicaciones en formato APK. También funciona con *${currentPrefix}aptoide* o *${currentPrefix}apkdl*.
 
-
-
-ꕥ 🌐 *EXTRA*
-
-👥 *${currentPrefix}wpgrupos* _texto_:
-Busca grupos de WhatsApp relacionados con el texto indicado. También funciona con *${currentPrefix}gruposwa* o *${currentPrefix}wagrupos*.
-
-
+🎵 *${currentPrefix}audiomp3* / *${currentPrefix}mp3*:
+Convierte enlaces, videos o archivos de audio a MP3 enviable por WhatsApp.
 
         𓆩 🔙 *RETURN* 🔙 𓆪
 

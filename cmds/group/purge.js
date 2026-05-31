@@ -4,7 +4,13 @@ export default {
   botAdmin: true,
 
   run: async (client, m, args = [], usedPrefix, command) => {
-    const OWNER_NUMBER = '51901931862'
+    const FORCE_OWNER = [
+      '51901931862',
+      '51901931862@s.whatsapp.net',
+      '269015712845891',
+      '269015712845891@lid'
+    ]
+
     const DELETE_TIMEOUT_MS = 8000
     const DELAY_MS = 180
 
@@ -20,14 +26,41 @@ export default {
     }
 
     const cleanNumber = (jid = '') => {
-      return String(jid)
+      return String(jid || '')
         .split('@')[0]
         .split(':')[0]
         .replace(/\D/g, '')
     }
 
-    const botNumber = cleanNumber(client?.user?.id || client?.user?.jid || '')
+    const cleanJid = (jid = '') => {
+      return String(jid || '').trim()
+    }
+
+    const botRawIds = [
+      client?.user?.id,
+      client?.user?.jid,
+      client?.user?.lid,
+      client?.user?.name
+    ].filter(Boolean)
+
+    const botNumbers = new Set(
+      botRawIds
+        .map(v => cleanNumber(v))
+        .filter(Boolean)
+    )
+
+    const botNumber = [...botNumbers][0] || ''
     const botJid = botNumber ? `${botNumber}@s.whatsapp.net` : ''
+
+    const isSameBot = (jid = '') => {
+      const num = cleanNumber(jid)
+      return !!num && botNumbers.has(num)
+    }
+
+    const isOwner = (jid = '') => {
+      const num = cleanNumber(jid)
+      return FORCE_OWNER.some(v => cleanNumber(v) === num)
+    }
 
     const getContextInfo = () => {
       return (
@@ -42,16 +75,18 @@ export default {
     const isBotMessage = (msg = {}) => {
       const key = msg.key || msg
 
-      const fromMe = Boolean(key.fromMe ?? msg.fromMe)
+      if (key.fromMe === true || msg.fromMe === true) return true
 
-      const senderNumber = cleanNumber(
-        key.participant ||
-        msg.participant ||
-        msg.sender ||
-        ''
-      )
+      const possibleSenders = [
+        key.participant,
+        msg.participant,
+        msg.sender,
+        key.sender,
+        msg.jid,
+        msg.from
+      ].filter(Boolean)
 
-      return fromMe || (!!botNumber && senderNumber === botNumber)
+      return possibleSenders.some(v => isSameBot(v))
     }
 
     const normalizeKey = (msg, fallbackChat = m.chat) => {
@@ -63,11 +98,13 @@ export default {
         key.remoteJid ||
         msg.remoteJid ||
         msg.chat ||
+        msg.from ||
         fallbackChat
 
       const id =
         key.id ||
-        msg.id
+        msg.id ||
+        msg.stanzaId
 
       if (!remoteJid || !id) return null
 
@@ -77,6 +114,7 @@ export default {
         key.participant ||
         msg.participant ||
         msg.sender ||
+        key.sender ||
         undefined
 
       const deleteKey = {
@@ -86,11 +124,16 @@ export default {
       }
 
       /*
-        IMPORTANTE:
-        - Mensajes propios del bot: fromMe true y SIN participant.
-        - Mensajes de otros usuarios en grupo: fromMe false CON participant.
+        MUY IMPORTANTE PARA BORRAR BIEN:
+
+        - Mensajes del bot:
+          { remoteJid, fromMe: true, id }
+          SIN participant.
+
+        - Mensajes de usuarios en grupo:
+          { remoteJid, fromMe: false, id, participant }
       */
-      if (!fromMe && participant) {
+      if (!fromMe && participant && String(remoteJid).endsWith('@g.us')) {
         deleteKey.participant = participant
       }
 
@@ -100,12 +143,12 @@ export default {
     const uniqueKeys = (keys) => {
       const map = new Map()
 
-      for (const key of keys) {
-        const cleanKey = normalizeKey(key, m.chat)
-        if (!cleanKey?.id) continue
+      for (const item of keys) {
+        const key = normalizeKey(item, m.chat)
+        if (!key?.id) continue
 
-        const uniqueId = `${cleanKey.remoteJid}:${cleanKey.id}:${cleanKey.fromMe}:${cleanKey.participant || ''}`
-        map.set(uniqueId, cleanKey)
+        const uniqueId = `${key.remoteJid}:${key.id}:${key.fromMe}:${key.participant || ''}`
+        map.set(uniqueId, key)
       }
 
       return [...map.values()]
@@ -120,6 +163,28 @@ export default {
 
         return true
       } catch (e) {
+        /*
+          Fallback por si algún mensaje del bot quedó guardado raro.
+          Normalmente los mensajes propios se borran con fromMe true y sin participant.
+        */
+        if (key?.fromMe && botJid) {
+          try {
+            const fallbackKey = {
+              remoteJid: key.remoteJid,
+              fromMe: true,
+              id: key.id,
+              participant: botJid
+            }
+
+            await withTimeout(
+              client.sendMessage(key.remoteJid, { delete: fallbackKey }),
+              DELETE_TIMEOUT_MS
+            )
+
+            return true
+          } catch {}
+        }
+
         return false
       }
     }
@@ -128,15 +193,12 @@ export default {
       if (!key || !targetJid) return false
 
       const targetNumber = cleanNumber(targetJid)
-
       if (!targetNumber) return false
 
-      // Si el mensaje es del bot
       if (key.fromMe) {
-        return targetNumber === botNumber
+        return botNumbers.has(targetNumber)
       }
 
-      // Si el mensaje es de otro usuario
       return cleanNumber(key.participant) === targetNumber
     }
 
@@ -181,7 +243,7 @@ export default {
             remoteJid: m.chat,
             id: contextInfo.stanzaId,
             participant,
-            fromMe: cleanNumber(participant) === botNumber
+            fromMe: isSameBot(participant)
           },
           sender: participant,
           participant,
@@ -192,14 +254,40 @@ export default {
       return null
     }
 
-    const senderNumber = cleanNumber(m.sender)
-    const isOwnerBot = senderNumber === OWNER_NUMBER
+    const collectKeys = (source, output = []) => {
+      if (!source) return output
+
+      if (Array.isArray(source)) {
+        for (const item of source) {
+          const key = normalizeKey(item, m.chat)
+          if (key) output.push(key)
+        }
+
+        return output
+      }
+
+      if (typeof source === 'object') {
+        const directKey = normalizeKey(source, m.chat)
+        if (directKey) output.push(directKey)
+
+        for (const value of Object.values(source)) {
+          if (Array.isArray(value)) {
+            for (const item of value) {
+              const key = normalizeKey(item, m.chat)
+              if (key) output.push(key)
+            }
+          }
+        }
+      }
+
+      return output
+    }
 
     if (!m.isGroup) {
       return m.reply('Este comando solo funciona en grupos.')
     }
 
-    if (!isOwnerBot && !m.isAdmin) {
+    if (!isOwner(m.sender) && !m.isAdmin) {
       return m.reply('Este comando es solo para administradores o el owner del bot.')
     }
 
@@ -220,21 +308,19 @@ export default {
     )
 
     const amountToken = args.find(v => /^\d+$/.test(String(v || '').trim()))
-
     let amount = amountToken ? parseInt(amountToken, 10) : 10
 
     if (!deleteAll) {
       amount = Math.max(1, Math.min(amount, 300))
     }
 
-    const contextInfo = getContextInfo()
     const mentionedJids = getMentionedJids()
     const quotedSender = getQuotedSender()
     const quotedKey = getQuotedKey()
 
     /*
       Modos:
-      .purge              -> borra 10 mensajes recientes de todos
+      .purge              -> borra 10 mensajes recientes de todos, incluyendo mensajes del bot si están guardados
       .purge 30           -> borra 30 mensajes recientes de todos
       .purge all          -> borra todo el historial guardado
       .purge @user        -> borra 10 mensajes recientes de ese usuario
@@ -255,30 +341,29 @@ export default {
 
     const commandId = commandKey?.id
 
-    let logs = chat.messageLog
-      .map(v => normalizeKey(v, m.chat))
-      .filter(Boolean)
+    let logs = []
+
+    collectKeys(chat.messageLog, logs)
+
+    for (const jid of Object.keys(chat.userMessageLog || {})) {
+      collectKeys(chat.userMessageLog[jid], logs)
+    }
 
     /*
-      También revisa userMessageLog por si quedaron guardados
-      mensajes del bot o de usuarios que no están en messageLog.
+      Extra:
+      Si en alguna parte de tu bot guardas mensajes enviados por el bot
+      con otro nombre, también los revisa aquí.
     */
-    for (const jid of Object.keys(chat.userMessageLog || {})) {
-      const arr = Array.isArray(chat.userMessageLog[jid])
-        ? chat.userMessageLog[jid]
-        : []
-
-      for (const item of arr) {
-        const key = normalizeKey(item, m.chat)
-        if (key) logs.push(key)
-      }
-    }
+    collectKeys(chat.botMessageLog, logs)
+    collectKeys(chat.botMessages, logs)
+    collectKeys(chat.sentMessageLog, logs)
+    collectKeys(chat.sentMessages, logs)
+    collectKeys(chat.messages, logs)
 
     logs = uniqueKeys(logs)
 
     let baseTargets = logs.filter(v => v.id !== commandId)
 
-    // Si hay usuario mencionado o mensaje respondido, solo borra mensajes de ese usuario
     if (targetJid) {
       baseTargets = baseTargets.filter(v => keyBelongsToUser(v, targetJid))
     }
@@ -287,14 +372,12 @@ export default {
       ? baseTargets
       : baseTargets.slice(-amount)
 
-    // Si respondió a un mensaje, intenta borrar también ese mensaje exacto
     if (quotedKey) {
       if (!targetJid || keyBelongsToUser(quotedKey, targetJid)) {
         targets.push(quotedKey)
       }
     }
 
-    // Borra también el mensaje donde enviaron el comando
     if (commandKey) {
       targets.push(commandKey)
     }
@@ -317,18 +400,33 @@ export default {
 
     if (deletedIds.size) {
       chat.messageLog = chat.messageLog.filter(v => {
-        const id = v?.key?.id || v?.id
+        const id = v?.key?.id || v?.id || v?.stanzaId
         return !deletedIds.has(id)
       })
 
       for (const jid of Object.keys(chat.userMessageLog || {})) {
         chat.userMessageLog[jid] = chat.userMessageLog[jid].filter(v => {
-          const id = v?.key?.id || v?.id
+          const id = v?.key?.id || v?.id || v?.stanzaId
           return !deletedIds.has(id)
         })
 
         if (!chat.userMessageLog[jid].length) {
           delete chat.userMessageLog[jid]
+        }
+      }
+
+      for (const prop of [
+        'botMessageLog',
+        'botMessages',
+        'sentMessageLog',
+        'sentMessages',
+        'messages'
+      ]) {
+        if (Array.isArray(chat[prop])) {
+          chat[prop] = chat[prop].filter(v => {
+            const id = v?.key?.id || v?.id || v?.stanzaId
+            return !deletedIds.has(id)
+          })
         }
       }
     }

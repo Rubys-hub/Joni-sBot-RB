@@ -1,59 +1,87 @@
+import {
+  getEconomyContext,
+  economyOffText,
+  applyGainBonus,
+  formatMoney,
+  formatTime,
+  saveDB,
+  vipBenefitLine,
+  vipReminder
+} from '../../core/vipNormalBonus.js'
+
+const MONTH = 30 * 24 * 60 * 60 * 1000
+const MAX_STREAK = 12
+
 export default {
   command: ['monthly', 'mensual'],
   category: 'rpg',
-  run: async (client, m, args, usedPrefix) => {
-    const chat = global.db.data.chats[m.chat]
+  group: true,
 
-    if (chat.adminonly || !chat.economy) return m.reply(`⚠️ ᴇᴄᴏɴᴏᴍíᴀ ᴏғғ ✦ Un admin puede activarla con *${usedPrefix}economy on*`)
+  run: async (client, m, args = [], usedPrefix = '.') => {
+    try {
+      const { chatData, user, globalUser, currency, vipBonus } = await getEconomyContext(client, m, usedPrefix)
 
-    const botId = client.user.id.split(':')[0] + '@s.whatsapp.net'
-    const bot = global.db.data.settings[botId]
-    const currency = bot.currency
+      if (chatData.adminonly || !chatData.economy) {
+        return m.reply(economyOffText(usedPrefix))
+      }
 
-    const user = global.db.data.chats[m.chat].users[m.sender]
-    const users = global.db.data.users[m.sender]
+      const now = Date.now()
 
-    const gap = 2592000000
-    const now = Date.now()
+      globalUser.monthlyStreak ??= 0
+      globalUser.lastMonthlyGlobal ??= 0
+      user.lastmonthly ??= 0
+      user.coins ??= 0
 
-    users.monthlyStreak ||= 0
-    users.lastMonthlyGlobal ||= 0
-    user.coins ||= 0
-    user.lastmonthly ||= 0
+      if (now < user.lastmonthly) {
+        return m.reply(
+          `⏳ ᴍᴏɴᴛʜʟʏ — ʏᴀ ʀᴇᴄʟᴀᴍᴀᴅᴏ\n\n` +
+          `Vuelve en: *${formatTime(user.lastmonthly - now)}*` +
+          vipReminder(vipBonus, usedPrefix)
+        )
+      }
 
-    if (now < user.lastmonthly) {
-      const wait = formatTime(Math.floor((user.lastmonthly - now) / 1000))
-      return client.sendMessage(m.chat, { text: `⏳ ᴇsᴘᴇʀᴀ ✦ Ya reclamaste tu recompensa mensual. ✦ Vuelve en *${wait}*` }, { quoted: m })
+      const lost = globalUser.monthlyStreak >= 1 && now - globalUser.lastMonthlyGlobal > MONTH * 1.5
+      if (lost) globalUser.monthlyStreak = 0
+
+      const canClaimGlobal = now - globalUser.lastMonthlyGlobal >= MONTH
+      if (canClaimGlobal) {
+        globalUser.monthlyStreak = Math.min(globalUser.monthlyStreak + 1, MAX_STREAK)
+        globalUser.lastMonthlyGlobal = now
+      }
+
+      const baseReward = Math.min(150000 + (globalUser.monthlyStreak - 1) * 25000, 1000000)
+      const reward = applyGainBonus(baseReward, vipBonus)
+
+      user.coins = Number(user.coins || 0) + reward.total
+      user.lastmonthly = now + MONTH
+
+      const nextBase = Math.min(150000 + globalUser.monthlyStreak * 25000, 1000000)
+
+      saveDB()
+
+      const text = vipBonus.active
+        ? (
+          `🎁 ᴍᴏɴᴛʜʟʏ — ʙᴏɴᴏ ᴍᴇɴsᴜᴀʟ ᴠɪᴘ\n\n` +
+          `Mes actual: ${globalUser.monthlyStreak}\n` +
+          (lost ? `Perdiste tu racha mensual anterior.\n\n` : `Tu racha mensual sigue activa.\n\n`) +
+          vipBenefitLine(vipBonus, reward, currency) +
+          `Reclamaste: ${formatMoney(reward.total, currency)}\n` +
+          `Próximo base: ${formatMoney(nextBase, currency)}\n` +
+          `Cartera: ${formatMoney(user.coins, currency)}` +
+          vipReminder(vipBonus, usedPrefix)
+        )
+        : (
+          `🎁 ᴍᴏɴᴛʜʟʏ — ʀᴇᴄʟᴀᴍᴀᴅᴏ\n\n` +
+          `Mes actual: ${globalUser.monthlyStreak}\n` +
+          (lost ? `Perdiste tu racha mensual anterior.\n\n` : `Tu racha mensual sigue activa.\n\n`) +
+          `Reclamaste: ${formatMoney(reward.total, currency)}\n` +
+          `Próximo: ${formatMoney(nextBase, currency)}\n` +
+          `Cartera: ${formatMoney(user.coins, currency)}`
+        )
+
+      return m.reply(text)
+    } catch (error) {
+      return m.reply(`Error: ${error?.message || String(error)}`)
     }
-
-    const lost = users.monthlyStreak >= 1 && now - users.lastMonthlyGlobal > gap * 1.5
-    if (lost) users.monthlyStreak = 0
-
-    const canClaimGlobal = now - users.lastMonthlyGlobal >= gap
-    if (canClaimGlobal) {
-      users.monthlyStreak = Math.min(users.monthlyStreak + 1, 8)
-      users.lastMonthlyGlobal = now
-    }
-
-    const coins = Math.min(60000 + (users.monthlyStreak - 1) * 5000, 95000)
-    user.coins += coins
-    user.lastmonthly = now + gap
-
-    const next = Math.min(60000 + users.monthlyStreak * 5000, 95000).toLocaleString()
-    let msg = `🎁 ᴍᴇɴsᴜᴀʟ ✦ Reclamaste *+${coins.toLocaleString()} ${currency}* ✦ Mes *${users.monthlyStreak}* ✦ Próximo: *+${next}*`
-    if (lost) msg += ` ✦ ⚠️ Perdiste tu racha.`
-
-    await client.sendMessage(m.chat, { text: msg }, { quoted: m })
   }
-}
-
-function formatTime(t) {
-  const d = Math.floor(t / 86400)
-  const h = Math.floor((t % 86400) / 3600)
-  const m = Math.floor((t % 3600) / 60)
-  const s = t % 60
-  if (d) return `${d} día${d !== 1 ? 's' : ''} ${h} hora${h !== 1 ? 's' : ''} ${m} minuto${m !== 1 ? 's' : ''}`
-  if (h) return `${h} hora${h !== 1 ? 's' : ''} ${m} minuto${m !== 1 ? 's' : ''} ${s} segundo${s !== 1 ? 's' : ''}`
-  if (m) return `${m} minuto${m !== 1 ? 's' : ''} ${s} segundo${s !== 1 ? 's' : ''}`
-  return `${s} segundo${s !== 1 ? 's' : ''}`
 }

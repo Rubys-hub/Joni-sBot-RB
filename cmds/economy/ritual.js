@@ -1,3 +1,5 @@
+import { applyEventoEconomyMultiplier } from '../adminabuse/eventoEconomy.js'
+
 export default {
   command: ['ritual', 'invoke', 'invocar'],
   category: 'rpg',
@@ -11,6 +13,7 @@ export default {
 
     const user = chat.users[m.sender]
     user.lastinvoke ||= 0
+    user.coins ||= 0
 
     const remaining = user.lastinvoke - Date.now()
     if (remaining > 0) return m.reply(`⏳ ᴇsᴘᴇʀᴀ ✦ Debes esperar *${msToTime(remaining)}* para invocar otro ritual.`)
@@ -37,10 +40,20 @@ export default {
       }
     }
 
+    const eventMult = await applyEventoEconomyMultiplier(m.chat, reward, {
+      currency: monedas
+    })
+
+    reward = eventMult.amount
     user.coins += reward
 
-    let msg = `🔮 ʀɪᴛᴜᴀʟ ✦ ${narration} ✦ Ganaste *S/${reward.toLocaleString()} ${monedas}*`
+    let msg =
+      `> *[ ⌬ ] 🔮 RITUAL*\n\n` +
+      `✨ ${narration}\n` +
+      `💰 *Ganaste:* S/${reward.toLocaleString()} ${monedas}`
+
     if (bonusMsg) msg += bonusMsg
+    msg += eventMult.text || ''
 
     await client.reply(m.chat, msg, m)
   }

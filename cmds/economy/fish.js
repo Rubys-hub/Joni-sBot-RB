@@ -1,3 +1,5 @@
+import { applyEventoEconomyMultiplier } from '../adminabuse/eventoEconomy.js'
+
 export default {
   command: ['pescar', 'fish'],
   category: 'rpg',
@@ -17,10 +19,19 @@ export default {
     const rand = Math.random()
     let cantidad = 0
     let message
+    let eventLine = ''
 
     if (rand < 0.4) {
       cantidad = Math.floor(Math.random() * (8000 - 6000 + 1)) + 6000
       user.coins ||= 0
+
+      const eventMult = await applyEventoEconomyMultiplier(m.chat, cantidad, {
+        currency
+      })
+
+      cantidad = eventMult.amount
+      eventLine = eventMult.text || ''
+
       user.coins += cantidad
 
       const successMessages = [
@@ -70,7 +81,17 @@ export default {
     }
 
     user.lastfish = Date.now() + 8 * 60 * 1000
-    await client.sendMessage(m.chat, { text: `🎣 ᴘᴇsᴄᴀ ✦ ${message}` }, { quoted: m })
+
+    await client.sendMessage(
+      m.chat,
+      {
+        text:
+          `> *[ ⌬ ] 🎣 PESCA*\n\n` +
+          `${message}` +
+          `${eventLine}`
+      },
+      { quoted: m }
+    )
   }
 }
 

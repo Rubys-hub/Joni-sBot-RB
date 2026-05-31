@@ -21,7 +21,7 @@ const isSimpleOperation = (input) => {
 }
 
 export default {
-  command: ['calc', 'calcular', 'math'],
+  command: ['calc', 'calcular', 'calculadora'],
   category: 'utils',
 
   run: async (client, m, args, usedPrefix, command, text) => {

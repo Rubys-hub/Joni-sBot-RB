@@ -1,3 +1,5 @@
+import { applyEventoEconomyMultiplier } from '../adminabuse/eventoEconomy.js'
+
 export default {
   command: ['dungeon', 'mazmorra'],
   category: 'rpg',
@@ -24,9 +26,18 @@ export default {
     let cantidad = 0
     let salud = Math.floor(Math.random() * (18 - 10 + 1)) + 10
     let message
+    let eventLine = ''
 
     if (rand < 0.4) {
       cantidad = Math.floor(Math.random() * (15000 - 12000 + 1)) + 12000
+
+      const eventMult = await applyEventoEconomyMultiplier(m.chat, cantidad, {
+        currency
+      })
+
+      cantidad = eventMult.amount
+      eventLine = eventMult.text || ''
+
       user.coins += cantidad
       user.health -= salud
 
@@ -79,7 +90,17 @@ export default {
     }
 
     user.lastdungeon = Date.now() + 17 * 60 * 1000
-    await client.sendMessage(m.chat, { text: `🏰 ᴍᴀᴢᴍᴏʀʀᴀ ✦ ${message}` }, { quoted: m })
+
+    await client.sendMessage(
+      m.chat,
+      {
+        text:
+          `> *[ ⌬ ] 🏰 MAZMORRA*\n\n` +
+          `${message}` +
+          `${eventLine}`
+      },
+      { quoted: m }
+    )
   }
 }
 

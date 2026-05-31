@@ -15,6 +15,26 @@ function onlyNumber(jid = '') {
   return cleanJid(jid).split('@')[0].replace(/\D/g, '')
 }
 
+
+function findUserKey(chatData = {}, ...jids) {
+  chatData.users ||= {}
+
+  for (const jid of jids) {
+    const clean = cleanJid(jid)
+
+    if (clean && chatData.users[clean]) return clean
+
+    const number = onlyNumber(clean)
+    if (!number) continue
+
+    const foundKey = Object.keys(chatData.users).find(key => onlyNumber(key) === number)
+
+    if (foundKey) return foundKey
+  }
+
+  return null
+}
+
 function isOwnerUser(jid = '') {
   const raw = cleanJid(jid)
   const number = onlyNumber(jid)
@@ -37,41 +57,73 @@ function isOwnerUser(jid = '') {
   })
 }
 
-function formatMoney(amount = 0, jid = '') {
-  if (isOwnerUser(jid)) return '∞'
+function formatNumber(amount = 0) {
   return Number(amount || 0).toLocaleString()
+}
+
+function formatMoney(amount = 0, jid = '', currency = 'Soles') {
+  if (isOwnerUser(jid)) return `∞ ${currency}`
+  return `S/${formatNumber(amount)} ${currency}`
 }
 
 export default {
   command: ['balance', 'bal', 'coins', 'bank'],
   category: 'rpg',
+
   run: async (client, m, args, usedPrefix) => {
     const db = global.db.data
     const chatId = m.chat
+
+    db.chats[chatId] ||= {}
+    db.chats[chatId].users ||= {}
+
     const chatData = db.chats[chatId]
     const botId = client.user.id.split(':')[0] + '@s.whatsapp.net'
-    const botSettings = db.settings[botId]
-    const monedas = botSettings.currency
+    const botSettings = db.settings[botId] || {}
+    const monedas = botSettings.currency || 'Soles'
 
-    if (chatData.adminonly || !chatData.economy) return m.reply(`⚠️ ᴇᴄᴏɴᴏᴍíᴀ ᴏғғ ✦ Un admin puede activarla con *${usedPrefix}economy on*`)
+    if (chatData.adminonly || !chatData.economy) {
+      return m.reply(
+        `╭━━〔 ⚠️ ᴇᴄᴏɴᴏᴍíᴀ ᴏғғ 〕━━⬣\n` +
+        `┃ La economía está desactivada.\n` +
+        `┃ Actívala con: ${usedPrefix}economy on\n` +
+        `╰━━━━━━━━━━━━━━━━⬣`
+      )
+    }
 
     const mentioned = m.mentionedJid || []
     const who2 = mentioned.length > 0 ? mentioned[0] : (m.quoted ? m.quoted.sender : m.sender)
     const who = await resolveLidToRealJid(who2, client, m.chat)
 
-    if (!(who in db.chats[m.chat].users)) {
-      return m.reply(`👤 ᴜsᴜᴀʀɪᴏ ✦ No está registrado en el bot.`)
-    }
+const userKey = findUserKey(chatData, who, who2)
 
-    const user = chatData.users[who]
-    const total = (user.coins || 0) + (user.bank || 0)
+if (!userKey) {
+  return m.reply(
+    `╭━━〔 👤 ᴜsᴜᴀʀɪᴏ ɴᴏ ʀᴇɢɪsᴛʀᴀᴅᴏ 〕━━⬣\n` +
+    `┃ Ese usuario aún no tiene balance.\n` +
+    `┃ Puede empezar con: ${usedPrefix}daily\n` +
+    `╰━━━━━━━━━━━━━━━━⬣`
+  )
+}
 
-    const walletText = formatMoney(user.coins, who)
-    const bankText = formatMoney(user.bank, who)
-    const totalText = formatMoney(total, who)
-    const name = global.db.data.users[who]?.name || who.split('@')[0]
+const user = chatData.users[userKey]
+    const wallet = Number(user.coins || 0)
+    const bank = Number(user.bank || 0)
+    const total = wallet + bank
 
-    const bal = `💰 ʙᴀʟᴀɴᴄᴇ ✦ Usuario: *${name}* ✦ 🪙 Cartera: *S/${walletText} ${monedas}* ✦ 🏦 Banco: *S/${bankText} ${monedas}* ✦ 💎 Total: *S/${totalText} ${monedas}*`
+    const name = db.users[userKey]?.name || user.name || userKey.split('@')[0]
+
+const walletText = formatMoney(wallet, userKey, monedas)
+const bankText = formatMoney(bank, userKey, monedas)
+const totalText = formatMoney(total, userKey, monedas)
+
+    const bal =
+      `╭━━〔 💰 ʙᴀʟᴀɴᴄᴇ 〕━━⬣\n` +
+      `┃ 👤 Usuario: ${name}\n` +
+      `┃ 🪙 Cartera: ${walletText}\n` +
+      `┃ 🏦 Banco: ${bankText}\n` +
+      `┃ 💎 Total: ${totalText}\n` +
+      `╰━━━━━━━━━━━━━━━━⬣`
 
     await client.sendMessage(chatId, { text: bal }, { quoted: m })
   }
