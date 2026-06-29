@@ -1,0 +1,25 @@
+{
+  "version": 1,
+  "createdAt": "2026-06-29T03:56:40.709Z",
+  "updatedAt": "2026-06-29T05:01:00.602Z",
+  "activeGroups": [
+    {
+      "chat": "120363427149052395@g.us",
+      "name": "🌹🌷GRUPO DE MEN AND WOMEN🌷🌹 (ORIGINAL)💓",
+      "level": 5,
+      "mood": "intenso",
+      "social": true,
+      "intervenir": true
+    }
+  ],
+  "config": {
+    "level": 2,
+    "private": true,
+    "social": false,
+    "intervenir": false,
+    "frequency": "media",
+    "mood": "vacio",
+    "personality": "profunda",
+    "silence": false
+  }
+}
