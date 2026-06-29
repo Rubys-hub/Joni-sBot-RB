@@ -36,17 +36,19 @@ export default {
     const costo = bloques * 500
     const totalFondos = healer.coins + healer.bank
 
-    if (totalFondos < costo) {
+    if (!m.isOwner && totalFondos < costo) {
       const fondos = who ? `💸 sᴀʟᴅᴏ ɪɴsᴜғɪᴄɪᴇɴᴛᴇ ✦ Necesitas *S/${costo.toLocaleString()} ${currency}* para curar a *${db.users[who]?.name || who.split('@')[0]}*.` : `💸 sᴀʟᴅᴏ ɪɴsᴜғɪᴄɪᴇɴᴛᴇ ✦ Necesitas *S/${costo.toLocaleString()} ${currency}* para curarte.`
       return m.reply(fondos)
     }
 
-    if (healer.coins >= costo) {
-      healer.coins -= costo
-    } else {
-      const restante = costo - healer.coins
-      healer.coins = 0
-      healer.bank = Math.max(0, healer.bank - restante)
+    if (!m.isOwner) {
+      if (healer.coins >= costo) {
+        healer.coins -= costo
+      } else {
+        const restante = costo - healer.coins
+        healer.coins = 0
+        healer.bank = Math.max(0, healer.bank - restante)
+      }
     }
 
     target.health = 100

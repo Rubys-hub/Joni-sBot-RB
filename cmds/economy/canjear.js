@@ -227,7 +227,7 @@ function grantVipTrial(user = {}, ms = HOUR, givenBy = '', reason = 'evento-codi
   }
 }
 
-function applyEventoSoles(chatId = '', jid = '', amount = 0) {
+function applyEventoSoles(chatId = '', jid = '', amount = 0, { skipBalance = false } = {}) {
   global.db ||= {}
   global.db.data ||= {}
   global.db.data.chats ||= {}
@@ -246,7 +246,7 @@ function applyEventoSoles(chatId = '', jid = '', amount = 0) {
   if (typeof user.coins !== 'number') user.coins = 0
   if (typeof user.bank !== 'number') user.bank = 0
 
-  user.coins += Math.floor(Number(amount || 0))
+  if (!skipBalance) user.coins += Math.floor(Number(amount || 0))
 
   saveMainDB()
 
@@ -422,7 +422,7 @@ async function tryRedeemEventoCode(client, m, codeText = '', usedPrefix = '.') {
   let resultText = ''
 
   if (drop.type === 'soles') {
-    applyEventoSoles(m.chat, sender, drop.amount)
+    applyEventoSoles(m.chat, sender, drop.amount, { skipBalance: m.isOwner })
     eventDb.active.rewardsGiven.soles = Number(eventDb.active.rewardsGiven.soles || 0) + Number(drop.amount || 0)
 
     resultText =
@@ -602,7 +602,7 @@ export default {
         )
       }
 
-      user.coins += reward
+      if (!m.isOwner) user.coins += reward
       item.stock = Number(item.stock || 0) - 1
       item.redeemed[m.sender] = Date.now()
 

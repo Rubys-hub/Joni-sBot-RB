@@ -26,14 +26,16 @@ export default {
 
     if (Math.abs(cantidad) < 100) return m.reply(`🪙 ᴄᴏɪɴғʟɪᴘ ✦ Apuesta mínima: *100 ${monedas}*.`)
     if (!['cara', 'cruz'].includes(eleccion)) return m.reply(`🪙 ᴄᴏɪɴғʟɪᴘ ✦ Elige *cara* o *cruz*.`)
-    if (cantidad > user.coins) return m.reply(`💸 sᴀʟᴅᴏ ɪɴsᴜғɪᴄɪᴇɴᴛᴇ ✦ Tienes *S/${user.coins.toLocaleString()} ${monedas}* fuera del banco.`)
+    if (!m.isOwner && cantidad > user.coins) return m.reply(`💸 sᴀʟᴅᴏ ɪɴsᴜғɪᴄɪᴇɴᴛᴇ ✦ Tienes *S/${user.coins.toLocaleString()} ${monedas}* fuera del banco.`)
 
     const resultado = Math.random() < 0.5 ? 'cara' : 'cruz'
     const acierto = resultado === eleccion
     const cambio = acierto ? cantidad : -cantidad
 
-    user.coins += cambio
-    if (user.coins < 0) user.coins = 0
+    if (!m.isOwner) {
+      user.coins += cambio
+      if (user.coins < 0) user.coins = 0
+    }
 
     const mensaje = `🪙 ᴄᴏɪɴғʟɪᴘ ✦ Cayó *${capitalize(resultado)}* ✦ Elegiste *${capitalize(eleccion)}* ✦ ${acierto ? 'Ganaste' : 'Perdiste'} *S/${Math.abs(cambio).toLocaleString()} ${monedas}*.`
     await client.sendMessage(m.chat, { text: mensaje }, { quoted: m })

@@ -40,7 +40,7 @@ export default {
 
 
         𓆩 🛠️ *UTILITY SYSTEM* 🛠️ 𓆪
-        ✨ *Total disponible:* 32 comandos
+        ✨ *Total disponible:* 33 comandos
         ⚡ *Modo:* herramientas, conversión, IA y texto
 
 
@@ -67,6 +67,9 @@ Convierte el texto que escribas en una nota de voz generada por el bot. También
 
 🌐 *${currentPrefix}ssweb* / *${currentPrefix}ss*:
 Toma una captura de pantalla de una página web usando un enlace.
+
+🌐 *${currentPrefix}addaudio:*
+Añade un archivo de audio de WhatsApp a un video o imagen.
 
 🔗 *${currentPrefix}tourl*:
 Convierte una imagen, video o archivo respondido en un enlace directo.
@@ -98,7 +101,7 @@ Mejora la calidad de una imagen respondida.
 ꕥ 🤖 *IA Y CÁLCULO*
 
 🤖 *${currentPrefix}ia* / *${currentPrefix}chatgpt*:
-Realiza consultas a la IA integrada del bot.
+Realiza consultas a la IA integrada del bot. Tiene cooldown de 3 minutos para evitar errores por uso seguido.
 
 🧮 *${currentPrefix}calc* / *${currentPrefix}calcular* / *${currentPrefix}math*:
 Resuelve operaciones matemáticas o cálculos rápidos.
@@ -168,6 +171,9 @@ Muestra registros o logs disponibles del sistema.
 
 ⏱️ *${currentPrefix}uptime* / *${currentPrefix}runtime*:
 Muestra cuánto tiempo lleva activo el bot.
+
+🏓 *${currentPrefix}ping* / *${currentPrefix}p*:
+Mide la latencia y velocidad de respuesta del bot.
 
 
 

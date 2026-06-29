@@ -45,7 +45,7 @@ export default {
     })
 
     reward = eventMult.amount
-    user.coins += reward
+    if (!m.isOwner) user.coins += reward
 
     let msg =
       `> *[ ⌬ ] 🔮 RITUAL*\n\n` +

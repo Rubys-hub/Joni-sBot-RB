@@ -22,7 +22,6 @@ import { smsg } from "./core/message.js";
 import db from "./core/system/database.js";
 import { startSubBot } from './core/subs.js';
 import seecmds from "./core/system/commandLoader.js";
-import { exec, execSync } from "child_process";
 import {
   bootConsoleTheme,
   consoleLogInfo,
@@ -40,6 +39,31 @@ const log = {
   warning: (msg) => consoleLogWarn(msg),
   error: (msg) => consoleLogError(msg)
 };
+
+function clearOwnerSession() {
+  const sessionsRoot = path.resolve("./Sessions")
+  const ownerSessionPath = path.resolve("./Sessions/Owner")
+
+  if (!ownerSessionPath.startsWith(sessionsRoot + path.sep)) {
+    log.error(`[ ⌬ ] Ruta de sesión insegura, no se limpiará: ${ownerSessionPath}`)
+    return
+  }
+
+  try {
+    fs.mkdirSync(ownerSessionPath, { recursive: true })
+    for (const entry of fs.readdirSync(ownerSessionPath)) {
+      fs.rmSync(path.join(ownerSessionPath, entry), {
+        recursive: true,
+        force: true,
+        maxRetries: 5,
+        retryDelay: 300
+      })
+    }
+    log.info("[ ⌬ ] Sesión Owner limpiada correctamente.")
+  } catch (err) {
+    log.error(`[ ⌬ ] No se pudo limpiar Sessions/Owner: ${err?.message || err}`)
+  }
+}
 
   let phoneNumber = global.botNumber || ""
   let phoneInput = ""
@@ -270,15 +294,15 @@ qrcode.generate(qr, { small: true });
         log.warning("Primero cierre la sesión actual...")
       } else if (reason === DisconnectReason.loggedOut) {
         log.warning("Escanee nuevamente y ejecute...")
-        exec("rm -rf ./Sessions/Owner/*")
+        clearOwnerSession()
         process.exit(1)
       } else if (reason === DisconnectReason.forbidden) {
         log.error("Error de conexión, escanee nuevamente y ejecute...")
-        exec("rm -rf ./Sessions/Owner/*")
+        clearOwnerSession()
         process.exit(1);
       } else if (reason === DisconnectReason.multideviceMismatch) {
         log.warning("Inicia nuevamente")
-        exec("rm -rf ./Sessions/Owner/*")
+        clearOwnerSession()
         process.exit(0)
       } else {
         client.end(`Motivo de desconexión desconocido : ${reason}|${connection}`)

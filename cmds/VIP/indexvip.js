@@ -1496,7 +1496,7 @@ export default {
   senderEco.user.coins = Number(senderEco.user.coins || 0)
   senderEco.user.bank = Number(senderEco.user.bank || 0)
 
-  if (senderEco.user.coins < price.coins) {
+  if (!m.isOwner && senderEco.user.coins < price.coins) {
     return m.reply(
       `╭━━〔 ❌ SALDO INSUFICIENTE 〕━━\n` +
       `┃ Plan: ${cfg.badge} ${cfg.name}\n` +
@@ -1523,7 +1523,7 @@ export default {
     )
   }
 
-  senderEco.user.coins -= price.coins
+  if (!m.isOwner) senderEco.user.coins -= price.coins
 
   grantVip(senderUser, {
     type,

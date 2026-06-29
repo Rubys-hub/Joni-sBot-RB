@@ -34,6 +34,21 @@ export default {
 💰 *${currentPrefix}addcoin* / *${currentPrefix}addxp*:
 Agrega coins o experiencia manualmente a un usuario.
 
+📊 *${currentPrefix}auditeco* / *${currentPrefix}contadoreco* / *${currentPrefix}finanzasbot*:
+Auditoría económica global exacta con lectura ejecutiva por IA.
+
+🧾 *${currentPrefix}economiaaudit* / *${currentPrefix}economiaempresa*:
+Aliases alternativos del auditor económico tipo contador/CFO.
+
+📈 *${currentPrefix}auditeco raw*:
+Muestra solo el informe exacto sin llamar a la IA.
+
+🧮 *${currentPrefix}auditeco reset*:
+Guarda una nueva línea base para medir movimiento económico desde cero.
+
+🌾 *${currentPrefix}farmowner* / *${currentPrefix}farmadmin* / *${currentPrefix}farmcontrol* / *${currentPrefix}granjasowner*:
+Panel owner para configurar granjas, precios, producción, daños y usuarios.
+
 🧹 *${currentPrefix}clear*:
 Limpia datos antiguos o registros internos del bot.
 
@@ -212,7 +227,7 @@ Envía reportes o sugerencias al owner.
 
 
 
-ꕥ 💰 *ECONOMÍA* — *20 comandos*
+ꕥ 💰 *ECONOMÍA* — *27 comandos*
 > Acceso: *${currentPrefix}menu economia*
 
 💰 *${currentPrefix}balance* / *${currentPrefix}bal* / *${currentPrefix}coins* / *${currentPrefix}bank*:
@@ -231,11 +246,23 @@ Trabaja para ganar monedas.
 📅 *${currentPrefix}monthly* / *${currentPrefix}mensual*:
 Reclama una recompensa mensual.
 
-🏆 *${currentPrefix}economyboard* / *${currentPrefix}eboard* / *${currentPrefix}baltop*:
+🏆 *${currentPrefix}economyboard* / *${currentPrefix}eboard* / *${currentPrefix}baltop* / *${currentPrefix}eboardglobal* / *${currentPrefix}economyboardglobal* / *${currentPrefix}baltopglobal*:
 Muestra el ranking económico del grupo.
 
 ℹ️ *${currentPrefix}infoeconomy* / *${currentPrefix}cooldowns* / *${currentPrefix}economyinfo* / *${currentPrefix}einfo*:
 Muestra información y tiempos de espera de economía.
+
+🌾 *${currentPrefix}farm* / *${currentPrefix}farminfo*:
+Muestra tu panel de granjas, producción acumulada, daños y dinero listo para cobrar.
+
+🏡 *${currentPrefix}buyfarm*:
+Compra una granja nueva para producir dinero automáticamente.
+
+🧺 *${currentPrefix}harvest* / *${currentPrefix}harvestall*:
+Cobra la producción acumulada de una granja o de todas tus granjas.
+
+🛠️ *${currentPrefix}upgradefarm* / *${currentPrefix}repairfarm*:
+Mejora tus granjas para producir más o repáralas cuando estén dañadas.
 
 🏦 *${currentPrefix}deposit* / *${currentPrefix}dep* / *${currentPrefix}d*:
 Deposita monedas en el banco.
@@ -364,10 +391,10 @@ Elimina un personaje según permisos.
 
 
 
-ꕥ 📥 *DOWNLOADS* — *13 comandos*
+ꕥ 📥 *DOWNLOADS* — *15 comandos*
 > Acceso: *${currentPrefix}menu downloads*
 
-🎵 *${currentPrefix}audiomp3* / *${currentPrefix}mp3*:
+🎵 *${currentPrefix}audiomp3* / *${currentPrefix}mp3* / *${currentPrefix}audio* / *${currentPrefix}youtubemp3* / *${currentPrefix}tiktokmp3* / *${currentPrefix}igmp3* / *${currentPrefix}linkmp3*:
 Convierte enlaces, videos o archivos de audio a MP3 enviable por WhatsApp.
 
 🎧 *${currentPrefix}play* / *${currentPrefix}mp3* / *${currentPrefix}ytmp3* / *${currentPrefix}ytaudio* / *${currentPrefix}playaudio*:
@@ -597,7 +624,7 @@ Hace público un pack.
 
 
 
-ꕥ 🛠️ *UTILITIES* — *32 comandos*
+ꕥ 🛠️ *UTILITIES* — *33 comandos*
 > Acceso: *${currentPrefix}menu utilities*
 
 📖 *${currentPrefix}readviewonce* / *${currentPrefix}read* / *${currentPrefix}readvo*:
@@ -637,7 +664,7 @@ Obtiene foto de perfil.
 Mejora calidad de imagen.
 
 🤖 *${currentPrefix}ia* / *${currentPrefix}chatgpt*:
-Consulta inteligencia artificial.
+Consulta inteligencia artificial. Tiene cooldown de 3 minutos para evitar errores por uso seguido.
 
 🧮 *${currentPrefix}calc* / *${currentPrefix}calcular* / *${currentPrefix}math*:
 Resuelve cálculos.
@@ -690,9 +717,12 @@ Muestra registros del sistema.
 ⏱️ *${currentPrefix}uptime* / *${currentPrefix}runtime*:
 Muestra cuánto tiempo lleva activo el bot.
 
+🏓 *${currentPrefix}ping* / *${currentPrefix}p*:
+Mide la latencia y velocidad de respuesta del bot.
 
 
-ꕥ 👥 *GROUP* — *59 comandos*
+
+ꕥ 👥 *GROUP* — *63 comandos*
 > Acceso: *${currentPrefix}menu group*
 
 👤 *${currentPrefix}add*:
@@ -850,6 +880,15 @@ Activa o desactiva gacha.
 
 👮‍♂️ *${currentPrefix}adminonly* / *${currentPrefix}onlyadmin*:
 Solo admins pueden usar comandos.
+
+🔥 *${currentPrefix}setracha*:
+Activa o desactiva las rachas automáticas del grupo.
+
+📜 *${currentPrefix}racha*:
+Muestra el menú decorado de rachas con comandos y explicación del sistema.
+
+📊 *${currentPrefix}inforacha* / *${currentPrefix}streakinfo* / *${currentPrefix}rachainfo*:
+Muestra el estado de tu racha diaria y progreso en el grupo.
 
 💬 *${currentPrefix}setwelcome*:
 Configura mensaje de bienvenida.
@@ -1010,16 +1049,16 @@ Comando extra anime.
 ꕥ 💞 *INTERACCIONES* — *67 comandos*
 > Acceso: *${currentPrefix}menu interacciones*
 
-🫂 *${currentPrefix}hug* / *${currentPrefix}abrazar*:
+🫂 *${currentPrefix}hug* / *${currentPrefix}abrazar* / *${currentPrefix}abrazo*:
 Abraza a otro usuario.
 
-💋 *${currentPrefix}kiss* / *${currentPrefix}muak*:
+💋 *${currentPrefix}kiss* / *${currentPrefix}muak* / *${currentPrefix}besaroca*:
 Besa a otro usuario.
 
-😘 *${currentPrefix}kisscheek* / *${currentPrefix}beso* / *${currentPrefix}besar*:
+😘 *${currentPrefix}kisscheek* / *${currentPrefix}beso* / *${currentPrefix}besar* / *${currentPrefix}mejilla* / *${currentPrefix}cachete* / *${currentPrefix}besomejilla*:
 Da un beso en la mejilla.
 
-👋 *${currentPrefix}pat* / *${currentPrefix}acariciar*:
+👋 *${currentPrefix}pat* / *${currentPrefix}acariciar* / *${currentPrefix}palmadita*:
 Acaricia a otro usuario.
 
 🤗 *${currentPrefix}cuddle* / *${currentPrefix}acurrucar*:
@@ -1028,175 +1067,175 @@ Se acurruca con otro usuario.
 🤗 *${currentPrefix}snuggle* / *${currentPrefix}acurrucarse*:
 Se arrima cariñosamente.
 
-😘 *${currentPrefix}blowkiss* / *${currentPrefix}besito*:
+😘 *${currentPrefix}blowkiss* / *${currentPrefix}besito* / *${currentPrefix}besoaire*:
 Lanza un beso.
 
-🤝 *${currentPrefix}handhold* / *${currentPrefix}tomar*:
+🤝 *${currentPrefix}handhold* / *${currentPrefix}tomar* / *${currentPrefix}mano* / *${currentPrefix}agarrarmano*:
 Toma la mano de otro usuario.
 
-🙌 *${currentPrefix}highfive* / *${currentPrefix}choca*:
+🙌 *${currentPrefix}highfive* / *${currentPrefix}choca* / *${currentPrefix}chocar* / *${currentPrefix}cinco*:
 Choca los cinco.
 
-❤️ *${currentPrefix}love* / *${currentPrefix}amor*:
+❤️ *${currentPrefix}love* / *${currentPrefix}amor* / *${currentPrefix}amar* / *${currentPrefix}enamorar*:
 Muestra cariño.
 
-😡 *${currentPrefix}angry* / *${currentPrefix}enojado* / *${currentPrefix}enojada*:
+😡 *${currentPrefix}angry* / *${currentPrefix}enojado* / *${currentPrefix}enojada* / *${currentPrefix}enojo* / *${currentPrefix}furioso* / *${currentPrefix}furiosa* / *${currentPrefix}enfado*:
 Muestra enojo.
 
-🥱 *${currentPrefix}bored* / *${currentPrefix}aburrido* / *${currentPrefix}aburrida*:
+🥱 *${currentPrefix}bored* / *${currentPrefix}aburrido* / *${currentPrefix}aburrida* / *${currentPrefix}aburrimiento*:
 Muestra aburrimiento.
 
-😂 *${currentPrefix}laugh*:
+😂 *${currentPrefix}laugh* / *${currentPrefix}laught* / *${currentPrefix}laugth* / *${currentPrefix}laguht* / *${currentPrefix}risa* / *${currentPrefix}reir* / *${currentPrefix}reirse* / *${currentPrefix}jaja*:
 Muestra risa.
 
-😔 *${currentPrefix}sad* / *${currentPrefix}triste*:
+😔 *${currentPrefix}sad* / *${currentPrefix}triste* / *${currentPrefix}tristeza*:
 Muestra tristeza.
 
-😨 *${currentPrefix}scared* / *${currentPrefix}asustado*:
+😨 *${currentPrefix}scared* / *${currentPrefix}asustado* / *${currentPrefix}asustada* / *${currentPrefix}miedo*:
 Muestra miedo.
 
-😳 *${currentPrefix}shy* / *${currentPrefix}timido* / *${currentPrefix}timida*:
+😳 *${currentPrefix}shy* / *${currentPrefix}timido* / *${currentPrefix}timida* / *${currentPrefix}verguenza*:
 Muestra timidez.
 
-😄 *${currentPrefix}happy* / *${currentPrefix}feliz*:
+😄 *${currentPrefix}happy* / *${currentPrefix}feliz* / *${currentPrefix}alegre* / *${currentPrefix}felicidad*:
 Muestra felicidad.
 
-😊 *${currentPrefix}blush* / *${currentPrefix}sonrojarse*:
+😊 *${currentPrefix}blush* / *${currentPrefix}sonrojarse* / *${currentPrefix}sonrojo* / *${currentPrefix}sonrojado* / *${currentPrefix}sonrojada*:
 Muestra sonrojo.
 
-😊 *${currentPrefix}smile* / *${currentPrefix}sonreir*:
+😊 *${currentPrefix}smile* / *${currentPrefix}sonreir* / *${currentPrefix}sonrisa*:
 Muestra sonrisa.
 
-😭 *${currentPrefix}cry* / *${currentPrefix}llorar*:
+😭 *${currentPrefix}cry* / *${currentPrefix}llorar* / *${currentPrefix}llanto*:
 Muestra llanto.
 
-😛 *${currentPrefix}bleh*:
+😛 *${currentPrefix}bleh* / *${currentPrefix}lengua* / *${currentPrefix}mueca* / *${currentPrefix}muecalengua*:
 Saca la lengua.
 
-👏 *${currentPrefix}clap* / *${currentPrefix}aplaudir*:
+👏 *${currentPrefix}clap* / *${currentPrefix}aplaudir* / *${currentPrefix}aplauso* / *${currentPrefix}aplausos*:
 Aplaude.
 
-🎭 *${currentPrefix}dramatic* / *${currentPrefix}drama*:
+🎭 *${currentPrefix}dramatic* / *${currentPrefix}drama* / *${currentPrefix}dramatico* / *${currentPrefix}dramatica*:
 Hace una reacción dramática.
 
-😗 *${currentPrefix}pout*:
+😗 *${currentPrefix}pout* / *${currentPrefix}puchero* / *${currentPrefix}pucheros*:
 Muestra puchero.
 
-😉 *${currentPrefix}wink* / *${currentPrefix}guiñar*:
+😉 *${currentPrefix}wink* / *${currentPrefix}guiñar* / *${currentPrefix}guiño*:
 Guiña el ojo.
 
-👋 *${currentPrefix}wave* / *${currentPrefix}saludar*:
+👋 *${currentPrefix}wave* / *${currentPrefix}saludar* / *${currentPrefix}saludo*:
 Saluda.
 
-😏 *${currentPrefix}smug* / *${currentPrefix}presumir*:
+😏 *${currentPrefix}smug* / *${currentPrefix}presumir* / *${currentPrefix}presumido* / *${currentPrefix}presumida*:
 Muestra actitud presumida.
 
-😬 *${currentPrefix}cringe*:
+😬 *${currentPrefix}cringe* / *${currentPrefix}penaajena*:
 Muestra cringe.
 
-🙅 *${currentPrefix}nope* / *${currentPrefix}no*:
+🙅 *${currentPrefix}nope* / *${currentPrefix}no* / *${currentPrefix}nop*:
 Niega algo.
 
-👀 *${currentPrefix}peek*:
+👀 *${currentPrefix}peek* / *${currentPrefix}espiar* / *${currentPrefix}miraroculto*:
 Mira de forma curiosa.
 
-👊 *${currentPrefix}punch* / *${currentPrefix}golpear*:
+👊 *${currentPrefix}punch* / *${currentPrefix}golpear* / *${currentPrefix}puñete* / *${currentPrefix}puñetazo*:
 Golpea de forma ficticia.
 
-🔪 *${currentPrefix}kill* / *${currentPrefix}matar*:
+🔪 *${currentPrefix}kill* / *${currentPrefix}matar* / *${currentPrefix}asesinar*:
 Acción ficticia de ataque.
 
-😈 *${currentPrefix}bully* / *${currentPrefix}molestar*:
+😈 *${currentPrefix}bully* / *${currentPrefix}molestar* / *${currentPrefix}bullying*:
 Molesta a otro usuario.
 
-🦷 *${currentPrefix}bite* / *${currentPrefix}morder*:
+🦷 *${currentPrefix}bite* / *${currentPrefix}morder* / *${currentPrefix}mordida*:
 Muerde ficticiamente.
 
-🔨 *${currentPrefix}bonk* / *${currentPrefix}golpe*:
+🔨 *${currentPrefix}bonk* / *${currentPrefix}golpe* / *${currentPrefix}coscorrón* / *${currentPrefix}coscorron*:
 Da un bonk.
 
-👅 *${currentPrefix}lick* / *${currentPrefix}lamer*:
+👅 *${currentPrefix}lick* / *${currentPrefix}lamer* / *${currentPrefix}lamida*:
 Lame de forma ficticia.
 
-🖐️ *${currentPrefix}slap* / *${currentPrefix}bofetada*:
+🖐️ *${currentPrefix}slap* / *${currentPrefix}bofetada* / *${currentPrefix}cachetada*:
 Da una bofetada ficticia.
 
-🖐️ *${currentPrefix}push* / *${currentPrefix}empujar*:
+🖐️ *${currentPrefix}push* / *${currentPrefix}empujar* / *${currentPrefix}empujon*:
 Empuja a otro usuario.
 
-🦶 *${currentPrefix}trip* / *${currentPrefix}tropezar*:
+🦶 *${currentPrefix}trip* / *${currentPrefix}tropezar* / *${currentPrefix}tropiezo*:
 Hace tropezar.
 
-💦 *${currentPrefix}spit* / *${currentPrefix}escupir*:
+💦 *${currentPrefix}spit* / *${currentPrefix}escupir* / *${currentPrefix}escupirle*:
 Escupe ficticiamente.
 
-👣 *${currentPrefix}step* / *${currentPrefix}pisar*:
+👣 *${currentPrefix}step* / *${currentPrefix}pisar* / *${currentPrefix}pisoton*:
 Pisa ficticiamente.
 
-🤔 *${currentPrefix}think* / *${currentPrefix}pensar*:
+🤔 *${currentPrefix}think* / *${currentPrefix}pensar* / *${currentPrefix}pensando*:
 Muestra pensamiento.
 
-🤯 *${currentPrefix}thinkhard*:
+🤯 *${currentPrefix}thinkhard* / *${currentPrefix}pensarprofundo* / *${currentPrefix}reflexionar*:
 Piensa intensamente.
 
-🧐 *${currentPrefix}curious* / *${currentPrefix}curioso* / *${currentPrefix}curiosa*:
+🧐 *${currentPrefix}curious* / *${currentPrefix}curioso* / *${currentPrefix}curiosa* / *${currentPrefix}curiosidad*:
 Muestra curiosidad.
 
-👁️ *${currentPrefix}stare* / *${currentPrefix}mirar*:
+👁️ *${currentPrefix}stare* / *${currentPrefix}mirar* / *${currentPrefix}mirada*:
 Mira fijamente.
 
-👃 *${currentPrefix}sniff* / *${currentPrefix}oler*:
+👃 *${currentPrefix}sniff* / *${currentPrefix}oler* / *${currentPrefix}olfatear*:
 Huele ficticiamente.
 
-🫂 *${currentPrefix}comfort* / *${currentPrefix}consolar*:
+🫂 *${currentPrefix}comfort* / *${currentPrefix}consolar* / *${currentPrefix}consuelo*:
 Consuela a otro usuario.
 
-🏃 *${currentPrefix}run* / *${currentPrefix}correr*:
+🏃 *${currentPrefix}run* / *${currentPrefix}correr* / *${currentPrefix}huir* / *${currentPrefix}escapar*:
 Corre.
 
-🚶 *${currentPrefix}walk* / *${currentPrefix}caminar*:
+🚶 *${currentPrefix}walk* / *${currentPrefix}caminar* / *${currentPrefix}pasear*:
 Camina.
 
-💃 *${currentPrefix}dance* / *${currentPrefix}bailar*:
+💃 *${currentPrefix}dance* / *${currentPrefix}bailar* / *${currentPrefix}baile*:
 Baila.
 
-🦘 *${currentPrefix}jump* / *${currentPrefix}saltar*:
+🦘 *${currentPrefix}jump* / *${currentPrefix}saltar* / *${currentPrefix}salto*:
 Salta.
 
-🎮 *${currentPrefix}gaming* / *${currentPrefix}jugar*:
+🎮 *${currentPrefix}gaming* / *${currentPrefix}jugar* / *${currentPrefix}gamer* / *${currentPrefix}juego*:
 Juega.
 
-🎨 *${currentPrefix}draw* / *${currentPrefix}dibujar*:
+🎨 *${currentPrefix}draw* / *${currentPrefix}dibujar* / *${currentPrefix}dibujo*:
 Dibuja.
 
-📞 *${currentPrefix}call* / *${currentPrefix}llamar*:
+📞 *${currentPrefix}call* / *${currentPrefix}llamar* / *${currentPrefix}llamada*:
 Llama.
 
-🎤 *${currentPrefix}sing* / *${currentPrefix}cantar*:
+🎤 *${currentPrefix}sing* / *${currentPrefix}cantar* / *${currentPrefix}cancion*:
 Canta.
 
-☕ *${currentPrefix}coffee* / *${currentPrefix}cafe*:
+☕ *${currentPrefix}coffee* / *${currentPrefix}cafe* / *${currentPrefix}cafecito*:
 Toma café.
 
-🍻 *${currentPrefix}drunk*:
+🍻 *${currentPrefix}drunk* / *${currentPrefix}borracho* / *${currentPrefix}borracha* / *${currentPrefix}ebrio* / *${currentPrefix}ebria*:
 Muestra estado ebrio.
 
-🥶 *${currentPrefix}cold*:
+🥶 *${currentPrefix}cold* / *${currentPrefix}frio* / *${currentPrefix}fria*:
 Muestra frío.
 
-😴 *${currentPrefix}sleep* / *${currentPrefix}dormir*:
+😴 *${currentPrefix}sleep* / *${currentPrefix}dormir* / *${currentPrefix}duerme* / *${currentPrefix}sueño*:
 Duerme.
 
-🚬 *${currentPrefix}smoke* / *${currentPrefix}fumar*:
+🚬 *${currentPrefix}smoke* / *${currentPrefix}fumar* / *${currentPrefix}fumando*:
 Fuma ficticiamente.
 
-🍽️ *${currentPrefix}eat* / *${currentPrefix}nom* / *${currentPrefix}comer*:
+🍽️ *${currentPrefix}eat* / *${currentPrefix}nom* / *${currentPrefix}comer* / *${currentPrefix}comida*:
 Come.
 
-🛁 *${currentPrefix}bath* / *${currentPrefix}bañarse*:
+🛁 *${currentPrefix}bath* / *${currentPrefix}bañarse* / *${currentPrefix}baño*:
 Se baña.
 
-🔥 *${currentPrefix}seduce* / *${currentPrefix}seducir*:
+🔥 *${currentPrefix}seduce* / *${currentPrefix}seducir* / *${currentPrefix}seductor* / *${currentPrefix}seductora*:
 Seducción ficticia.
 
 🥵 *${currentPrefix}heat* / *${currentPrefix}calor*:
@@ -1208,7 +1247,7 @@ Acción especial de interacción.
 🤭 *${currentPrefix}tickle* / *${currentPrefix}cosquillas*:
 Hace cosquillas.
 
-😱 *${currentPrefix}scream* / *${currentPrefix}gritar*:
+😱 *${currentPrefix}scream* / *${currentPrefix}gritar* / *${currentPrefix}grito*:
 Grita.
 
 

@@ -105,6 +105,7 @@ global.comandos.set(String(cmd).toLowerCase(), {
   pluginId,
   run: comando.run,
       category: comando.category || "uncategorized",
+      group: comando.group || false,
       isOwner: comando.isOwner || false,
       isAdmin: comando.isAdmin || false,
       botAdmin: comando.botAdmin || false,

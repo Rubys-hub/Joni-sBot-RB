@@ -33,14 +33,14 @@ export default {
     count = Math.max(1, count)
 
     if (args.length < 1) return client.reply(m.chat, `🎰 ᴄᴀsɪɴᴏ ✦ Ingresa una cantidad ✦ Ejemplo: *${usedPrefix + command} 100*`, m)
-    if (user.coins < count) return client.reply(m.chat, `💸 sᴀʟᴅᴏ ɪɴsᴜғɪᴄɪᴇɴᴛᴇ ✦ Te faltan *S/${formatNumber(count)} ${currency}* para apostar.`, m)
+    if (!m.isOwner && user.coins < count) return client.reply(m.chat, `💸 sᴀʟᴅᴏ ɪɴsᴜғɪᴄɪᴇɴᴛᴇ ✦ Te faltan *S/${formatNumber(count)} ${currency}* para apostar.`, m)
 
     user.lastApuesta = ahora
 
     const Aku = Math.floor(Math.random() * 101)
     const Kamu = Math.floor(Math.random() * 55)
 
-    user.coins -= count
+    if (!m.isOwner) user.coins -= count
 
     let resultado = ''
     let ganancia = 0
@@ -49,7 +49,7 @@ export default {
       resultado = `💔 *${userName}*, perdiste *S/${formatNumber(count)} ${currency}*.`
     } else {
       ganancia = Aku < Kamu ? count * 2 : count
-      user.coins += ganancia
+      if (!m.isOwner) user.coins += ganancia
       resultado = `💰 *${userName}*, ganaste *S/${formatNumber(ganancia)} ${currency}*.`
     }
 

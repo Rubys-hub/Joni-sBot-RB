@@ -59,9 +59,10 @@ export default {
 
     if (chatData.adminonly || !chatData.economy) {
       return m.reply(
-        `▣ ᴇᴄᴏɴᴏᴍíᴀ ᴏғғ\n` +
-        `▪ La economía está desactivada.\n` +
-        `▪ Actívala con: ${usedPrefix}economy on`
+        `╭━━〔 ⚠️ ECONOMÍA DESACTIVADA 〕━━⬣\n` +
+        `┃ 📴 La economía está apagada en este grupo.\n` +
+        `┃ 🔧 Actívala con: *${usedPrefix}economy on*\n` +
+        `╰━━━━━━━━━━━━━━━━━━━━⬣`
       )
     }
 
@@ -74,18 +75,20 @@ export default {
 
     if (!user) {
       return m.reply(
-        `▣ ᴅᴇᴘᴏsɪᴛ\n` +
-        `▪ No estás registrado en la economía.\n` +
-        `▪ Usa ${usedPrefix}daily para empezar.`
+        `╭━━〔 🏦 DEPÓSITO 〕━━⬣\n` +
+        `┃ 👤 Aún no estás registrado en la economía.\n` +
+        `┃ 🎁 Empieza reclamando: *${usedPrefix}daily*\n` +
+        `╰━━━━━━━━━━━━━━━━━━━━⬣`
       )
     }
 
     if (!args[0]) {
       return m.reply(
-        `▣ ᴅᴇᴘᴏsɪᴛ\n` +
-        `▪ Ingresa una cantidad o usa all.\n` +
-        `▪ Ejemplo: ${usedPrefix}deposit 25000\n` +
-        `▪ Todo: ${usedPrefix}deposit all`
+        `╭━━〔 🏦 DEPÓSITO 〕━━⬣\n` +
+        `┃ 💰 Ingresa cuánto quieres guardar.\n` +
+        `┃ 🧾 Ejemplo: *${usedPrefix}dep 25000*\n` +
+        `┃ 📦 Todo: *${usedPrefix}dep all*\n` +
+        `╰━━━━━━━━━━━━━━━━━━━━⬣`
       )
     }
 
@@ -96,8 +99,10 @@ export default {
 
       if (count <= 0) {
         return m.reply(
-          `▣ sᴀʟᴅᴏ ɪɴsᴜғɪᴄɪᴇɴᴛᴇ\n` +
-          `▪ No tienes ${monedas} para depositar.`
+          `╭━━〔 💸 SIN MONEDAS 〕━━⬣\n` +
+          `┃ 🪙 No tienes ${monedas} en cartera para depositar.\n` +
+          `┃ 🏦 Tu banco sigue igual de seguro.\n` +
+          `╰━━━━━━━━━━━━━━━━━━━━⬣`
         )
       }
 
@@ -105,10 +110,11 @@ export default {
       user.bank = Number(user.bank || 0) + count
 
       return m.reply(
-        `▣ ᴅᴇᴘᴏ́sɪᴛᴏ ᴇxɪᴛᴏsᴏ\n` +
-        `▪ Guardaste: ${formatMoney(count, monedas)}\n` +
-        `▪ Cartera: ${formatMoney(user.coins, monedas)}\n` +
-        `▪ Banco: ${formatMoney(user.bank, monedas)}`
+        `╭━━〔 ✅ DEPÓSITO EXITOSO 〕━━⬣\n` +
+        `┃ 🏦 Guardaste: *${formatMoney(count, monedas)}*\n` +
+        `┃ 👛 Cartera: *${formatMoney(user.coins, monedas)}*\n` +
+        `┃ 💳 Banco: *${formatMoney(user.bank, monedas)}*\n` +
+        `╰━━━━━━━━━━━━━━━━━━━━⬣`
       )
     }
 
@@ -116,17 +122,20 @@ export default {
 
     if (!count || isNaN(count) || count < 1) {
       return m.reply(
-        `▣ ᴅᴇᴘᴏsɪᴛ\n` +
-        `▪ Ingresa una cantidad válida.\n` +
-        `▪ Ejemplo: ${usedPrefix}deposit 25000`
+        `╭━━〔 🔢 CANTIDAD INVÁLIDA 〕━━⬣\n` +
+        `┃ 💰 Ingresa una cantidad válida para depositar.\n` +
+        `┃ 🧾 Ejemplo: *${usedPrefix}dep 25000*\n` +
+        `╰━━━━━━━━━━━━━━━━━━━━⬣`
       )
     }
 
     if (Number(user.coins || 0) < count) {
       return m.reply(
-        `▣ sᴀʟᴅᴏ ɪɴsᴜғɪᴄɪᴇɴᴛᴇ\n` +
-        `▪ Cartera actual: ${formatMoney(user.coins || 0, monedas)}\n` +
-        `▪ Intentaste guardar: ${formatMoney(count, monedas)}`
+        `╭━━〔 🚫 SALDO INSUFICIENTE 〕━━⬣\n` +
+        `┃ 👛 Cartera actual: *${formatMoney(user.coins || 0, monedas)}*\n` +
+        `┃ 🏦 Querías guardar: *${formatMoney(count, monedas)}*\n` +
+        `┃ 💡 Usa *${usedPrefix}dep all* para guardar todo.\n` +
+        `╰━━━━━━━━━━━━━━━━━━━━⬣`
       )
     }
 
@@ -134,10 +143,11 @@ export default {
     user.bank = Number(user.bank || 0) + count
 
     await m.reply(
-      `▣ ᴅᴇᴘᴏ́sɪᴛᴏ ᴇxɪᴛᴏsᴏ\n` +
-      `▪ Guardaste: ${formatMoney(count, monedas)}\n` +
-      `▪ Cartera: ${formatMoney(user.coins, monedas)}\n` +
-      `▪ Banco: ${formatMoney(user.bank, monedas)}`
+      `╭━━〔 ✅ DEPÓSITO EXITOSO 〕━━⬣\n` +
+      `┃ 🏦 Guardaste: *${formatMoney(count, monedas)}*\n` +
+      `┃ 👛 Cartera: *${formatMoney(user.coins, monedas)}*\n` +
+      `┃ 💳 Banco: *${formatMoney(user.bank, monedas)}*\n` +
+      `╰━━━━━━━━━━━━━━━━━━━━⬣`
     )
   }
 }

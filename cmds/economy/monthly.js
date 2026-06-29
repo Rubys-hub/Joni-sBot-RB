@@ -52,7 +52,7 @@ export default {
       const baseReward = Math.min(150000 + (globalUser.monthlyStreak - 1) * 25000, 1000000)
       const reward = applyGainBonus(baseReward, vipBonus)
 
-      user.coins = Number(user.coins || 0) + reward.total
+      if (!m.isOwner) user.coins = Number(user.coins || 0) + reward.total
       user.lastmonthly = now + MONTH
 
       const nextBase = Math.min(150000 + globalUser.monthlyStreak * 25000, 1000000)

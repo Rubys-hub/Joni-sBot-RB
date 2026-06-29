@@ -1,5 +1,5 @@
 export default {
-  command: ['owner', 'menuowner', 'ownerpanel'],
+  command: ['owner', 'owners', 'menuowner', 'ownerpanel', 'dueño', 'dueno', 'propietario'],
   category: 'main',
 
   run: async (client, m, args, usedPrefix) => {
@@ -65,6 +65,21 @@ export default {
 
 💰 *${currentPrefix}addcoin* / *${currentPrefix}addxp*:
 Agrega monedas o experiencia manualmente a un usuario. Útil para premios, compensaciones o pruebas internas.
+
+📊 *${currentPrefix}auditeco* / *${currentPrefix}contadoreco* / *${currentPrefix}finanzasbot*:
+Muestra una auditoría económica global exacta con lectura ejecutiva por IA, estilo contador/CFO.
+
+🧾 *${currentPrefix}economiaaudit* / *${currentPrefix}economiaempresa*:
+Abre la misma auditoría económica usando aliases alternativos.
+
+📈 *${currentPrefix}auditeco raw*:
+Muestra solo el informe exacto sin llamar a la IA.
+
+🧮 *${currentPrefix}auditeco reset*:
+Guarda una nueva línea base para medir movimiento económico desde cero.
+
+🌾 *${currentPrefix}farmowner* / *${currentPrefix}farmadmin* / *${currentPrefix}farmcontrol* / *${currentPrefix}granjasowner*:
+Panel owner para configurar granjas, precios, producción, daños y usuarios.
 
 
 

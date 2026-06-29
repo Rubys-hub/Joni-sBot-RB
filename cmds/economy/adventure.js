@@ -36,7 +36,7 @@ export default {
       cantidad = eventMult.amount
       eventLine = eventMult.text || ''
 
-      user.coins += cantidad
+      if (!m.isOwner) user.coins += cantidad
       user.health -= salud
 
       const successMessages = [
@@ -52,18 +52,20 @@ export default {
       cantidad = Math.floor(Math.random() * (11000 - 9000 + 1)) + 9000
       user.bank ||= 0
 
-      const total = user.coins + user.bank
-      if (total >= cantidad) {
-        if (user.coins >= cantidad) user.coins -= cantidad
-        else {
-          const restante = cantidad - user.coins
+      if (!m.isOwner) {
+        const total = user.coins + user.bank
+        if (total >= cantidad) {
+          if (user.coins >= cantidad) user.coins -= cantidad
+          else {
+            const restante = cantidad - user.coins
+            user.coins = 0
+            user.bank -= restante
+          }
+        } else {
+          cantidad = total
           user.coins = 0
-          user.bank -= restante
+          user.bank = 0
         }
-      } else {
-        cantidad = total
-        user.coins = 0
-        user.bank = 0
       }
 
       user.health -= salud

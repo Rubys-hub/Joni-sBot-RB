@@ -54,7 +54,7 @@ export default {
       const reward = applyGainBonus(baseReward, vipBonus)
       const eventMult = await applyEventoEconomyMultiplier(m.chat, reward.total, { currency })
 
-user.coins = Number(user.coins || 0) + eventMult.amount
+      if (!m.isOwner) user.coins = Number(user.coins || 0) + eventMult.amount
       user.lastdaily = now + DAY
 
       const nextBase = Math.min(20000 + globalUser.streak * 5000, 1015000)

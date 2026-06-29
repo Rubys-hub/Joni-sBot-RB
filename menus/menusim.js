@@ -79,7 +79,9 @@ export default {
       anime: 'anime',
 
       interacciones: 'interacciones',
+      interaccion: 'interacciones',
       interactions: 'interacciones',
+      acciones: 'interacciones',
 
       reactions: 'reactions',
       reaction: 'reactions',
@@ -87,8 +89,12 @@ export default {
       react: 'reactions',
 
       owner: 'owner',
+      owners: 'owner',
       menuowner: 'owner',
-      ownerpanel: 'owner'
+      ownerpanel: 'owner',
+      dueño: 'owner',
+      dueno: 'owner',
+      propietario: 'owner'
     }
 
     const openMenu = async (pluginKey, cmdName) => {
@@ -130,6 +136,15 @@ export default {
     if (selected === 'anime') return await openMenu('anime', 'anime')
     if (selected === 'interacciones') return await openMenu('interacciones', 'interacciones')
     if (selected === 'reactions') return await openMenu('reactions', 'reactions')
+
+    const ownerMenuHint = isOwner
+      ? `
+
+👑 *OWNER*
+> Usa: *${currentPrefix}menu owner*
+> Solo disponible para el owner.
+`
+      : ''
 
     const textMenu = `> 𖧧 *Hola, ${pushname}* 🧸
 > Bienvenido al menú principal de *${botName}* ✨
@@ -212,10 +227,7 @@ export default {
 📋 *MENÚ COMPLETO*
 > Usa: *${currentPrefix}menutotal*
 
-👑 *OWNER*
-> Usa: *${currentPrefix}menu owner*
-> Solo disponible para el owner.
-
+${ownerMenuHint}
 
 
 ╭━━━〔 📌 *EJEMPLOS* 〕━━━╮

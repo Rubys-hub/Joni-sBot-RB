@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { jidDecode } from 'baileys'
+import { isSocketOwner } from "../../core/utils.js";
 
 export default {
   command: ['logout'],
@@ -9,6 +10,9 @@ export default {
     const rawId = client.user?.id || ''
     const decoded = jidDecode(rawId)
     const cleanId = decoded?.user || rawId.split('@')[0]
+    const botId = `${cleanId}@s.whatsapp.net`
+    const config = global.db.data.settings?.[botId] || {}
+    if (!(await isSocketOwner(client, m, config))) return m.reply(mess.socket)
     const sessionTypes = ['Subs']
     const basePath = 'Sessions'
     const sessionPath = sessionTypes.map((type) => path.join(basePath, type, cleanId)).find((p) => fs.existsSync(p))

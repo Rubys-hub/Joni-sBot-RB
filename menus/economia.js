@@ -42,7 +42,7 @@ export default {
 
 
         𓆩 💰 *ECONOMY SYSTEM* 💰 𓆪
-        ✨ *Total disponible:* 20 comandos
+        ✨ *Total disponible:* 27 comandos
         ⚡ *Modo:* dinero, banco, recompensas y apuestas
 
 
@@ -65,11 +65,26 @@ Trabaja para ganar ${coinsName}. Es una forma segura de generar dinero dentro de
 📅 *${currentPrefix}monthly* / *${currentPrefix}mensual*:
 Reclama una recompensa mensual especial. Sirve para obtener una cantidad mayor de ${coinsName} cuando esté disponible.
 
-🏆 *${currentPrefix}economyboard* / *${currentPrefix}eboard* / *${currentPrefix}baltop*:
+🏆 *${currentPrefix}economyboard* / *${currentPrefix}eboard* / *${currentPrefix}baltop* / *${currentPrefix}eboardglobal* / *${currentPrefix}economyboardglobal* / *${currentPrefix}baltopglobal*:
 Muestra el ranking económico del grupo con los usuarios que tienen más dinero.
 
 ℹ️ *${currentPrefix}infoeconomy* / *${currentPrefix}cooldowns* / *${currentPrefix}economyinfo* / *${currentPrefix}einfo*:
 Muestra información del sistema económico, tiempos de espera y estado de los comandos.
+
+
+ꕥ 🌾 *GRANJAS*
+
+🌾 *${currentPrefix}farm* / *${currentPrefix}farminfo*:
+Muestra tu panel de granjas, producción acumulada, daños, mejoras y dinero listo para cobrar.
+
+🏡 *${currentPrefix}buyfarm*:
+Compra una granja nueva para empezar a generar dinero automáticamente con el paso del tiempo.
+
+🧺 *${currentPrefix}harvest* / *${currentPrefix}harvestall*:
+Cobra la producción acumulada de una granja o de todas tus granjas disponibles.
+
+🛠️ *${currentPrefix}upgradefarm* / *${currentPrefix}repairfarm*:
+Mejora tus granjas para producir más o repáralas cuando estén dañadas.
 
 
 

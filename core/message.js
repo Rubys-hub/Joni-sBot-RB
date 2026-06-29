@@ -352,69 +352,141 @@ const botNumber = client.decodeJid(safeJid(client?.user?.id || ''))
         m.isAnimated = m.msg?.isAnimated
       }
     }
+  
     m.quoted = m.msg?.contextInfo?.quotedMessage || null
-    if (m.quoted) {
-      m.quoted.message = extractMessageContent(m.msg?.contextInfo?.quotedMessage)
-      m.quoted.type = getContentType(m.quoted.message) || Object.keys(m.quoted.message)[0]
-      m.quoted.id = m.msg.contextInfo.stanzaId
-      m.quoted.device = getDevice(m.quoted.id)
-      m.quoted.chat = m.msg.contextInfo.remoteJid || m.chat
-      m.quoted.isBot = m.quoted.id ? ['HSK', 'BAE', 'B1E', '3EB0', 'B24E', 'WA'].some((a) => m.quoted.id.startsWith(a) && [12, 16, 20, 22, 40].includes(m.quoted.id.length)) || /(.)\1{5,}|[^a-zA-Z0-9]|[^0-9A-F]/.test(m.quoted.id) : false
-      if (m.msg?.contextInfo?.participant?.endsWith('@lid'))
-        m.msg.contextInfo.participant = m?.metadata?.participants?.find((a) => a.lid === m.msg.contextInfo.participant)?.id || m.msg.contextInfo.participant
-      m.quoted.sender = await fixLid2(client, m)
-      m.quoted.fromMe = m.quoted.sender === client.decodeJid(client.user.id)
-      m.quoted.text = m.quoted.caption || m.quoted.conversation || m.quoted.contentText || m.quoted.selectedDisplayText || m.quoted.title || ''
-      m.quoted.msg = extractMessageContent(m.quoted.message[m.quoted.type]) || m.quoted.message[m.quoted.type]
-      m.quoted.mentionedJid = m.quoted?.msg?.contextInfo?.mentionedJid || []
-      m.quoted.body = m.quoted.msg?.text || m.quoted.msg?.caption || m.quoted?.message?.conversation || m.quoted.msg?.selectedButtonId || m.quoted.msg?.singleSelectReply?.selectedRowId || m.quoted.msg?.selectedId || m.quoted.msg?.contentText || m.quoted.msg?.selectedDisplayText || m.quoted.msg?.title || m.quoted?.msg?.name || ''
-      m.getQuotedObj = async () => {
-        if (!m.quoted.id) return false
-        let q = await store.loadMessage(m.chat, m.quoted.id)
-        return await smsg(client, q, store)
-      }
-      m.quoted.key = { remoteJid: m.msg?.contextInfo?.remoteJid || m.chat, participant: m.quoted.sender, fromMe: areJidsSameUser(client.decodeJid(m.msg?.contextInfo?.participant), client.decodeJid(client?.user?.id)), id: m.msg?.contextInfo?.stanzaId }
-      m.quoted.isGroup = m.quoted.chat.endsWith('@g.us')
-      m.quoted.mentions = m.quoted.msg?.contextInfo?.mentionedJid || []
-      m.quoted.body = m.quoted.msg?.text || m.quoted.msg?.caption || m.quoted?.message?.conversation || m.quoted.msg?.selectedButtonId || m.quoted.msg?.singleSelectReply?.selectedRowId || m.quoted.msg?.selectedId || m.quoted.msg?.contentText || m.quoted.msg?.selectedDisplayText || m.quoted.msg?.title || m.quoted?.msg?.name || ''
-        let quotedPrefix = ''
-      if (activePrefixes.length > 0) {
-        for (const p of activePrefixes) {
-          if (m.quoted.body?.startsWith(p)) {
-            quotedPrefix = p
-            break
-          }
+if (m.quoted && typeof m.quoted === 'object') {
+  try {
+    const quotedRaw = m.msg?.contextInfo?.quotedMessage || {}
+    const quotedMsgContent = extractMessageContent(quotedRaw) || quotedRaw
+    const quotedType = getContentType(quotedMsgContent) || Object.keys(quotedMsgContent || {})[0] || ''
+    const quotedParticipant = m.msg?.contextInfo?.participant || ''
+    const quotedRemoteJid = m.msg?.contextInfo?.remoteJid || m.chat || ''
+
+    m.quoted.message = quotedMsgContent
+    m.quoted.type = quotedType
+    m.quoted.id = m.msg?.contextInfo?.stanzaId || ''
+    m.quoted.device = m.quoted.id ? getDevice(m.quoted.id) : ''
+    m.quoted.chat = quotedRemoteJid
+    m.quoted.isBot = m.quoted.id
+      ? ['HSK', 'BAE', 'B1E', '3EB0', 'B24E', 'WA'].some((a) => m.quoted.id.startsWith(a) && [12, 16, 20, 22, 40].includes(m.quoted.id.length)) ||
+        /(.)\1{5,}|[^a-zA-Z0-9]|[^0-9A-F]/.test(m.quoted.id)
+      : false
+
+    if (quotedParticipant?.endsWith('@lid')) {
+      m.msg.contextInfo.participant =
+        m?.metadata?.participants?.find((a) => a.lid === quotedParticipant)?.id ||
+        quotedParticipant
+    }
+
+    m.quoted.sender = await fixLid2(client, m).catch(() => safeJid(quotedParticipant || m.sender || ''))
+    m.quoted.fromMe = m.quoted.sender === client.decodeJid(client.user.id)
+
+    const quotedInner =
+      (quotedType && quotedMsgContent?.[quotedType])
+        ? extractMessageContent(quotedMsgContent[quotedType]) || quotedMsgContent[quotedType]
+        : quotedMsgContent
+
+    m.quoted.msg = quotedInner || {}
+    m.quoted.text =
+      m.quoted.msg?.text ||
+      m.quoted.msg?.caption ||
+      quotedMsgContent?.conversation ||
+      m.quoted.msg?.contentText ||
+      m.quoted.msg?.selectedDisplayText ||
+      m.quoted.msg?.title ||
+      ''
+
+    m.quoted.mentionedJid = m.quoted?.msg?.contextInfo?.mentionedJid || []
+    m.quoted.body =
+      m.quoted.msg?.text ||
+      m.quoted.msg?.caption ||
+      quotedMsgContent?.conversation ||
+      m.quoted.msg?.selectedButtonId ||
+      m.quoted.msg?.singleSelectReply?.selectedRowId ||
+      m.quoted.msg?.selectedId ||
+      m.quoted.msg?.contentText ||
+      m.quoted.msg?.selectedDisplayText ||
+      m.quoted.msg?.title ||
+      m.quoted?.msg?.name ||
+      ''
+
+    m.getQuotedObj = async () => {
+      if (!m.quoted?.id) return false
+      let q = await store.loadMessage(m.chat, m.quoted.id).catch(() => null)
+      if (!q) return false
+      return await smsg(client, q, store)
+    }
+
+    m.quoted.key = {
+      remoteJid: m.quoted.chat || m.chat || '',
+      participant: m.quoted.sender || '',
+      fromMe: areJidsSameUser(
+        client.decodeJid(safeJid(m.msg?.contextInfo?.participant || '')),
+        client.decodeJid(safeJid(client?.user?.id || ''))
+      ),
+      id: m.quoted.id || ''
+    }
+
+    m.quoted.isGroup = String(m.quoted.chat || '').endsWith('@g.us')
+    m.quoted.mentions = m.quoted.msg?.contextInfo?.mentionedJid || []
+
+    let quotedPrefix = ''
+    if (activePrefixes.length > 0) {
+      for (const p of activePrefixes) {
+        if (m.quoted.body?.startsWith(p)) {
+          quotedPrefix = p
+          break
         }
-      }
-      m.quoted.usedPrefix = quotedPrefix
-      m.quoted.command = m.quoted.body && m.quoted.body.replace(m.quoted.usedPrefix, '').trim().split(/ +/).shift()
-      m.quoted.isMedia = !!m.quoted.msg?.mimetype || !!m.quoted.msg?.thumbnailDirectPath
-      if (m.quoted.isMedia) {
-        m.quoted.fileSha256 = m.quoted[m.quoted.type]?.fileSha256 || ''
-        m.quoted.mime = m.quoted.msg?.mimetype
-        m.quoted.size = m.quoted.msg?.fileLength
-        m.quoted.height = m.quoted.msg?.height || ''
-        m.quoted.width = m.quoted.msg?.width || ''
-        if (/webp/i.test(m.quoted.mime)) {
-          m.quoted.isAnimated = m?.quoted?.msg?.isAnimated || false
-        }
-      }
-m.quoted.fakeObj = proto.WebMessageInfo.create({
-  key: {
-    remoteJid: m.quoted.chat,
-    fromMe: m.quoted.fromMe,
-    id: m.quoted.id,
-    participant: m.quoted.sender
-  },
-  message: m.msg?.contextInfo?.quotedMessage || {},
-  ...(m.isGroup ? { participant: m.quoted.sender } : {})
-})
-      m.quoted.download = () => client.downloadMediaMessage(m.quoted)
-      m.quoted.delete = () => {
-        client.sendMessage(m.quoted.chat, { delete: { remoteJid: m.quoted.chat, fromMe: m.isBotAdmin ? false : true, id: m.quoted.id, participant: m.quoted.sender }})
       }
     }
-  }
+
+    m.quoted.usedPrefix = quotedPrefix
+    m.quoted.command = m.quoted.body
+      ? m.quoted.body.replace(m.quoted.usedPrefix, '').trim().split(/ +/).shift()
+      : ''
+
+    m.quoted.isMedia = !!m.quoted.msg?.mimetype || !!m.quoted.msg?.thumbnailDirectPath
+    if (m.quoted.isMedia) {
+      m.quoted.fileSha256 = m.quoted?.msg?.fileSha256 || ''
+      m.quoted.mime = m.quoted.msg?.mimetype || ''
+      m.quoted.size = m.quoted.msg?.fileLength || 0
+      m.quoted.height = m.quoted.msg?.height || ''
+      m.quoted.width = m.quoted.msg?.width || ''
+      if (/webp/i.test(m.quoted.mime || '')) {
+        m.quoted.isAnimated = m.quoted?.msg?.isAnimated || false
+      }
+    }
+
+    m.quoted.fakeObj = proto.WebMessageInfo.create({
+      key: {
+        remoteJid: m.quoted.chat || m.chat || '',
+        fromMe: !!m.quoted.fromMe,
+        id: m.quoted.id || '',
+        participant: m.quoted.sender || ''
+      },
+      message: quotedRaw,
+      ...(m.isGroup ? { participant: m.quoted.sender || '' } : {})
+    })
+
+    m.quoted.download = () => client.downloadMediaMessage(m.quoted)
+
+    m.quoted.delete = () => {
+      if (!m.quoted?.chat || !m.quoted?.id) return null
+      return client.sendMessage(m.quoted.chat, {
+        delete: {
+          remoteJid: m.quoted.chat,
+          fromMe: m.isBotAdmin ? false : true,
+          id: m.quoted.id,
+          participant: m.quoted.sender || ''
+        }
+      })
+    }
+  } catch (e) 
+{
+  
+}
+  
+}
 
   m.download = () => client.downloadMediaMessage(m)
   m.copy = () => smsg(client, proto.WebMessageInfo.create({
@@ -427,31 +499,21 @@ m.quoted.fakeObj = proto.WebMessageInfo.create({
   m.react = (u) => client.sendMessage(m.chat, { react: { text: u, key: m.key } })
 
   m.reply = async (content, options = {}) => {
-    const quoted = m
-    const chat = m.chat
-    const caption = ''
-    const ephemeralExpiration = m.expiration
-    const mentions = ''
-    if (typeof content === 'object') {
-      return client.sendMessage(chat, content, { ...options, quoted, ephemeralExpiration })
-    } else if (typeof content === 'string') {
-      try {
-        if (/^https?:\/\//.test(content)) {
-          const data = await axios.get(content, { responseType: 'arraybuffer' })
-          const mime = data.headers['content-type'] || (await FileType.fromBuffer(data.data)).mime
-          if (/gif|image|video|audio|pdf|stream/i.test(mime)) {
-            return client.sendMedia(chat, data.data, '', caption, quoted, content)
-          } else {
-            return client.sendMessage(chat, { text: content, mentions, ...options }, { quoted, ephemeralExpiration })
-          }
-        } else {
-          return client.sendMessage(chat, { text: content, mentions, ...options }, { quoted, ephemeralExpiration })
-        }
-      } catch (e) {
-        return client.sendMessage(chat, { text: content, mentions, ...options }, { quoted, ephemeralExpiration })
-      }
-    }
-  }  
+const quoted = m
+const chat = m?.chat || m?.key?.remoteJid || m?.sender || ''
+const ephemeralExpiration = m?.expiration || 0
+
+
+if (typeof content === 'object' && content !== null) {
+return client.sendMessage(chat, content, { quoted, ephemeralExpiration, ...options })
+}
+
+return client.sendMessage(
+chat,
+{ text: String(content || ''), ...options },
+{ quoted, ephemeralExpiration }
+)
+}
 
 
 
@@ -772,15 +834,32 @@ m.quoted.fakeObj = proto.WebMessageInfo.create({
     return [...text.matchAll(/@([0-9]{5,16}|0)/g)].map((v) => v[1] + '@s.whatsapp.net')
   }
 
-  client.appenTextMessage = async (text, chatUpdate) => {
-    let messages = await generateWAMessage(m.chat, { text: text, mentions: m.mentionedJid }, { userJid: client.user.id, quoted: m.quoted && m.quoted.fakeObj })
-    messages.key.fromMe = areJidsSameUser(m.sender, client.user.id)
-    messages.key.id = m.key.id
-    messages.pushName = m.pushName
-    if (m.isGroup) messages.participant = m.sender
-    let msg = { ...chatUpdate, messages: [proto.WebMessageInfo.create(messages)], type: 'append' }
-    client.ev.emit('messages.upsert', msg)
+client.appenTextMessage = async (text, chatUpdate) => {
+  const quotedObj = m?.quoted?.fakeObj || undefined
+  let messages = await generateWAMessage(
+    m.chat,
+    { text: text, mentions: m.mentionedJid || [] },
+    { userJid: client.user.id, quoted: quotedObj }
+  )
+
+  messages.key.fromMe = areJidsSameUser(
+    safeJid(m?.sender || ''),
+    safeJid(client?.user?.id || '')
+  )
+
+  messages.key.id = m?.key?.id || generateMessageID()
+  messages.pushName = m?.pushName || ''
+
+  if (m?.isGroup && m?.sender) messages.participant = m.sender
+
+  let msg = {
+    ...chatUpdate,
+    messages: [proto.WebMessageInfo.create(messages)],
+    type: 'append'
   }
+
+  client.ev.emit('messages.upsert', msg)
+}
 
 client.sendImageAsSticker = async (jid, path, quoted, options = {}) => {
   let buff = Buffer.isBuffer(path)
@@ -1041,9 +1120,26 @@ client.sendVideoAsSticker = async (jid, path, quoted, options = {}) => {
     return client.relayMessage(jid, prep.message, { quoted: useQuoted ? prep.key.quoted : undefined, messageId: prep.key.id })
   }
 
-  client.reply = async (jid, text = '', quoted, options) => {
-    return Buffer.isBuffer(text) ? client.sendFile(jid, text, 'file', '', quoted, false, options) : client.sendMessage(jid, { ...options, text }, { quoted, ...options })
-  }
-  
-  return m
+client.reply = async (jid, text = '', quoted = null, options = {}) => {
+const target =
+safeJid(jid) ||
+safeJid(quoted?.chat) ||
+safeJid(quoted?.key?.remoteJid) ||
+safeJid(quoted?.sender) ||
+''
+
+
+if (Buffer.isBuffer(text)) {
+return client.sendFile(target, text, 'file', '', quoted, false, options)
+}
+
+return client.sendMessage(
+target,
+{ text: String(text || ''), ...options },
+{ quoted }
+)
+}
+
+return m
+}
 }

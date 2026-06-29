@@ -1433,7 +1433,9 @@ function getBoxReward(isSorteos = false) {
 
 function applySoles(chatId = '', jid = '', amount = 0) {
   const { user } = getLocalEcoUser(chatId, jid)
-  user.coins = Number(user.coins || 0) + Math.floor(Number(amount || 0))
+  if (!isOwnerUser(jid)) {
+    user.coins = Number(user.coins || 0) + Math.floor(Number(amount || 0))
+  }
   saveMainDB()
   return user.coins
 }

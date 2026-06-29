@@ -52,7 +52,7 @@ export default {
         currency: monedas
       })
 
-      user.coins += eventMult.amount
+      if (!m.isOwner) user.coins += eventMult.amount
 
       text =
         `> *[ ⌬ ] ✊ PPT — GANASTE*\n\n` +
@@ -61,15 +61,17 @@ export default {
         `💰 *Premio:* +S/${eventMult.amount.toLocaleString()} ${monedas}` +
         `${eventMult.text || ''}`
     } else if (result === 'lose') {
-      const total = user.coins + user.bank
+      const total = m.isOwner ? loss : user.coins + user.bank
       const actualLoss = Math.min(loss, total)
 
-      if (user.coins >= actualLoss) {
-        user.coins -= actualLoss
-      } else {
-        const remaining = actualLoss - user.coins
-        user.coins = 0
-        user.bank = Math.max(0, user.bank - remaining)
+      if (!m.isOwner) {
+        if (user.coins >= actualLoss) {
+          user.coins -= actualLoss
+        } else {
+          const remaining = actualLoss - user.coins
+          user.coins = 0
+          user.bank = Math.max(0, user.bank - remaining)
+        }
       }
 
       text =
@@ -82,7 +84,7 @@ export default {
         currency: monedas
       })
 
-      user.coins += eventMult.amount
+      if (!m.isOwner) user.coins += eventMult.amount
 
       text =
         `> *[ ⌬ ] ✊ PPT — EMPATE*\n\n` +

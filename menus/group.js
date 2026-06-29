@@ -40,7 +40,7 @@ export default {
 
 
         𓆩 👥 *GROUP SYSTEM* 👥 𓆪
-        ✨ *Total disponible:* 59 comandos
+        ✨ *Total disponible:* 63 comandos
         ⚡ *Modo:* moderación, configuración y seguridad
 
 
@@ -229,6 +229,18 @@ Activa o desactiva el sistema gacha dentro del grupo.
 
 👮‍♂️ *${currentPrefix}adminonly* / *${currentPrefix}onlyadmin*:
 Permite que solo administradores usen ciertas funciones.
+
+
+ꕥ 🔥 *RACHAS DEL GRUPO*
+
+🔥 *${currentPrefix}setracha*:
+Activa o desactiva las rachas automáticas del grupo. Cuando están activas, el sistema cuenta actividad por hablar en el grupo.
+
+📜 *${currentPrefix}racha*:
+Muestra el menú decorado de rachas con los comandos disponibles y explicación del sistema.
+
+📊 *${currentPrefix}inforacha* / *${currentPrefix}streakinfo* / *${currentPrefix}rachainfo*:
+Muestra el estado de tu racha diaria, progreso y actividad registrada en el grupo.
 
 
 

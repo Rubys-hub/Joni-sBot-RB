@@ -217,14 +217,15 @@
     "LEI-DZ4N-PB24": {
       "code": "LEI-DZ4N-PB24",
       "coins": 150000,
-      "stock": 1,
+      "stock": 0,
       "initialStock": 3,
       "enabled": true,
       "createdBy": "51901931862@s.whatsapp.net",
       "createdAt": 1779304099819,
       "redeemed": {
         "573205194898@s.whatsapp.net": 1779304259957,
-        "5219212539534@s.whatsapp.net": 1779305972936
+        "5219212539534@s.whatsapp.net": 1779305972936,
+        "18498643793@s.whatsapp.net": 1780331155320
       }
     },
     "LEI-VFD8-SNN8": {
@@ -268,13 +269,115 @@
     "LEI-WZEK-R5VB": {
       "code": "LEI-WZEK-R5VB",
       "coins": 300000,
-      "stock": 2,
+      "stock": 0,
       "initialStock": 3,
       "enabled": true,
       "createdBy": "51901931862@s.whatsapp.net",
       "createdAt": 1780202467078,
       "redeemed": {
-        "18498643793@s.whatsapp.net": 1780204740581
+        "18498643793@s.whatsapp.net": 1780204740581,
+        "5219212539534@s.whatsapp.net": 1780235797330,
+        "584144997722@s.whatsapp.net": 1780235924782
+      }
+    },
+    "LEI-GVPJ-UAZD": {
+      "code": "LEI-GVPJ-UAZD",
+      "coins": 100000,
+      "stock": 0,
+      "initialStock": 3,
+      "enabled": true,
+      "createdBy": "51901931862@s.whatsapp.net",
+      "createdAt": 1780266410601,
+      "redeemed": {
+        "51935502887@s.whatsapp.net": 1780266568060,
+        "584144997722@s.whatsapp.net": 1780266949648,
+        "51901931862@s.whatsapp.net": 1780266957429
+      }
+    },
+    "LEI-M6Y6-RVEY": {
+      "code": "LEI-M6Y6-RVEY",
+      "coins": 100000,
+      "stock": 0,
+      "initialStock": 1,
+      "enabled": true,
+      "createdBy": "51901931862@s.whatsapp.net",
+      "createdAt": 1780369076506,
+      "redeemed": {
+        "5219212539534@s.whatsapp.net": 1780369177985
+      }
+    },
+    "LEI-RYHQ-82HN": {
+      "code": "LEI-RYHQ-82HN",
+      "coins": 150000,
+      "stock": 2,
+      "initialStock": 2,
+      "enabled": true,
+      "createdBy": "51901931862@s.whatsapp.net",
+      "createdAt": 1780370260204,
+      "redeemed": {}
+    },
+    "LEI-5TJF-GJJ7": {
+      "code": "LEI-5TJF-GJJ7",
+      "coins": 150000,
+      "stock": 0,
+      "initialStock": 2,
+      "enabled": true,
+      "createdBy": "51901931862@s.whatsapp.net",
+      "createdAt": 1780370406554,
+      "redeemed": {
+        "51935502887@s.whatsapp.net": 1780370482652,
+        "573023849487@s.whatsapp.net": 1780370493021
+      }
+    },
+    "LEI-VTKL-2QP2": {
+      "code": "LEI-VTKL-2QP2",
+      "coins": 6767,
+      "stock": 0,
+      "initialStock": 1,
+      "enabled": true,
+      "createdBy": "51901931862@s.whatsapp.net",
+      "createdAt": 1780467716117,
+      "redeemed": {
+        "584144997722@s.whatsapp.net": 1780467734011
+      }
+    },
+    "LEI-5PYG-XJLM": {
+      "code": "LEI-5PYG-XJLM",
+      "coins": 300000,
+      "stock": 0,
+      "initialStock": 1,
+      "enabled": true,
+      "createdBy": "51901931862@s.whatsapp.net",
+      "createdAt": 1780538887620,
+      "redeemed": {
+        "5219212539534@s.whatsapp.net": 1780538914715
+      }
+    },
+    "LEI-PV6Y-K7VB": {
+      "code": "LEI-PV6Y-K7VB",
+      "coins": 300000,
+      "stock": 0,
+      "initialStock": 3,
+      "enabled": true,
+      "createdBy": "51901931862@s.whatsapp.net",
+      "createdAt": 1780716683819,
+      "redeemed": {
+        "18498643793@s.whatsapp.net": 1780716733222,
+        "5491158480521@s.whatsapp.net": 1780716751663,
+        "5491162504265@s.whatsapp.net": 1780716765888
+      }
+    },
+    "LEI-K9HG-SWAV": {
+      "code": "LEI-K9HG-SWAV",
+      "coins": 300000,
+      "stock": 0,
+      "initialStock": 2,
+      "enabled": true,
+      "createdBy": "51901931862@s.whatsapp.net",
+      "createdAt": 1781142143390,
+      "redeemed": {
+        "584144997722@s.whatsapp.net": 1781142176659,
+        "18498643793@s.whatsapp.net": 1781142190816
       }
     }
   }

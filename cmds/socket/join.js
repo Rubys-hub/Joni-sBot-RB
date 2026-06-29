@@ -1,52 +1,14 @@
+import { isSocketOwner } from "../../core/utils.js";
+
 export default {
   command: ['join', 'unir'],
   category: 'socket',
 
   run: async (client, m, args) => {
     const idBot = client.user.id.split(':')[0] + '@s.whatsapp.net'
-    const botLid = client.user?.lid || ''
     const config = global.db.data.settings[idBot] ||= {}
 
-    // AGREGA AQUÍ TU NÚMERO Y TU LID
-    const FORCE_SOCKET = [
-      '51901931862',
-      '269015712845891@lid'
-    ]
-
-    const cleanJid = (jid = '') =>
-      String(jid || '').trim().replace(/:\d+/, '')
-
-    const digitsOnly = (jid = '') =>
-      cleanJid(jid).split('@')[0].replace(/\D/g, '')
-
-    const senderRaw = cleanJid(m.sender)
-    const senderDigits = digitsOnly(m.sender)
-
-    const allowedJids = [
-      idBot,
-      botLid,
-      config.owner,
-      ...(Array.isArray(global.owner)
-        ? global.owner.map(num => `${String(num).replace(/\D/g, '')}@s.whatsapp.net`)
-        : []),
-      ...FORCE_SOCKET
-    ].filter(Boolean)
-
-    const allowedRaw = allowedJids.map(cleanJid)
-    const allowedDigits = allowedJids.map(digitsOnly).filter(Boolean)
-
-    const isOwner2 =
-      allowedRaw.includes(senderRaw) ||
-      (senderDigits && allowedDigits.includes(senderDigits))
-
-    console.log('[JOIN PERMISO]', {
-      sender: m.sender,
-      senderRaw,
-      senderDigits,
-      allowedRaw,
-      allowedDigits,
-      isOwner2
-    })
+    const isOwner2 = await isSocketOwner(client, m, config)
 
     if (!isOwner2) return m.reply(mess.socket)
 

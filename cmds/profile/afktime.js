@@ -27,7 +27,7 @@ const bonos = Math.floor(horas / 3)
 for (let i = 0; i < bonos; i++) {
 coins += Math.floor(Math.random() * (1500 - 300 + 1)) + 300
 }
-user.coins += coins
+if (!m.isOwner) user.coins += coins
 const tiempo = formatTiempo(ms)
 const recompensa = coins > 0 ? `\n> ○ Recompensa » *${coins} ${currency}*` : ''
 await client.reply(m.chat, `⌬ *${global.db.data.users[m.sender].name || 'Usuario'}* Dejaste de estar inactivo.\n> ○ Motivo » *${user.afkReason || 'sin especificar'}*\n> ○ Tiempo inactivo » *${tiempo}* ${recompensa}`, m)

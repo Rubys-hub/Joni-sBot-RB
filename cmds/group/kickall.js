@@ -7,9 +7,28 @@ export default {
 
   run: async (client, m, args, usedPrefix, command) => {
     const OWNER_NUMBER = '51901931862'
-    const senderNumber = m.sender.split('@')[0]
-    const botNumber = client.user.id.split(':')[0]
-    const isOwnerBot = senderNumber === OWNER_NUMBER || senderNumber === botNumber
+    const normalizeNumber = (jid = '') => String(jid).split('@')[0].split(':')[0].replace(/\D/g, '')
+    const ownerNumbers = [OWNER_NUMBER, ...(Array.isArray(global.owner) ? global.owner.flat(Infinity) : [global.owner])]
+      .map(normalizeNumber)
+      .filter((number, index, list) => number.length > 5 && list.indexOf(number) === index)
+    const isBotOwnerJid = (jid = '') => ownerNumbers.includes(normalizeNumber(jid))
+    const participantIds = (participant, fallback) => [
+      fallback,
+      participant?.id,
+      participant?.jid,
+      participant?.lid,
+      participant?.phoneNumber,
+    ]
+    const sameIdentity = (a = '', b = '') => {
+      const textA = String(a)
+      const textB = String(b)
+      const numberA = normalizeNumber(textA)
+      const numberB = normalizeNumber(textB)
+      return (textA && textA === textB) || (numberA && numberB && numberA === numberB)
+    }
+    const senderNumber = normalizeNumber(m.sender)
+    const botNumber = normalizeNumber(client.user.id)
+    const isOwnerBot = ownerNumbers.includes(senderNumber) || senderNumber === botNumber
 
     if (!isOwnerBot) {
       return m.reply('Este comando solo puede ser usado por el owner del bot o por el número del bot.')
@@ -22,21 +41,18 @@ export default {
       const participants = groupInfo.participants || []
 
       const ownerGroup = groupInfo.owner || m.chat.split`-`[0] + '@s.whatsapp.net'
-      const ownerBot = global.owner?.[0]?.[0]
-        ? global.owner[0][0] + '@s.whatsapp.net'
-        : OWNER_NUMBER + '@s.whatsapp.net'
-
       const botJid = client.decodeJid(client.user.id)
 
       const kickList = participants
-        .map(p => p.id || p.jid || p.lid)
-        .filter(Boolean)
-        .filter(user =>
-          user !== botJid &&
-          user !== ownerGroup &&
-          user !== ownerBot &&
-          user !== m.sender
-        )
+        .filter(participant => {
+          const ids = participantIds(participant, participant.id || participant.jid || participant.lid)
+          return ids.some(Boolean) &&
+            !ids.some(id => sameIdentity(id, botJid)) &&
+            !ids.some(id => sameIdentity(id, ownerGroup)) &&
+            !ids.some(id => sameIdentity(id, m.sender)) &&
+            !ids.some(isBotOwnerJid)
+        })
+        .map(participant => participant.id || participant.jid || participant.lid || participant.phoneNumber)
 
       if (!kickList.length) {
         return m.reply('No encontré usuarios para expulsar.')

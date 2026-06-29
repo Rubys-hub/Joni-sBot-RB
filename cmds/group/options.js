@@ -8,6 +8,7 @@ export default {
     'antilinksoft',
     'rpg', 'economy', 'economia',
     'gacha',
+    'setracha',
     'adminonly', 'onlyadmin'
   ],
   category: 'grupo',
@@ -39,6 +40,7 @@ if (!isOwnerBot && !m.isAdmin) {
       alertas: 'alerts',
       economy: 'economy',      
       economia: 'economy',
+      setracha: 'racha',
       adminonly: 'adminonly',
       onlyadmin: 'adminonly',
       nsfw: 'nsfw',
@@ -53,6 +55,7 @@ if (!isOwnerBot && !m.isAdmin) {
       alerts: 'las *Alertas*',
       economy: 'los comandos de *Economía*',
       gacha: 'los comandos de *Gacha*',
+      racha: 'el sistema de *Rachas*',
       adminonly: 'el modo *Solo Admin*',
       nsfw: 'los comandos *NSFW*'
     }
@@ -64,19 +67,21 @@ if (!isOwnerBot && !m.isAdmin) {
       alerts: 'Alertas',
       economy: 'Economía',
       gacha: 'Gacha',
+      racha: 'Rachas',
       adminonly: 'AdminOnly',
       nsfw: 'NSFW'
     }
     const normalizedKey = mapTerms[command] || command
+    const commandLabel = command === 'setracha' ? 'setracha' : normalizedKey
     const current = chatData[normalizedKey] === true
     const estado = current ? '✓ Activado' : '✗ Desactivado'
     const nombreBonito = featureNames[normalizedKey] || `la función *${normalizedKey}*`
     const titulo = featureTitles[normalizedKey] || normalizedKey
     if (!stateArg) {
-      return client.reply(m.chat, `*✩ ${titulo} (✿❛◡❛)*\n\n⌬ Un administrador puede activar o desactivar ${nombreBonito} utilizando:\n\n● _Habilitar ›_ *${usedPrefix + normalizedKey} enable*\n● _Deshabilitar ›_ *${usedPrefix + normalizedKey} disable*\n\n❒ *Estado actual ›* ${estado}`, m)
+      return client.reply(m.chat, `*✩ ${titulo} (✿❛◡❛)*\n\n⌬ Un administrador puede activar o desactivar ${nombreBonito} utilizando:\n\n● _Habilitar ›_ *${usedPrefix + commandLabel} enable*\n● _Deshabilitar ›_ *${usedPrefix + commandLabel} disable*\n\n❒ *Estado actual ›* ${estado}`, m)
     }
     if (!validStates.includes(stateArg)) {
-      return m.reply(`✎ Estado no válido. Usa *on*, *off*, *enable* o *disable*\n\nEjemplo:\n${usedPrefix}${normalizedKey} enable`)
+      return m.reply(`✎ Estado no válido. Usa *on*, *off*, *enable* o *disable*\n\nEjemplo:\n${usedPrefix}${commandLabel} enable`)
     }
     const enabled = ['on', 'enable'].includes(stateArg)
     if (chatData[normalizedKey] === enabled) {

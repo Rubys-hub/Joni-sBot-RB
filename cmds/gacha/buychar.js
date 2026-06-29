@@ -23,12 +23,12 @@ export default {
       const botId = client.user.id.split(':')[0] + '@s.whatsapp.net'
       const bot = global.db.data.settings[botId]
       const currency = bot.currency
-      if (saldo < venta.price) {
+      if (!m.isOwner && saldo < venta.price) {
         return m.reply(`⌬ No tienes suficientes *${currency}* para comprar a *${venta.name}*.\n> Necesitas *S/${venta.price.toLocaleString()} ${currency}*`)
       }
       if (!chat.users[venta.user]) chat.users[venta.user] = { coins: 0, characters: [] }
       if (!Array.isArray(chat.users[venta.user].characters)) chat.users[venta.user].characters = []
-      chat.users[m.sender].coins -= venta.price
+      if (!m.isOwner) chat.users[m.sender].coins -= venta.price
       chat.users[venta.user].coins += venta.price
       chat.characters[idBuy].user = m.sender
       if (!chat.users[m.sender].characters.includes(idBuy)) {

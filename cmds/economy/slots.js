@@ -28,7 +28,7 @@ export default {
     }
 
     if (apuesta < 100) return m.reply(`🎰 sʟᴏᴛ ✦ Apuesta mínima: *100 ${currency}*.`)
-    if (user.coins < apuesta) return m.reply(`💸 sᴀʟᴅᴏ ɪɴsᴜғɪᴄɪᴇɴᴛᴇ ✦ No tienes suficientes *${currency}*.`)
+    if (!m.isOwner && user.coins < apuesta) return m.reply(`💸 sᴀʟᴅᴏ ɪɴsᴜғɪᴄɪᴇɴᴛᴇ ✦ No tienes suficientes *${currency}*.`)
 
     const emojis = ['🍒', '🍋', '💎', '⭐', '7️⃣']
     const spin = () => Array.from({ length: 3 }, () => emojis[Math.floor(Math.random() * emojis.length)])
@@ -46,13 +46,13 @@ export default {
 
     if (r[0] === r[1] && r[1] === r[2]) {
       const win = apuesta * 2
-      user.coins += apuesta
+      if (!m.isOwner) user.coins += apuesta
       resultado = `💎 Jackpot ✦ Ganaste *S/${win.toLocaleString()} ${currency}*.`
     } else if (r[0] === r[1] || r[0] === r[2] || r[1] === r[2]) {
-      user.coins += 10
+      if (!m.isOwner) user.coins += 10
       resultado = `✨ Casi ✦ Recuperaste *S/10 ${currency}*.`
     } else {
-      user.coins -= apuesta
+      if (!m.isOwner) user.coins -= apuesta
       resultado = `💔 Mala suerte ✦ Perdiste *S/${apuesta.toLocaleString()} ${currency}*.`
     }
 

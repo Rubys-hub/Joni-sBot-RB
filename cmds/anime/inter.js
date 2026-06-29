@@ -76,83 +76,236 @@ function getRandomSymbol() {
   return symbols[Math.floor(Math.random() * symbols.length)]
 }
 
+const REQUEST_TIMEOUT_MS = 15_000
+const WAIFU_PICS_MAP = {
+  angry: 'slap',
+  bleh: 'smile',
+  bored: 'smug',
+  bully: 'bully',
+  coffee: 'nom',
+  cold: 'cuddle',
+  clap: 'highfive',
+  dramatic: 'cringe',
+  drunk: 'happy',
+  impregnate: 'kiss',
+  cuddle: 'cuddle',
+  cry: 'cry',
+  hug: 'hug',
+  kisscheek: 'kiss',
+  laugh: 'happy',
+  love: 'hug',
+  kiss: 'kiss',
+  lick: 'lick',
+  pat: 'pat',
+  pout: 'blush',
+  punch: 'bonk',
+  run: 'yeet',
+  sad: 'cry',
+  scared: 'cry',
+  seduce: 'blush',
+  shy: 'blush',
+  sleep: 'cuddle',
+  smoke: 'smug',
+  spit: 'slap',
+  step: 'bonk',
+  think: 'smug',
+  walk: 'wave',
+  smug: 'smug',
+  bonk: 'bonk',
+  blush: 'blush',
+  smile: 'smile',
+  wave: 'wave',
+  highfive: 'highfive',
+  handhold: 'handhold',
+  eat: 'nom',
+  bite: 'bite',
+  slap: 'slap',
+  kill: 'kill',
+  happy: 'happy',
+  wink: 'wink',
+  dance: 'dance',
+  cringe: 'cringe',
+  bath: 'smile',
+  sing: 'happy',
+  tickle: 'happy',
+  scream: 'cringe',
+  push: 'yeet',
+  nope: 'wave',
+  jump: 'happy',
+  heat: 'blush',
+  gaming: 'happy',
+  draw: 'smile',
+  call: 'wave',
+  snuggle: 'cuddle',
+  blowkiss: 'kiss',
+  trip: 'bonk',
+  stare: 'smug',
+  sniff: 'smug',
+  curious: 'smile',
+  thinkhard: 'smug',
+  comfort: 'hug',
+  peek: 'smug'
+}
+
+function isValidMediaUrl(url = '') {
+  return /^https?:\/\//i.test(String(url || '').trim())
+}
+
+function extractMediaUrl(data = {}) {
+  const candidates = [
+    data?.result?.url,
+    data?.result?.gif,
+    data?.result?.video,
+    data?.result,
+    data?.url,
+    data?.data?.url,
+    data?.data?.result,
+    data?.data?.video
+  ]
+
+  for (const candidate of candidates) {
+    if (typeof candidate === 'string' && isValidMediaUrl(candidate)) {
+      return candidate
+    }
+  }
+
+  return null
+}
+
+async function fetchJson(url = '') {
+  const response = await fetch(url, {
+    signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
+    headers: { accept: 'application/json' }
+  })
+
+  if (!response.ok) return null
+  return response.json()
+}
+
+function buildStellarInteractionUrl(action = '') {
+  const api = global.APIs?.stellar || { url: 'https://api.stellarwa.xyz', key: 'YukiWaBot' }
+  if (!api.url) return null
+
+  const url = new URL('/sfw/interaction', api.url)
+  url.searchParams.set('inter', action)
+
+  if (api.key) {
+    url.searchParams.set('key', api.key)
+    url.searchParams.set('apikey', api.key)
+  }
+
+  return url.toString()
+}
+
+async function getStellarMedia(action = '') {
+  const url = buildStellarInteractionUrl(action)
+  if (!url) return null
+
+  const data = await fetchJson(url)
+  return extractMediaUrl(data)
+}
+
+async function getWaifuPicsMedia(action = '') {
+  const mapped = WAIFU_PICS_MAP[action]
+  if (!mapped) return null
+
+  const data = await fetchJson(`https://api.waifu.pics/sfw/${mapped}`)
+  return extractMediaUrl(data)
+}
+
+async function getInteractionMedia(action = '') {
+  const providers = [
+    () => getStellarMedia(action),
+    () => getWaifuPicsMedia(action)
+  ]
+
+  for (const provider of providers) {
+    try {
+      const media = await provider()
+      if (media) return media
+    } catch {}
+  }
+
+  return null
+}
+
 const alias = {
-  angry: ['angry','enojado','enojada'],
-  bleh: ['bleh'],
-  bored: ['bored','aburrido','aburrida'],
-  clap: ['clap','aplaudir'],
-  coffee: ['coffee','cafe'],
-  dramatic: ['dramatic','drama'],
-  drunk: ['drunk'],
-  cold: ['cold'],
+  angry: ['angry','enojado','enojada','enojo','enfado','furioso','furiosa'],
+  bleh: ['bleh','lengua','muecalengua'],
+  bored: ['bored','aburrido','aburrida','aburrimiento'],
+  clap: ['clap','aplaudir','aplauso','aplausos'],
+  coffee: ['coffee','cafe','cafecito'],
+  dramatic: ['dramatic','drama','dramatico','dramatica'],
+  drunk: ['drunk','borracho','borracha','ebrio','ebria'],
+  cold: ['cold','frio','fria'],
   impregnate: ['impregnate','preg','preñar','embarazar'],
-  kisscheek: ['kisscheek','beso','besar'],
-  laugh: ['laugh'],
-  love: ['love','amor'],
-  pout: ['pout','mueca'],
-  punch: ['punch','golpear'],
-  run: ['run','correr'],
-  sad: ['sad','triste'],
-  scared: ['scared','asustado'],
-  seduce: ['seduce','seducir'],
-  shy: ['shy','timido','timida'],
-  sleep: ['sleep','dormir'],
-  smoke: ['smoke','fumar'],
-  spit: ['spit','escupir'],
-  step: ['step','pisar'],
-  think: ['think','pensar'],
-  walk: ['walk','caminar'],
-  hug: ['hug','abrazar'],
-  kill: ['kill','matar'],
-  eat: ['eat','nom','comer'],
-  kiss: ['kiss','muak','besar'],
-  wink: ['wink','guiñar'],
-  pat: ['pat','acariciar'],
-  happy: ['happy','feliz'],
-  bully: ['bully','molestar'],
-  bite: ['bite','morder'],
-  blush: ['blush','sonrojarse'],
-  wave: ['wave','saludar'],
-  bath: ['bath','bañarse'],
-  smug: ['smug','presumir'],
-  smile: ['smile','sonreir'],
-  highfive: ['highfive','choca'],
-  handhold: ['handhold','tomar'],
-  cringe: ['cringe','mueca'],
-  bonk: ['bonk','golpe'],
-  cry: ['cry','llorar'],
-  lick: ['lick','lamer'],
-  slap: ['slap','bofetada'],
-  dance: ['dance','bailar'],
+  kisscheek: ['kisscheek','beso','besar','besomejilla','mejilla','cachete'],
+  laugh: ['laugh','laught','laugth','laguht','risa','reir','reirse','jaja'],
+  love: ['love','amor','amar','enamorar'],
+  pout: ['pout','mueca','puchero','pucheros'],
+  punch: ['punch','golpear','puñete','puñetazo'],
+  run: ['run','correr','huir','escapar'],
+  sad: ['sad','triste','tristeza'],
+  scared: ['scared','asustado','asustada','miedo'],
+  seduce: ['seduce','seducir','seductor','seductora'],
+  shy: ['shy','timido','timida','verguenza'],
+  sleep: ['sleep','dormir','duerme','sueño'],
+  smoke: ['smoke','fumar','fumando'],
+  spit: ['spit','escupir','escupirle'],
+  step: ['step','pisar','pisoton'],
+  think: ['think','pensar','pensando'],
+  walk: ['walk','caminar','pasear'],
+  hug: ['hug','abrazar','abrazo'],
+  kill: ['kill','matar','asesinar'],
+  eat: ['eat','nom','comer','comida'],
+  kiss: ['kiss','muak','besar','besaroca'],
+  wink: ['wink','guiñar','guiño'],
+  pat: ['pat','acariciar','palmadita'],
+  happy: ['happy','feliz','felicidad','alegre'],
+  bully: ['bully','molestar','bullying'],
+  bite: ['bite','morder','mordida'],
+  blush: ['blush','sonrojarse','sonrojo','sonrojado','sonrojada'],
+  wave: ['wave','saludar','saludo'],
+  bath: ['bath','bañarse','baño'],
+  smug: ['smug','presumir','presumido','presumida'],
+  smile: ['smile','sonreir','sonrisa'],
+  highfive: ['highfive','choca','chocar','cinco'],
+  handhold: ['handhold','tomar','mano','agarrarmano'],
+  cringe: ['cringe','mueca','penaajena'],
+  bonk: ['bonk','golpe','coscorrón','coscorron'],
+  cry: ['cry','llorar','llanto'],
+  lick: ['lick','lamer','lamida'],
+  slap: ['slap','bofetada','cachetada'],
+  dance: ['dance','bailar','baile'],
   cuddle: ['cuddle','acurrucar'],
-  sing: ['sing','cantar'],
+  sing: ['sing','cantar','cancion'],
   tickle: ['tickle','cosquillas'],
-  scream: ['scream','gritar'],
-  push: ['push','empujar'],
-  nope: ['nope','no'],
-  jump: ['jump','saltar'],
+  scream: ['scream','gritar','grito'],
+  push: ['push','empujar','empujon'],
+  nope: ['nope','no','nop'],
+  jump: ['jump','saltar','salto'],
   heat: ['heat','calor'],
-  gaming: ['gaming','jugar'],
-  draw: ['draw','dibujar'],
-  call: ['call','llamar'],
+  gaming: ['gaming','jugar','gamer','juego'],
+  draw: ['draw','dibujar','dibujo'],
+  call: ['call','llamar','llamada'],
   snuggle: ['snuggle','acurrucarse'],
-  blowkiss: ['blowkiss','besito'],
-  trip: ['trip','tropezar'],
-  stare: ['stare','mirar'],
-  sniff: ['sniff','oler'],
-  curious: ['curious','curioso','curiosa'],
-  thinkhard: ['thinkhard','pensar'],
-  comfort: ['comfort','consolar'],
-  peek: ['peek','mirar']
+  blowkiss: ['blowkiss','besito','besoaire'],
+  trip: ['trip','tropezar','tropiezo'],
+  stare: ['stare','mirar','mirada'],
+  sniff: ['sniff','oler','olfatear'],
+  curious: ['curious','curioso','curiosa','curiosidad'],
+  thinkhard: ['thinkhard','pensarprofundo','reflexionar'],
+  comfort: ['comfort','consolar','consuelo'],
+  peek: ['peek','espiar','miraroculto']
 };
 
 export default {
-command: ['angry','enojado','enojada','bleh','bored','aburrido','aburrida','clap','aplaudir','coffee','cafe','dramatic','drama','drunk','cold','impregnate','preg','preñar','embarazar','kisscheek','beso','besar','laugh','love','amor','pout','mueca','punch','golpear','run','correr','sad','triste','scared','asustado','seduce','seducir','shy','timido','timida','sleep','dormir','smoke','fumar','spit','escupir','step','pisar','think','pensar','walk','caminar','hug','abrazar','kill','matar','eat','nom','comer','kiss','muak','wink','guiñar','pat','acariciar','happy','feliz','bully','molestar','bite','morder','blush','sonrojarse','wave','saludar','bath','bañarse','smug','presumir','smile','sonreir','highfive','choca','handhold','tomar','cringe','mueca','bonk','golpe','cry','llorar','lick','lamer','slap','bofetada','dance','bailar','cuddle','acurrucar','sing','cantar','tickle','cosquillas','scream','gritar','push','empujar','nope','no','jump','saltar','heat','calor','gaming','jugar','draw','dibujar','call','llamar','snuggle','acurrucarse','blowkiss','besito','trip','tropezar','stare','mirar','sniff','oler','curious','curioso','curiosa','thinkhard','pensar','comfort','consolar','peek','mirar'],
+command: [...new Set(Object.values(alias).flat())],
   category: 'anime',
   run: async (client, m, args, usedPrefix, command) => {
     const currentCommand = Object.keys(alias).find(key => alias[key].includes(command)) || command
     if (!captions[currentCommand]) return
-    let mentionedJid = m.mentionedJid
+    const mentionedJid = Array.isArray(m.mentionedJid) ? m.mentionedJid : []
     let who2 = mentionedJid.length > 0 ? mentionedJid[0] : (m.quoted ? m.quoted.sender : m.sender)
     const who = await resolveLidToRealJid(who2, client, m.chat)
     const fromName = global.db.data.users[m.sender]?.name || '@'+m.sender.split('@')[0]
@@ -161,10 +314,31 @@ command: ['angry','enojado','enojada','bleh','bored','aburrido','aburrida','clap
     const captionText = captions[currentCommand](fromName, toName, genero)
     const caption = who !== m.sender ? `\`${fromName}.\` ${captionText} \`${toName}.\` ${getRandomSymbol()}.` : `\`${fromName}\` ${captionText} ${getRandomSymbol()}.`
     try {
-      const response = await fetch(`https://api.stellarwa.xyz/sfw/interaction?inter=${currentCommand}`)
-      const json = await response.json()
-      const { result } = json
-      await client.sendMessage(m.chat, { video: { url: result }, gifPlayback: true, caption, mentions: [who, m.sender] }, { quoted: m })
+      const media = await getInteractionMedia(currentCommand)
+
+      if (!media) {
+        return client.sendMessage(
+          m.chat,
+          {
+            text: `${caption}\n\n⚠️ No pude cargar el gif ahora, pero la reacción sí se envió.`,
+            mentions: [who, m.sender]
+          },
+          { quoted: m }
+        )
+      }
+
+      try {
+        await client.sendMessage(m.chat, { video: { url: media }, gifPlayback: true, caption, mentions: [who, m.sender] }, { quoted: m })
+      } catch {
+        await client.sendMessage(
+          m.chat,
+          {
+            text: `${caption}\n\n⚠️ El gif no pudo enviarse, pero la reacción sí se envió.`,
+            mentions: [who, m.sender]
+          },
+          { quoted: m }
+        )
+      }
     } catch (e) {
     await m.reply(`> An unexpected error occurred while executing command *${usedPrefix + command}*. Please try again or contact support if the issue persists.\n> [Error: *${e.message}*]`)
     }

@@ -1,4 +1,5 @@
 import GraphemeSplitter from 'grapheme-splitter'
+import { isSocketOwner } from "../../core/utils.js";
 
 export default {
   command: ['setprefix', 'setbotprefix'],
@@ -6,7 +7,7 @@ export default {
   run: async (client, m, args, usedPrefix, command) => {
     const idBot = client.user.id.split(':')[0] + '@s.whatsapp.net'
     const config = global.db.data.settings[idBot]
-    const isOwner2 = [idBot, ...(config.owner ? [config.owner] : []), ...global.owner.map(num => num + '@s.whatsapp.net')].includes(m.sender)
+    const isOwner2 = await isSocketOwner(client, m, config)
     if (!isOwner2) return client.reply(m.chat, mess.socket, m)
     const value = args.join(' ').trim()
     const defaultPrefix = ["#", "/", "!", "."]

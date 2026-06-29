@@ -39,7 +39,7 @@ export default {
 
 
         𓆩 📥 *DOWNLOAD SYSTEM* 📥 𓆪
-        ✨ *Total disponible:* 14 comandos
+        ✨ *Total disponible:* 15 comandos
         ⚡ *Modo:* descargas, búsquedas y recursos
 
 
@@ -97,8 +97,8 @@ Descarga archivos desde Google Drive. También puedes usar el alias *${currentPr
 📲 *${currentPrefix}apk* _nombre de app_:
 Busca y descarga aplicaciones en formato APK. También funciona con *${currentPrefix}aptoide* o *${currentPrefix}apkdl*.
 
-🎵 *${currentPrefix}audiomp3* / *${currentPrefix}mp3*:
-Convierte enlaces, videos o archivos de audio a MP3 enviable por WhatsApp.
+🎵 *${currentPrefix}audiomp3* / *${currentPrefix}mp3* / *${currentPrefix}audio* / *${currentPrefix}youtubemp3* / *${currentPrefix}tiktokmp3* / *${currentPrefix}igmp3* / *${currentPrefix}linkmp3*:
+Convierte enlaces de YouTube, TikTok, Instagram, links directos, videos o archivos de audio a MP3 enviable por WhatsApp.
 
         𓆩 🔙 *RETURN* 🔙 𓆪
 

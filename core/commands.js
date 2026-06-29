@@ -34,11 +34,20 @@ economia: `╭┈ࠢ͜─ׄ֟፝͜─ׄ͜─ׄ͜╴𐔌 💰 *ECONOMY* 𐦯╶͜
 ꕤ *$prefixmonthly » $prefixmensual*
 > 📅 Reclama una recompensa mensual.
 
-ꕤ *$prefixeconomyboard » $prefixeboard » $prefixbaltop*
+ꕤ *$prefixeconomyboard » $prefixeboard » $prefixbaltop » $prefixeboardglobal » $prefixeconomyboardglobal » $prefixbaltopglobal*
 > 🏆 Muestra el ranking económico del grupo.
 
 ꕤ *$prefixinfoeconomy » $prefixcooldowns » $prefixeconomyinfo » $prefixeinfo*
 > ℹ️ Muestra información y tiempos de espera de economía.
+
+ꕤ *$prefixfarm » $prefixfarminfo*
+> 🌾 Muestra tu panel de granjas, producción, daños y dinero acumulado.
+
+ꕤ *$prefixbuyfarm » $prefixharvest » $prefixharvestall*
+> 🏡 Compra granjas y cobra producción acumulada.
+
+ꕤ *$prefixupgradefarm » $prefixrepairfarm*
+> 🛠️ Mejora o repara tus granjas.
 
 ꕤ *$prefixdeposit » $prefixdep » $prefixdepositar » $prefixd*
 > 🏦 Deposita monedas en el banco.
@@ -168,7 +177,7 @@ gacha: `╭┈ࠢ͜─ׄ֟፝͜─ׄ͜─ׄ͜╴𐔌 🎴 *GACHA* 𐦯╶͜─ׄ
 downloads: `╭┈ࠢ͜─ׄ֟፝͜─ׄ͜─ׄ͜╴𐔌 📥 *DOWNLOADS* 𐦯╶͜─ׄ͜─ׄ֟፝͜─ׄ͜─ׄ͜
 > ✐ Descargas, búsquedas, redes sociales, archivos y apps.
 
-ꕤ *$prefixplay » $prefixmp3 » $prefixytmp3 » $prefixytaudio » $prefixplayaudio*
+ꕤ *$prefixplay » $prefixmp3 » $prefixaudiomp3 » $prefixaudio » $prefixyoutubemp3 » $prefixtiktokmp3 » $prefixigmp3 » $prefixlinkmp3 » $prefixytmp3 » $prefixytaudio » $prefixplayaudio*
 > 🎧 Busca música en YouTube y la descarga en audio.
 
 ꕤ *$prefixplay2 » $prefixmp4 » $prefixytmp4 » $prefixytvideo » $prefixplayvideo*
@@ -416,7 +425,7 @@ utils: `╭┈ࠢ͜─ׄ֟፝͜─ׄ͜─ׄ͜╴𐔌 🛠️ *UTILITIES* 𐦯╶
 > ✨ Mejora calidad de imagen.
 
 ꕤ *$prefixia » $prefixchatgpt*
-> 🤖 Consulta inteligencia artificial.
+> 🤖 Consulta inteligencia artificial. Tiene cooldown de 3 minutos.
 
 ꕤ *$prefixcalc » $prefixcalcular » $prefixmath*
 > 🧮 Resuelve cálculos.
@@ -468,6 +477,9 @@ utils: `╭┈ࠢ͜─ׄ֟፝͜─ׄ͜─ׄ͜╴𐔌 🛠️ *UTILITIES* 𐦯╶
 
 ꕤ *$prefixuptime » $prefixruntime*
 > ⏱️ Muestra cuánto tiempo lleva activo el bot.
+
+ꕤ *$prefixping » $prefixp*
+> 🏓 Mide la latencia del bot.
 ╰ׅ͜─֟͜─͜─ٞ͜─͜─๊͜─͜─๋͜─⃔═̶፝֟͜═̶⃔─๋͜─͜─͜─๊͜─ٞ͜─͜─֟͜┈ࠢ͜╯ׅ`,
 
 grupo: `╭┈ࠢ͜─ׄ֟፝͜─ׄ͜─ׄ͜╴𐔌 👥 *GROUPS* 𐦯╶͜─ׄ͜─ׄ֟፝͜─ׄ͜─ׄ͜
@@ -629,6 +641,12 @@ grupo: `╭┈ࠢ͜─ׄ֟፝͜─ׄ͜─ׄ͜╴𐔌 👥 *GROUPS* 𐦯╶͜─�
 ꕤ *$prefixadminonly » $prefixonlyadmin*
 > 👮‍♂️ Solo admins pueden usar comandos.
 
+ꕤ *$prefixsetracha*
+> 🔥 Activa o desactiva las rachas automáticas del grupo.
+
+ꕤ *$prefixracha*
+> 🔥 Muestra el menú decorado de rachas del grupo.
+
 ꕤ *$prefixsetwelcome*
 > 💬 Configura mensaje de bienvenida.
 
@@ -640,6 +658,9 @@ grupo: `╭┈ࠢ͜─ׄ֟፝͜─ׄ͜─ׄ͜╴𐔌 👥 *GROUPS* 𐦯╶͜─�
 
 ꕤ *$prefixtopcount » $prefixtopmensajes » $prefixtopmsgcount » $prefixtopmessages*
 > 🏆 Muestra top de mensajes.
+
+ꕤ *$prefixinforacha » $prefixstreakinfo » $prefixrachainfo*
+> 🔥 Muestra el estado de tu racha diaria en el grupo.
 
 ꕤ *$prefixtopinactive » $prefixtopinactivos » $prefixtopinactiveusers*
 > 😴 Muestra usuarios inactivos.
@@ -785,16 +806,16 @@ anime: `╭┈ࠢ͜─ׄ֟፝͜─ׄ͜─ׄ͜╴𐔌 🌌 *ANIME* 𐦯╶͜─ׄ
 interacciones: `╭┈ࠢ͜─ׄ֟፝͜─ׄ͜─ׄ͜╴𐔌 💞 *INTERACCIONES* 𐦯╶͜─ׄ͜─ׄ֟፝͜─ׄ͜─ׄ͜
 > ✐ Acciones, emociones, gestos y convivencia.
 
-ꕤ *$prefixhug » $prefixabrazar*
+ꕤ *$prefixhug » $prefixabrazar » $prefixabrazo*
 > 🫂 Abraza a otro usuario.
 
-ꕤ *$prefixkiss » $prefixmuak*
+ꕤ *$prefixkiss » $prefixmuak » $prefixbesaroca*
 > 💋 Besa a otro usuario.
 
-ꕤ *$prefixkisscheek » $prefixbeso » $prefixbesar*
+ꕤ *$prefixkisscheek » $prefixbeso » $prefixbesar » $prefixmejilla » $prefixcachete » $prefixbesomejilla*
 > 😘 Da un beso en la mejilla.
 
-ꕤ *$prefixpat » $prefixacariciar*
+ꕤ *$prefixpat » $prefixacariciar » $prefixpalmadita*
 > 👋 Acaricia a otro usuario.
 
 ꕤ *$prefixcuddle » $prefixacurrucar*
@@ -803,175 +824,175 @@ interacciones: `╭┈ࠢ͜─ׄ֟፝͜─ׄ͜─ׄ͜╴𐔌 💞 *INTERACCIONES
 ꕤ *$prefixsnuggle » $prefixacurrucarse*
 > 🤗 Se arrima cariñosamente.
 
-ꕤ *$prefixblowkiss » $prefixbesito*
+ꕤ *$prefixblowkiss » $prefixbesito » $prefixbesoaire*
 > 😘 Lanza un beso.
 
-ꕤ *$prefixhandhold » $prefixtomar*
+ꕤ *$prefixhandhold » $prefixtomar » $prefixmano » $prefixagarrarmano*
 > 🤝 Toma la mano de otro usuario.
 
-ꕤ *$prefixhighfive » $prefixchoca*
+ꕤ *$prefixhighfive » $prefixchoca » $prefixchocar » $prefixcinco*
 > 🙌 Choca los cinco.
 
-ꕤ *$prefixlove » $prefixamor*
+ꕤ *$prefixlove » $prefixamor » $prefixamar » $prefixenamorar*
 > ❤️ Muestra cariño.
 
-ꕤ *$prefixangry » $prefixenojado » $prefixenojada*
+ꕤ *$prefixangry » $prefixenojado » $prefixenojada » $prefixenojo » $prefixfurioso » $prefixfuriosa » $prefixenfado*
 > 😡 Muestra enojo.
 
-ꕤ *$prefixbored » $prefixaburrido » $prefixaburrida*
+ꕤ *$prefixbored » $prefixaburrido » $prefixaburrida » $prefixaburrimiento*
 > 🥱 Muestra aburrimiento.
 
-ꕤ *$prefixlaugh*
+ꕤ *$prefixlaugh » $prefixlaught » $prefixlaugth » $prefixlaguht » $prefixrisa » $prefixreir » $prefixreirse » $prefixjaja*
 > 😂 Muestra risa.
 
-ꕤ *$prefixsad » $prefixtriste*
+ꕤ *$prefixsad » $prefixtriste » $prefixtristeza*
 > 😔 Muestra tristeza.
 
-ꕤ *$prefixscared » $prefixasustado*
+ꕤ *$prefixscared » $prefixasustado » $prefixasustada » $prefixmiedo*
 > 😨 Muestra miedo.
 
-ꕤ *$prefixshy » $prefixtimido » $prefixtimida*
+ꕤ *$prefixshy » $prefixtimido » $prefixtimida » $prefixverguenza*
 > 😳 Muestra timidez.
 
-ꕤ *$prefixhappy » $prefixfeliz*
+ꕤ *$prefixhappy » $prefixfeliz » $prefixalegre » $prefixfelicidad*
 > 😄 Muestra felicidad.
 
-ꕤ *$prefixblush » $prefixsonrojarse*
+ꕤ *$prefixblush » $prefixsonrojarse » $prefixsonrojo » $prefixsonrojado » $prefixsonrojada*
 > 😊 Muestra sonrojo.
 
-ꕤ *$prefixsmile » $prefixsonreir*
+ꕤ *$prefixsmile » $prefixsonreir » $prefixsonrisa*
 > 😊 Muestra sonrisa.
 
-ꕤ *$prefixcry » $prefixllorar*
+ꕤ *$prefixcry » $prefixllorar » $prefixllanto*
 > 😭 Muestra llanto.
 
-ꕤ *$prefixbleh*
+ꕤ *$prefixbleh » $prefixlengua » $prefixmueca » $prefixmuecalengua*
 > 😛 Saca la lengua.
 
-ꕤ *$prefixclap » $prefixaplaudir*
+ꕤ *$prefixclap » $prefixaplaudir » $prefixaplauso » $prefixaplausos*
 > 👏 Aplaude.
 
-ꕤ *$prefixdramatic » $prefixdrama*
+ꕤ *$prefixdramatic » $prefixdrama » $prefixdramatico » $prefixdramatica*
 > 🎭 Hace una reacción dramática.
 
-ꕤ *$prefixpout*
+ꕤ *$prefixpout » $prefixpuchero » $prefixpucheros*
 > 😗 Muestra puchero.
 
-ꕤ *$prefixwink » $prefixguiñar*
+ꕤ *$prefixwink » $prefixguiñar » $prefixguiño*
 > 😉 Guiña el ojo.
 
-ꕤ *$prefixwave » $prefixsaludar*
+ꕤ *$prefixwave » $prefixsaludar » $prefixsaludo*
 > 👋 Saluda.
 
-ꕤ *$prefixsmug » $prefixpresumir*
+ꕤ *$prefixsmug » $prefixpresumir » $prefixpresumido » $prefixpresumida*
 > 😏 Muestra actitud presumida.
 
-ꕤ *$prefixcringe*
+ꕤ *$prefixcringe » $prefixpenaajena*
 > 😬 Muestra cringe.
 
-ꕤ *$prefixnope » $prefixno*
+ꕤ *$prefixnope » $prefixno » $prefixnop*
 > 🙅 Niega algo.
 
-ꕤ *$prefixpeek*
+ꕤ *$prefixpeek » $prefixespiar » $prefixmiraroculto*
 > 👀 Mira de forma curiosa.
 
-ꕤ *$prefixpunch » $prefixgolpear*
+ꕤ *$prefixpunch » $prefixgolpear » $prefixpuñete » $prefixpuñetazo*
 > 👊 Golpea de forma ficticia.
 
-ꕤ *$prefixkill » $prefixmatar*
+ꕤ *$prefixkill » $prefixmatar » $prefixasesinar*
 > 🔪 Acción ficticia de ataque.
 
-ꕤ *$prefixbully » $prefixmolestar*
+ꕤ *$prefixbully » $prefixmolestar » $prefixbullying*
 > 😈 Molesta a otro usuario.
 
-ꕤ *$prefixbite » $prefixmorder*
+ꕤ *$prefixbite » $prefixmorder » $prefixmordida*
 > 🦷 Muerde ficticiamente.
 
-ꕤ *$prefixbonk » $prefixgolpe*
+ꕤ *$prefixbonk » $prefixgolpe » $prefixcoscorrón » $prefixcoscorron*
 > 🔨 Da un bonk.
 
-ꕤ *$prefixlick » $prefixlamer*
+ꕤ *$prefixlick » $prefixlamer » $prefixlamida*
 > 👅 Lame de forma ficticia.
 
-ꕤ *$prefixslap » $prefixbofetada*
+ꕤ *$prefixslap » $prefixbofetada » $prefixcachetada*
 > 🖐️ Da una bofetada ficticia.
 
-ꕤ *$prefixpush » $prefixempujar*
+ꕤ *$prefixpush » $prefixempujar » $prefixempujon*
 > 🖐️ Empuja a otro usuario.
 
-ꕤ *$prefixtrip » $prefixtropezar*
+ꕤ *$prefixtrip » $prefixtropezar » $prefixtropiezo*
 > 🦶 Hace tropezar.
 
-ꕤ *$prefixspit » $prefixescupir*
+ꕤ *$prefixspit » $prefixescupir » $prefixescupirle*
 > 💦 Escupe ficticiamente.
 
-ꕤ *$prefixstep » $prefixpisar*
+ꕤ *$prefixstep » $prefixpisar » $prefixpisoton*
 > 👣 Pisa ficticiamente.
 
-ꕤ *$prefixthink » $prefixpensar*
+ꕤ *$prefixthink » $prefixpensar » $prefixpensando*
 > 🤔 Muestra pensamiento.
 
-ꕤ *$prefixthinkhard*
+ꕤ *$prefixthinkhard » $prefixpensarprofundo » $prefixreflexionar*
 > 🤯 Piensa intensamente.
 
-ꕤ *$prefixcurious » $prefixcurioso » $prefixcuriosa*
+ꕤ *$prefixcurious » $prefixcurioso » $prefixcuriosa » $prefixcuriosidad*
 > 🧐 Muestra curiosidad.
 
-ꕤ *$prefixstare » $prefixmirar*
+ꕤ *$prefixstare » $prefixmirar » $prefixmirada*
 > 👁️ Mira fijamente.
 
-ꕤ *$prefixsniff » $prefixoler*
+ꕤ *$prefixsniff » $prefixoler » $prefixolfatear*
 > 👃 Huele ficticiamente.
 
-ꕤ *$prefixcomfort » $prefixconsolar*
+ꕤ *$prefixcomfort » $prefixconsolar » $prefixconsuelo*
 > 🫂 Consuela a otro usuario.
 
-ꕤ *$prefixrun » $prefixcorrer*
+ꕤ *$prefixrun » $prefixcorrer » $prefixhuir » $prefixescapar*
 > 🏃 Corre.
 
-ꕤ *$prefixwalk » $prefixcaminar*
+ꕤ *$prefixwalk » $prefixcaminar » $prefixpasear*
 > 🚶 Camina.
 
-ꕤ *$prefixdance » $prefixbailar*
+ꕤ *$prefixdance » $prefixbailar » $prefixbaile*
 > 💃 Baila.
 
-ꕤ *$prefixjump » $prefixsaltar*
+ꕤ *$prefixjump » $prefixsaltar » $prefixsalto*
 > 🦘 Salta.
 
-ꕤ *$prefixgaming » $prefixjugar*
+ꕤ *$prefixgaming » $prefixjugar » $prefixgamer » $prefixjuego*
 > 🎮 Juega.
 
-ꕤ *$prefixdraw » $prefixdibujar*
+ꕤ *$prefixdraw » $prefixdibujar » $prefixdibujo*
 > 🎨 Dibuja.
 
-ꕤ *$prefixcall » $prefixllamar*
+ꕤ *$prefixcall » $prefixllamar » $prefixllamada*
 > 📞 Llama.
 
-ꕤ *$prefixsing » $prefixcantar*
+ꕤ *$prefixsing » $prefixcantar » $prefixcancion*
 > 🎤 Canta.
 
-ꕤ *$prefixcoffee » $prefixcafe*
+ꕤ *$prefixcoffee » $prefixcafe » $prefixcafecito*
 > ☕ Toma café.
 
-ꕤ *$prefixdrunk*
+ꕤ *$prefixdrunk » $prefixborracho » $prefixborracha » $prefixebrio » $prefixebria*
 > 🍻 Muestra estado ebrio.
 
-ꕤ *$prefixcold*
+ꕤ *$prefixcold » $prefixfrio » $prefixfria*
 > 🥶 Muestra frío.
 
-ꕤ *$prefixsleep » $prefixdormir*
+ꕤ *$prefixsleep » $prefixdormir » $prefixduerme » $prefixsueño*
 > 😴 Duerme.
 
-ꕤ *$prefixsmoke » $prefixfumar*
+ꕤ *$prefixsmoke » $prefixfumar » $prefixfumando*
 > 🚬 Fuma ficticiamente.
 
-ꕤ *$prefixeat » $prefixnom » $prefixcomer*
+ꕤ *$prefixeat » $prefixnom » $prefixcomer » $prefixcomida*
 > 🍽️ Come.
 
-ꕤ *$prefixbath » $prefixbañarse*
+ꕤ *$prefixbath » $prefixbañarse » $prefixbaño*
 > 🛁 Se baña.
 
-ꕤ *$prefixseduce » $prefixseducir*
+ꕤ *$prefixseduce » $prefixseducir » $prefixseductor » $prefixseductora*
 > 🔥 Seducción ficticia.
 
 ꕤ *$prefixheat » $prefixcalor*
@@ -983,7 +1004,7 @@ interacciones: `╭┈ࠢ͜─ׄ֟፝͜─ׄ͜─ׄ͜╴𐔌 💞 *INTERACCIONES
 ꕤ *$prefixtickle » $prefixcosquillas*
 > 🤭 Hace cosquillas.
 
-ꕤ *$prefixscream » $prefixgritar*
+ꕤ *$prefixscream » $prefixgritar » $prefixgrito*
 > 😱 Grita.
 ╰ׅ͜─֟͜─͜─ٞ͜─͜─๊͜─͜─๋͜─⃔═̶፝֟͜═̶⃔─๋͜─͜─͜─๊͜─ٞ͜─͜─֟͜┈ࠢ͜╯ׅ`,
 
@@ -1007,5 +1028,24 @@ reactions: `╭┈ࠢ͜─ׄ֟፝͜─ׄ͜─ׄ͜╴𐔌 🎯 *REACTIONS* 𐦯�
 
 ꕤ *$prefixreact unequip » $prefixreact quitar*
 > ❌ Quita tu reacción activa.
+╰ׅ͜─֟͜─͜─ٞ͜─͜─๊͜─͜─๋͜─⃔═̶፝֟͜═̶⃔─๋͜─͜─͜─๊͜─ٞ͜─͜─֟͜┈ࠢ͜╯ׅ`,
+
+owner: `╭┈ࠢ͜─ׄ֟፝͜─ׄ͜─ׄ͜╴𐔌 👑 *OWNER* 𐦯╶͜─ׄ͜─ׄ֟፝͜─ׄ͜─ׄ͜
+> ✐ Panel privado de administración, auditoría y control.
+
+ꕤ *$prefixauditeco » $prefixcontadoreco » $prefixfinanzasbot*
+> 📊 Auditoría económica global exacta con lectura ejecutiva por IA.
+
+ꕤ *$prefixeconomiaaudit » $prefixeconomiaempresa*
+> 🧾 Aliases del auditor económico tipo contador/CFO.
+
+ꕤ *$prefixauditeco raw*
+> 📈 Muestra solo el informe exacto sin llamar a la IA.
+
+ꕤ *$prefixauditeco reset*
+> 🧮 Guarda una nueva línea base para medir movimiento desde cero.
+
+ꕤ *$prefixfarmowner » $prefixfarmadmin » $prefixfarmcontrol » $prefixgranjasowner*
+> 🌾 Panel owner para configurar granjas, precios, producción, daños y usuarios.
 ╰ׅ͜─֟͜─͜─ٞ͜─͜─๊͜─͜─๋͜─⃔═̶፝֟͜═̶⃔─๋͜─͜─͜─๊͜─ٞ͜─͜─֟͜┈ࠢ͜╯ׅ`
 }

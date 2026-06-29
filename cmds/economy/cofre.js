@@ -92,7 +92,7 @@ export default {
 const reward = applyGainBonus(result.amount, vipBonus)
 const eventMult = await applyEventoEconomyMultiplier(m.chat, reward.total, { currency })
 
-user.coins = Number(user.coins || 0) + eventMult.amount
+if (!m.isOwner) user.coins = Number(user.coins || 0) + eventMult.amount
 
       saveDB()
 

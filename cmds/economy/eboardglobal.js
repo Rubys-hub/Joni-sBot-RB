@@ -5,7 +5,27 @@ command: ['eboardglobal', 'economyboardglobal', 'baltopglobal'],
   run: async (client, m, args, usedPrefix, command) => {
     const db = global.db.data
     const chatId = m.chat
-    const botId = client.user.id.split(':')[0] + '@s.whatsapp.net'
+    const normalizeNumber = (value = '') => {
+      return String(value || '')
+        .split('@')[0]
+        .split(':')[0]
+        .replace(/\D/g, '')
+    }
+
+    const cleanJid = (value = '') => {
+      const text = String(value || '').trim()
+      if (!text) return ''
+
+      if (text.includes('@')) {
+        const [left, server] = text.split('@')
+        return `${left.split(':')[0]}@${server}`
+      }
+
+      const number = normalizeNumber(text)
+      return number ? `${number}@s.whatsapp.net` : ''
+    }
+
+    const botId = cleanJid(client.user.id)
 
     const botSettings = db.settings?.[botId] || {}
     const monedas = botSettings.currency || 'coins'
@@ -14,23 +34,101 @@ command: ['eboardglobal', 'economyboardglobal', 'baltopglobal'],
     const chatData = db.chats?.[chatId] || {}
     const cmd = command || 'eboardglobal'
 
-    const senderNumber = m.sender.split('@')[0].replace(/\D/g, '')
+const botIdentityCandidates = [
+  client?.user?.id,
+  client?.user?.jid,
+  client?.user?.lid,
+  client?.user?.phoneNumber,
+  ...Object.keys(db.settings || {}).filter(key => key.endsWith('@s.whatsapp.net'))
+]
 
-const excludedNumbers = new Set([
+const botNumbers = new Set(
+  botIdentityCandidates
+    .map(value => normalizeNumber(value))
+    .filter(Boolean)
+)
+
+const botJids = new Set(
+  botIdentityCandidates
+    .map(value => cleanJid(value))
+    .filter(Boolean)
+)
+
+const ownerNumbers = new Set([
   '51901931862',
   ...(Array.isArray(global.owner)
-    ? global.owner.map(v => String(v).replace(/\D/g, ''))
+    ? global.owner.map(v => normalizeNumber(v))
     : [])
+].filter(Boolean))
+
+const excludedNumbers = new Set([
+  ...ownerNumbers,
+  ...botNumbers
 ])
 
+const excludedJids = new Set([...botJids])
+
+const isBotIdentity = (jid) => {
+  const clean = cleanJid(jid)
+  const number = normalizeNumber(jid)
+
+  return botJids.has(clean) || botNumbers.has(number)
+}
+
 const isExcludedOwner = (jid) => {
-  const number = String(jid).split('@')[0].replace(/\D/g, '')
+  const clean = cleanJid(jid)
+  const number = normalizeNumber(jid)
+  if (excludedJids.has(clean)) return true
   return excludedNumbers.has(number)
 }
 
-const isExcludedUser = (jid) => {
-  const number = String(jid).split('@')[0].replace(/\D/g, '')
-  return excludedNumbers.has(number)
+const cleanSystemEconomy = () => {
+  let cleaned = 0
+
+  const resetMoney = (user = {}) => {
+    let touched = false
+
+    if (Number(user.coins || 0) !== 0) {
+      user.coins = 0
+      touched = true
+    }
+
+    if (Number(user.bank || 0) !== 0) {
+      user.bank = 0
+      touched = true
+    }
+
+    if (user.economy && typeof user.economy === 'object') {
+      for (const key of ['globalCoins', 'globalBank', 'localCoinsTotal', 'localBankTotal']) {
+        if (Number(user.economy[key] || 0) !== 0) {
+          user.economy[key] = 0
+          touched = true
+        }
+      }
+    }
+
+    return touched
+  }
+
+  for (const [jid, user] of Object.entries(db.users || {})) {
+    if (!isBotIdentity(jid)) continue
+    if (resetMoney(user)) cleaned += 1
+  }
+
+  for (const groupData of Object.values(db.chats || {})) {
+    if (!groupData?.users) continue
+
+    for (const [jid, user] of Object.entries(groupData.users || {})) {
+      if (!isBotIdentity(jid)) continue
+      if (resetMoney(user)) cleaned += 1
+    }
+  }
+
+  if (cleaned && typeof global.saveDatabase === 'function') {
+    global.saveDatabase()
+  }
+
+  return cleaned
 }
 
     if (chatData.adminonly || !chatData.economy) {
@@ -47,6 +145,8 @@ const isExcludedUser = (jid) => {
     }
 
     try {
+      cleanSystemEconomy()
+
       const globalUsers = new Map()
 
       for (const [groupId, groupData] of Object.entries(db.chats || {})) {

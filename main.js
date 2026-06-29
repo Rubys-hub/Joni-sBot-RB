@@ -46,6 +46,8 @@ export default async (client, m) => {
 
   m.text = body
 
+  if (m.key?.fromMe || m.fromMe) return
+
   // if ((m.id.startsWith("3EB0") || (m.id.startsWith("BAE5") && m.id.length === 16) || (m.id.startsWith("B24E") && m.id.length === 20))) return
 initDB(m, client)
 
@@ -406,6 +408,10 @@ return m.reply(`ʀᴜʙʏᴊx ʙᴏᴛ  •  ᴄᴏᴍᴀɴᴅᴏ ɴᴏ ᴇɴᴄ
   if (cmdData.isOwner && !m.isOwner) {
     if (settings.prefix === true) return;
     return m.reply(`ʀᴜʙʏᴊx ʙᴏᴛ  •  ᴄᴏᴍᴀɴᴅᴏ ɴᴏ ᴇɴᴄᴏɴᴛʀᴀᴅᴏ\nᴇʟ ᴄᴏᴍᴀɴᴅᴏ *${command}* ɴᴏ ᴇxɪsᴛᴇ.\nᴜsᴀ *${usedPrefix}help* ᴘᴀʀᴀ ᴠᴇʀ ʟᴀ ʟɪsᴛᴀ ᴅᴇ ᴄᴏᴍᴀɴᴅᴏs.`);
+  }
+  if (cmdData.group && !m.isGroup) {
+    if (settings.prefix === true) return;
+    return client.reply(m.chat, '⌬ Este comando solo puede usarse dentro de un grupo.', m);
   }
   if (cmdData.isAdmin && !isAdmins) return client.reply(m.chat, mess.admin, m);
   if (cmdData.botAdmin && !isBotAdmins) return client.reply(m.chat, mess.botAdmin, m);

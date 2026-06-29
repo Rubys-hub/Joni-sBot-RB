@@ -36,24 +36,29 @@ export default {
       const sender = global.db.data.users[m.sender].name;
       const time = client.uptime ? formatearMs(Date.now() - client.uptime) : "Desconocido";
       const alias = {
-        anime: ['anime', 'reacciones'],
+        anime: ['anime'],
         downloads: ['downloads', 'descargas'],
         economia: ['economia', 'economy', 'eco'],
         gacha: ['gacha', 'rpg'],
         grupo: ['grupo', 'group'],
+        interacciones: ['interacciones', 'interaccion', 'interactions', 'acciones'],
         nsfw: ['nsfw', '+18'],
+        owner: ['owner', 'owners', 'dueño', 'dueno', 'propietario'],
         profile: ['profile', 'perfil'],
+        reactions: ['reactions', 'react', 'reacciones', 'reaccion'],
         sockets: ['sockets', 'bots'],
         stickers: ['stickers', 'sticker'],
         utils: ['utils', 'utilidades', 'herramientas']
       };
+      if (!m.isOwner) delete alias.owner;
       const input = normalize(args[0] || '');
       const cat = Object.keys(alias).find(k => alias[k].map(normalize).includes(input));
       const category = `${cat ? ` para \`${cat}\`` : '. *(˶ᵔ ᵕ ᵔ˶)*'}`
       if (args[0] && !cat) {      
         return m.reply(`《✧》 La categoria *${args[0]}* no existe, las categorias disponibles son: *${Object.keys(alias).join(', ')}*.\n> Para ver la lista completa escribe *${usedPrefix}menu*\n> Para ver los comandos de una categoría escribe *${usedPrefix}menu [categoría]*\n> Ejemplo: *${usedPrefix}menu anime*`);
       }
-      const sections = menuObject;
+      const sections = { ...menuObject };
+      if (!m.isOwner) delete sections.owner;
       const content = cat ? String(sections[cat] || '') : Object.values(sections).map(s => String(s || '')).join('\n\n');
       let menu = bodyMenu ? String(bodyMenu || '') + '\n\n' + content : content;
       const replacements = {

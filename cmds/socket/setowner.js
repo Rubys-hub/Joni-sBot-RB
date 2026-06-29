@@ -1,4 +1,4 @@
-import { resolveLidToRealJid } from "../../core/utils.js"
+import { isSocketOwner, resolveLidToRealJid } from "../../core/utils.js"
 
 export default {
   command: ['setbotowner', 'setowner'],
@@ -6,7 +6,7 @@ export default {
   run: async (client, m, args, usedPrefix, command) => {
     const idBot = client.user.id.split(':')[0] + '@s.whatsapp.net'
     const config = global.db.data.settings[idBot]
-    const isOwner2 = [idBot, ...(config.owner ? [config.owner] : []), ...global.owner.map(num => num + '@s.whatsapp.net')].includes(m.sender)
+    const isOwner2 = await isSocketOwner(client, m, config)
     if (!isOwner2) return m.reply(mess.socket)
     const text = args.join(' ').trim()
     const actual = config.owner || ''

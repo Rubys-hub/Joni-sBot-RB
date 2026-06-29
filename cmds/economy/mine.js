@@ -47,7 +47,7 @@ export default {
     })
 
     reward = eventMult.amount
-    user.coins += reward
+    if (!m.isOwner) user.coins += reward
 
     const salud = Math.floor(Math.random() * (15 - 5 + 1)) + 5
     user.health = Math.max(0, user.health - salud)

@@ -1,3 +1,5 @@
+import { isSocketOwner } from "../../core/utils.js";
+
 export default {
   command: ['leave'],
   category: 'socket',
@@ -5,8 +7,8 @@ export default {
     const db = global.db.data
     const botId = client.user.id.split(':')[0] + '@s.whatsapp.net'
     const isOwner = db.settings[botId]?.owner
-    const isSocketOwner = [botId, ...(isOwner ? [isOwner] : []), ...global.owner.map(num => num + '@s.whatsapp.net')].includes(m.sender)
-    if (!isSocketOwner) return m.reply(mess.socket)
+    const isSocketOwner2 = await isSocketOwner(client, m, db.settings[botId] || { owner: isOwner })
+    if (!isSocketOwner2) return m.reply(mess.socket)
     const groupId = args[0] || m.chat
     try {
       await client.groupLeave(groupId)

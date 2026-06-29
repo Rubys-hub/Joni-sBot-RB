@@ -52,7 +52,7 @@ export default {
       const baseReward = Math.min(40000 + (globalUser.weeklyStreak - 1) * 5000, 185000)
       const reward = applyGainBonus(baseReward, vipBonus)
 
-      user.coins = Number(user.coins || 0) + reward.total
+      if (!m.isOwner) user.coins = Number(user.coins || 0) + reward.total
       user.lastweekly = now + WEEK
 
       const nextBase = Math.min(40000 + globalUser.weeklyStreak * 5000, 185000)

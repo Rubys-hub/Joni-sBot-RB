@@ -209,7 +209,7 @@ export default {
       const user = chatData.users[m.sender]
       if (typeof user.coins !== 'number') user.coins = 0
 
-      const ownerUnlimited = isOwnerUser(m.sender)
+      const ownerUnlimited = Boolean(m.isOwner) || isOwnerUser(m.sender)
       const packName = cleanName(args.join(' '))
       const square = command === 'sn1'
 

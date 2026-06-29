@@ -1166,7 +1166,7 @@ export default {
           }
 
           const user = userInfo.data
-          user.coins = Number(user.coins || 0) + game.reward
+          if (!m.isOwner) user.coins = Number(user.coins || 0) + game.reward
 
           db.users[userInfo.key] ||= {}
           db.users[userInfo.key].name ||= m.pushName || m.pushname || userInfo.key.split('@')[0]
@@ -1223,7 +1223,7 @@ export default {
           const user = userInfo.data
           const reward = getReward(game.difficulty)
 
-          user.coins = Number(user.coins || 0) + reward
+          if (!m.isOwner) user.coins = Number(user.coins || 0) + reward
 
           db.users[userInfo.key] ||= {}
           db.users[userInfo.key].name ||= m.pushName || m.pushname || userInfo.key.split('@')[0]

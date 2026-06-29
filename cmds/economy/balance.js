@@ -84,10 +84,10 @@ export default {
 
     if (chatData.adminonly || !chatData.economy) {
       return m.reply(
-        `╭━━〔 ⚠️ ᴇᴄᴏɴᴏᴍíᴀ ᴏғғ 〕━━⬣\n` +
-        `┃ La economía está desactivada.\n` +
-        `┃ Actívala con: ${usedPrefix}economy on\n` +
-        `╰━━━━━━━━━━━━━━━━⬣`
+        `╭━━〔 ⚠️ ECONOMÍA DESACTIVADA 〕━━⬣\n` +
+        `┃ 📴 La economía está apagada en este grupo.\n` +
+        `┃ 🔧 Actívala con: *${usedPrefix}economy on*\n` +
+        `╰━━━━━━━━━━━━━━━━━━━━⬣`
       )
     }
 
@@ -99,10 +99,10 @@ const userKey = findUserKey(chatData, who, who2)
 
 if (!userKey) {
   return m.reply(
-    `╭━━〔 👤 ᴜsᴜᴀʀɪᴏ ɴᴏ ʀᴇɢɪsᴛʀᴀᴅᴏ 〕━━⬣\n` +
-    `┃ Ese usuario aún no tiene balance.\n` +
-    `┃ Puede empezar con: ${usedPrefix}daily\n` +
-    `╰━━━━━━━━━━━━━━━━⬣`
+    `╭━━〔 👤 SIN BALANCE 〕━━⬣\n` +
+    `┃ 🧾 Ese usuario aún no tiene cuenta económica.\n` +
+    `┃ 🎁 Puede empezar con: *${usedPrefix}daily*\n` +
+    `╰━━━━━━━━━━━━━━━━━━━━⬣`
   )
 }
 
@@ -118,12 +118,13 @@ const bankText = formatMoney(bank, userKey, monedas)
 const totalText = formatMoney(total, userKey, monedas)
 
     const bal =
-      `╭━━〔 💰 ʙᴀʟᴀɴᴄᴇ 〕━━⬣\n` +
-      `┃ 👤 Usuario: ${name}\n` +
-      `┃ 🪙 Cartera: ${walletText}\n` +
-      `┃ 🏦 Banco: ${bankText}\n` +
-      `┃ 💎 Total: ${totalText}\n` +
-      `╰━━━━━━━━━━━━━━━━⬣`
+      `╭━━〔 💎 BANCO PERSONAL 〕━━⬣\n` +
+      `┃ 👤 Usuario: *${name}*\n` +
+      `┃\n` +
+      `┃ 🪙 Cartera: *${walletText}*\n` +
+      `┃ 🏦 Banco: *${bankText}*\n` +
+      `┃ ✨ Total: *${totalText}*\n` +
+      `╰━━〔 💰 Economy 〕━━⬣`
 
     await client.sendMessage(chatId, { text: bal }, { quoted: m })
   }

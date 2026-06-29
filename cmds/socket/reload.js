@@ -2,6 +2,7 @@ import { startSubBot } from '../../core/subs.js';
 import fs from 'fs';
 import path from 'path';
 import { jidDecode } from 'baileys'
+import { isSocketOwner } from "../../core/utils.js";
 
 export default {
   command: ['reload'],
@@ -10,13 +11,15 @@ export default {
     const rawId = client.user?.id || ''
     const decoded = jidDecode(rawId)
     const cleanId = decoded?.user || rawId.split('@')[0]
+    const botId = `${cleanId}@s.whatsapp.net`
+    const config = global.db.data.settings?.[botId] || {}
+    if (!(await isSocketOwner(client, m, config))) return m.reply(mess.socket)
     const sessionTypes = ['Subs']
     const basePath = 'Sessions'
     const sessionPath = sessionTypes.map((type) => path.join(basePath, type, cleanId)).find((p) => fs.existsSync(p))
     if (!sessionPath) {
       return m.reply('《✧》 Este comando solo puede ser usado desde una instancia de Sub-Bot.')
     }
-    const botId = client?.user?.id.split(':')[0] + '@s.whatsapp.net' || ''
     const botSettings = global.db.data.settings[botId] || {}
     const isOficialBot = botId === global.client.user.id.split(':')[0] + '@s.whatsapp.net'
     const botType = isOficialBot ? 'Principal/Owner' : 'Sub Bot'

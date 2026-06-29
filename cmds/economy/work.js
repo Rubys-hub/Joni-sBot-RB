@@ -43,7 +43,7 @@ export default {
       const baseGain = randomInt(2000, 4000)
       const gain = applyGainBonus(baseGain, vipBonus)
 
-      user.coins = Number(user.coins || 0) + gain.total
+      if (!m.isOwner) user.coins = Number(user.coins || 0) + gain.total
       user.lastwork = now + cooldown
 
       saveDB()

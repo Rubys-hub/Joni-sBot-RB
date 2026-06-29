@@ -442,11 +442,11 @@ export default {
         return m.reply(economyDisabledMessage(usedPrefix))
       }
 
-const ownerUnlimited = isOwnerUser(m.sender)
+const ownerUnlimited = Boolean(m.isOwner) || isOwnerUser(m.sender)
 
-const walletBalance = ownerUnlimited ? Number.MAX_SAFE_INTEGER : getWalletBalance(user)
-const bankBalance = ownerUnlimited ? Number.MAX_SAFE_INTEGER : getBankBalance(user)
-const totalBalance = ownerUnlimited ? Number.MAX_SAFE_INTEGER : getTotalBalance(user)
+const walletBalance = getWalletBalance(user)
+const bankBalance = getBankBalance(user)
+const totalBalance = getTotalBalance(user)
 
       const sub = String(args[0] || '').toLowerCase()
 

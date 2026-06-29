@@ -45,20 +45,22 @@ export default {
 
     if (chance < 0.3) {
       let loss = Math.floor(Math.random() * (5000 - 2000 + 1)) + 2000
-      const total = user.coins + (user.bank || 0)
+      if (!m.isOwner) {
+        const total = user.coins + (user.bank || 0)
 
-      if (total >= loss) {
-        if (user.coins >= loss) {
-          user.coins -= loss
+        if (total >= loss) {
+          if (user.coins >= loss) {
+            user.coins -= loss
+          } else {
+            const restante = loss - user.coins
+            user.coins = 0
+            user.bank = Math.max(0, (user.bank || 0) - restante)
+          }
         } else {
-          const restante = loss - user.coins
+          loss = total
           user.coins = 0
-          user.bank = Math.max(0, (user.bank || 0) - restante)
+          user.bank = 0
         }
-      } else {
-        loss = total
-        user.coins = 0
-        user.bank = 0
       }
 
       user.laststeal = Date.now() + 3600000
@@ -71,8 +73,10 @@ export default {
       return client.reply(m.chat, `🥷 ʀᴏʙᴏ ✦ *${name}* no tiene suficiente dinero fuera del banco.`, m, { mentions: [who] })
     }
 
-    user.coins += rob
-    target.coins -= rob
+    if (!m.isOwner) {
+      user.coins += rob
+      target.coins -= rob
+    }
     user.laststeal = Date.now() + 3600000
 
     await client.reply(m.chat, `🥷 ʀᴏʙᴏ ✦ Le robaste *S/${rob.toLocaleString()} ${currency}* a *${name}*.`, m, { mentions: [who] })

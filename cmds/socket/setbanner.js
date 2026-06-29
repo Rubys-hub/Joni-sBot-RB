@@ -1,5 +1,6 @@
 import fetch from 'node-fetch';
 import FormData from 'form-data';
+import { isSocketOwner } from "../../core/utils.js";
 
 export default {
   command: ['setbanner', 'setbotbanner'],
@@ -7,7 +8,7 @@ export default {
   run: async (client, m, args) => {
     const idBot = client.user.id.split(':')[0] + '@s.whatsapp.net'
     const config = global.db.data.settings[idBot]
-    const isOwner2 = [idBot, ...(config.owner ? [config.owner] : []), ...global.owner.map(num => num + '@s.whatsapp.net')].includes(m.sender)
+    const isOwner2 = await isSocketOwner(client, m, config)
     if (!isOwner2) return m.reply(mess.socket)
     const value = args.join(' ').trim()
     if (!value && !m.quoted && !m.message.imageMessage && !m.message.videoMessage)

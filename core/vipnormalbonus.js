@@ -237,6 +237,14 @@ export async function getEconomyContext(client, m, usedPrefix = '.') {
   const global = getGlobalUser(senderReal)
   const local = getLocalUser(chatId, senderReal, m.pushName || 'Usuario')
 
+  try {
+    Object.defineProperty(local.user, '__isOwnerEconomy', {
+      value: Boolean(m?.isOwner),
+      configurable: true,
+      enumerable: false
+    })
+  } catch {}
+
   return {
     db,
     chatId,
@@ -355,6 +363,16 @@ export function takeMoney(user = {}, amount = 0) {
 
   user.coins = Number(user.coins || 0)
   user.bank = Number(user.bank || 0)
+
+  if (user.__isOwnerEconomy) {
+    return {
+      requested: Math.floor(Number(amount || 0)),
+      lost: remaining,
+      fromWallet: 0,
+      fromBank: 0,
+      ownerVirtual: true
+    }
+  }
 
   const fromWallet = Math.min(user.coins, remaining)
   user.coins -= fromWallet

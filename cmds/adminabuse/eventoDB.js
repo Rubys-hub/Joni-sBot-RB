@@ -2,6 +2,8 @@ import fs from 'node:fs/promises'
 import path from 'node:path'
 
 const EVENT_DB_PATH = path.join(process.cwd(), 'cmds', 'adminabuse', 'database.json')
+const WRITE_RETRY_DELAYS_MS = [50, 100, 250, 500, 1000, 1500]
+const RETRYABLE_WRITE_ERRORS = new Set(['EPERM', 'EBUSY', 'EACCES'])
 
 const DEFAULT_EVENT_DB = {
   version: 1,
@@ -107,6 +109,19 @@ function mergeDefaults(target, defaults) {
   return target
 }
 
+function wait(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms))
+}
+
+function shouldRetryWrite(error = {}) {
+  return RETRYABLE_WRITE_ERRORS.has(error.code)
+}
+
+function makeTempPath(filePath) {
+  const suffix = `${process.pid}.${Date.now()}.${Math.random().toString(16).slice(2)}`
+  return `${filePath}.${suffix}.tmp`
+}
+
 export function createEventoId() {
   const time = Date.now().toString(36).toUpperCase()
   const random = Math.random().toString(36).slice(2, 6).toUpperCase()
@@ -144,10 +159,26 @@ export async function saveEventoDB(db = {}) {
   await fs.mkdir(path.dirname(EVENT_DB_PATH), { recursive: true })
 
   const safeDB = mergeDefaults(db, clone(DEFAULT_EVENT_DB))
-  const tempPath = `${EVENT_DB_PATH}.tmp`
+  const tempPath = makeTempPath(EVENT_DB_PATH)
 
   await fs.writeFile(tempPath, JSON.stringify(safeDB, null, 2), 'utf8')
-  await fs.rename(tempPath, EVENT_DB_PATH)
+
+  for (let attempt = 0; attempt <= WRITE_RETRY_DELAYS_MS.length; attempt++) {
+    try {
+      await fs.rename(tempPath, EVENT_DB_PATH)
+      return safeDB
+    } catch (error) {
+      const canRetry = shouldRetryWrite(error) && attempt < WRITE_RETRY_DELAYS_MS.length
+      if (!canRetry) {
+        try {
+          await fs.rm(tempPath, { force: true })
+        } catch {}
+        throw error
+      }
+
+      await wait(WRITE_RETRY_DELAYS_MS[attempt])
+    }
+  }
 
   return safeDB
 }

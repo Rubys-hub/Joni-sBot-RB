@@ -69,9 +69,10 @@ function initDB(m, client) {
   settings.botname ??= 'RubyJX (JBot)'
   settings.owner ??= '51901931862@s.whatsapp.net'
 
-  const user = global.db.data.users[sender] ||= {}
+  const userKey = findUserKey(global.db.data.users, sender)
+const user = global.db.data.users[userKey] ||= {}
 
-  user.id ??= sender
+  user.id ??= userKey
   user.name ??= pushname
 
   user.exp = ensureNumber(user.exp, 0)
@@ -135,7 +136,7 @@ function initDB(m, client) {
   user.metadatos ??= null
   user.metadatos2 ??= null
 
-  user.mainJid ??= sender
+  user.mainJid ??= userKey
   user.jidAliases = Array.isArray(user.jidAliases) ? user.jidAliases : [sender]
   if (!user.jidAliases.includes(sender)) user.jidAliases.push(sender)
 
@@ -183,9 +184,10 @@ function initDB(m, client) {
 
   chat.users ||= {}
 
-  const localUser = chat.users[sender] ||= {}
+  const localKey = findUserKey(chat.users, sender)
+const localUser = chat.users[localKey] ||= {}
 
-  localUser.id ??= sender
+  localUser.id ??= localKey
   localUser.name ??= pushname
 
   // Economía local por grupo

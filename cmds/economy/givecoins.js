@@ -7,6 +7,13 @@ const FORCE_OWNER = [
   '269015712845891@lid'
 ]
 
+const PAY_TAX_BRACKETS = [
+  { min: 5000000, rate: 0.05 },
+  { min: 1000000, rate: 0.03 },
+  { min: 500000, rate: 0.02 },
+  { min: 100000, rate: 0.01 }
+]
+
 function cleanJid(jid = '') {
   jid = String(jid || '').trim()
   if (!jid) return ''
@@ -66,6 +73,24 @@ function formatNumber(amount = 0) {
 
 function formatMoney(amount = 0, currency = 'Soles') {
   return `S/${formatNumber(amount)} ${currency}`
+}
+
+function formatTaxRate(rate = 0) {
+  return `${Math.round(Number(rate || 0) * 10000) / 100}%`
+}
+
+function calculateTax(amount = 0, brackets = []) {
+  const grossAmount = Math.max(0, Math.floor(Number(amount || 0)))
+  const bracket = brackets.find(item => grossAmount >= item.min)
+  const taxRate = bracket?.rate || 0
+  const taxAmount = Math.floor(grossAmount * taxRate)
+
+  return {
+    grossAmount,
+    taxRate,
+    taxAmount,
+    netAmount: Math.max(0, grossAmount - taxAmount)
+  }
 }
 
 function parseAmount(input = '') {
@@ -289,9 +314,10 @@ export default {
 
     if (chatData.adminonly || !chatData.economy) {
       return m.reply(
-        `▣ ᴇᴄᴏɴᴏᴍíᴀ ᴏғғ\n` +
-        `▪ La economía está desactivada.\n` +
-        `▪ Actívala con: ${usedPrefix}economy on`
+        `╭━━〔 ⚠️ ECONOMÍA DESACTIVADA 〕━━⬣\n` +
+        `┃ 📴 La economía está apagada en este grupo.\n` +
+        `┃ 🔧 Actívala con: *${usedPrefix}economy on*\n` +
+        `╰━━━━━━━━━━━━━━━━━━━━⬣`
       )
     }
 
@@ -299,23 +325,27 @@ export default {
 
     if (!targetJid) {
       return m.reply(
-        `▣ ᴘᴀʏ\n` +
-        `▪ Menciona a quién enviar.\n\n` +
-        `Ejemplos:\n` +
-        `▪ ${usedPrefix + command} @usuario 25000\n` +
-        `▪ ${usedPrefix + command} 25000 @usuario\n` +
-        `▪ Responde un mensaje: ${usedPrefix + command} 25000`
+        `╭━━〔 🤝 TRANSFERENCIA 〕━━⬣\n` +
+        `┃ 👤 Menciona a quién recibirá las monedas.\n` +
+        `┃\n` +
+        `┃ 🧾 Ejemplos:\n` +
+        `┃ • *${usedPrefix + command} @usuario 25000*\n` +
+        `┃ • *${usedPrefix + command} 25000 @usuario*\n` +
+        `┃ • Responde un mensaje: *${usedPrefix + command} 25000*\n` +
+        `╰━━━━━━━━━━━━━━━━━━━━⬣`
       )
     }
 
     if (amountInput === null) {
       return m.reply(
-        `▣ ᴘᴀʏ\n` +
-        `▪ Ingresa una cantidad válida.\n\n` +
-        `Ejemplos:\n` +
-        `▪ ${usedPrefix + command} @usuario 20\n` +
-        `▪ ${usedPrefix + command} 20 @usuario\n` +
-        `▪ ${usedPrefix + command} @usuario 25k`
+        `╭━━〔 🔢 CANTIDAD INVÁLIDA 〕━━⬣\n` +
+        `┃ 💰 Ingresa una cantidad válida para enviar.\n` +
+        `┃\n` +
+        `┃ 🧾 Ejemplos:\n` +
+        `┃ • *${usedPrefix + command} @usuario 20*\n` +
+        `┃ • *${usedPrefix + command} 20 @usuario*\n` +
+        `┃ • *${usedPrefix + command} @usuario 25k*\n` +
+        `╰━━━━━━━━━━━━━━━━━━━━⬣`
       )
     }
 
@@ -334,24 +364,28 @@ export default {
 
     if (!senderInfo && !senderIsOwner) {
       return m.reply(
-        `▣ ᴘᴀʏ\n` +
-        `▪ No estás registrado en la economía.\n` +
-        `▪ Usa ${usedPrefix}daily para empezar.`
+        `╭━━〔 🪪 REGISTRO REQUERIDO 〕━━⬣\n` +
+        `┃ 👤 Aún no estás registrado en la economía.\n` +
+        `┃ 🎁 Empieza reclamando: *${usedPrefix}daily*\n` +
+        `╰━━━━━━━━━━━━━━━━━━━━⬣`
       )
     }
 
     if (!targetInfo) {
       return m.reply(
-        `▣ ᴘᴀʏ\n` +
-        `▪ El usuario mencionado no está registrado.\n` +
-        `▪ Debe usar ${usedPrefix}daily para iniciar.`
+        `╭━━〔 👤 USUARIO SIN CUENTA 〕━━⬣\n` +
+        `┃ 🧾 El usuario mencionado no está registrado.\n` +
+        `┃ 🎁 Debe usar *${usedPrefix}daily* para iniciar.\n` +
+        `╰━━━━━━━━━━━━━━━━━━━━⬣`
       )
     }
 
     if (sameUser(senderInfo?.key || senderReal, targetInfo.key)) {
       return m.reply(
-        `▣ ᴘᴀʏ\n` +
-        `▪ No puedes enviarte dinero a ti mismo.`
+        `╭━━〔 🙅 TRANSFERENCIA BLOQUEADA 〕━━⬣\n` +
+        `┃ 🤝 No puedes enviarte dinero a ti mismo.\n` +
+        `┃ 💡 Elige otro usuario para la transferencia.\n` +
+        `╰━━━━━━━━━━━━━━━━━━━━⬣`
       )
     }
 
@@ -363,9 +397,10 @@ export default {
     if (amountInput === 'all') {
       if (senderIsOwner) {
         return m.reply(
-          `▣ ᴏᴡɴᴇʀ\n` +
-          `▪ Usa una cantidad exacta.\n` +
-          `▪ Ejemplo: ${usedPrefix + command} @usuario 50000`
+          `╭━━〔 👑 OWNER 〕━━⬣\n` +
+          `┃ ✨ Usa una cantidad exacta para transferir.\n` +
+          `┃ 🧾 Ejemplo: *${usedPrefix + command} @usuario 50000*\n` +
+          `╰━━━━━━━━━━━━━━━━━━━━⬣`
         )
       }
 
@@ -376,9 +411,10 @@ export default {
 
     if (!Number.isFinite(cantidad) || cantidad <= 0) {
       return m.reply(
-        `▣ ᴘᴀʏ\n` +
-        `▪ Ingresa una cantidad válida.\n` +
-        `▪ Ejemplo: ${usedPrefix + command} @usuario 25000`
+        `╭━━〔 🔢 CANTIDAD INVÁLIDA 〕━━⬣\n` +
+        `┃ 💰 Ingresa una cantidad mayor a cero.\n` +
+        `┃ 🧾 Ejemplo: *${usedPrefix + command} @usuario 25000*\n` +
+        `╰━━━━━━━━━━━━━━━━━━━━⬣`
       )
     }
 
@@ -389,29 +425,45 @@ export default {
 
       if (senderData.bank < cantidad) {
         return m.reply(
-          `▣ sᴀʟᴅᴏ ɪɴsᴜғɪᴄɪᴇɴᴛᴇ\n` +
-          `▪ Banco actual: ${formatMoney(senderData.bank, monedas)}\n` +
-          `▪ Intentaste enviar: ${formatMoney(cantidad, monedas)}`
+          `╭━━〔 💸 BANCO INSUFICIENTE 〕━━⬣\n` +
+          `┃ 🏦 Banco actual: *${formatMoney(senderData.bank, monedas)}*\n` +
+          `┃ 💸 Querías enviar: *${formatMoney(cantidad, monedas)}*\n` +
+          `┃ 💡 Las transferencias salen de tu banco.\n` +
+          `╰━━━━━━━━━━━━━━━━━━━━⬣`
         )
       }
 
       senderData.bank -= cantidad
     }
 
-    targetData.bank = Number(targetData.bank || 0) + cantidad
+    const targetIsOwner = isOwnerUser(targetInfo.key) || isOwnerUser(targetReal) || isOwnerUser(targetJid)
+    const transferTax = senderIsOwner || targetIsOwner
+      ? calculateTax(0, PAY_TAX_BRACKETS)
+      : calculateTax(cantidad, PAY_TAX_BRACKETS)
+    const receivedAmount = senderIsOwner || targetIsOwner ? cantidad : transferTax.netAmount
+
+    targetData.bank = Number(targetData.bank || 0) + receivedAmount
 
     const name = formatUserName(db, targetInfo.key)
     const senderBalanceText = senderIsOwner
       ? `∞ ${monedas}`
       : formatMoney(senderData.bank, monedas)
+    const taxText = transferTax.taxAmount > 0
+      ? (
+          `┃ Impuesto: *${formatMoney(transferTax.taxAmount, monedas)}* (${formatTaxRate(transferTax.taxRate)})\n` +
+          `┃ Recibe: *${formatMoney(receivedAmount, monedas)}*\n`
+        )
+      : ''
 
     return client.sendMessage(chatId, {
       text:
-        `▣ ᴛʀᴀɴsғᴇʀᴇɴᴄɪᴀ ᴇxɪᴛᴏsᴀ\n` +
-        `▪ Destino: @${onlyNumber(targetInfo.key)}\n` +
-        `▪ Usuario: ${name}\n` +
-        `▪ Enviado: ${formatMoney(cantidad, monedas)}\n` +
-        `▪ Tu banco: ${senderBalanceText}`,
+        `╭━━〔 ✨ TRANSFERENCIA EXITOSA 〕━━⬣\n` +
+        `┃ 🎯 Destino: @${onlyNumber(targetInfo.key)}\n` +
+        `┃ 👤 Usuario: *${name}*\n` +
+        `┃ 💸 Enviado: *${formatMoney(cantidad, monedas)}*\n` +
+        taxText +
+        `┃ 🏦 Tu banco: *${senderBalanceText}*\n` +
+        `╰━━━━━━━━━━━━━━━━━━━━⬣`,
       mentions: [targetInfo.key, targetJid, targetReal].filter(Boolean)
     }, { quoted: m })
   }

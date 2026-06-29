@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>RubyJX Bot · Web Oficial</title>
+  <meta name="description" content="Página oficial de RubyJX Bot con comandos públicos, categorías, funciones y estilo cyber neon.">
+  <link rel="stylesheet" href="styles/site.css">
+</head>
+<body>
+  <div class="noise"></div>
+  <div class="scanline"></div>
+
+  <header class="site-header">
+    <a class="brand" href="#inicio" aria-label="RubyJX Bot inicio">
+      <img src="assets/bot-emblem.png" alt="" class="brand-mark">
+      <span>
+        <strong>RubyJX Bot</strong>
+        <small>WhatsApp Multi Device</small>
+      </span>
+    </a>
+    <nav class="nav">
+      <a href="#ecosistema">Ecosistema</a>
+      <a href="#comandos">Comandos</a>
+      <a href="#galeria">Neon Lab</a>
+      <a href="#guia">Guía</a>
+    </nav>
+  </header>
+
+  <main id="inicio">
+    <section class="hero">
+      <img src="assets/hero-neon.png" alt="" class="hero-bg">
+      <div class="hero-glow"></div>
+      <div class="wrap hero-grid">
+        <div class="hero-copy">
+          <p class="eyebrow">RubyJX.core · v3.0 · Verified</p>
+          <h1>RubyJX Bot</h1>
+          <p class="hero-subtitle">Un bot de WhatsApp con economía, gacha, moderación, stickers, descargas, IA, perfiles, subbots, reacciones y un sistema social lleno de vida.</p>
+          <div class="hero-actions">
+            <a class="btn primary" href="#comandos">Explorar comandos</a>
+            <a class="btn ghost" href="#ecosistema">Ver funciones</a>
+          </div>
+          <div class="hero-stats" id="heroStats">
+            <span><b>330+</b> comandos públicos</span>
+            <span><b>15</b> categorías</span>
+            <span><b>0</b> owner visibles</span>
+          </div>
+        </div>
+
+        <aside class="terminal-card" aria-label="Resumen del bot">
+          <div class="terminal-top">
+            <span></span><span></span><span></span>
+            <strong>rubyjx.status</strong>
+          </div>
+          <pre id="terminalText">booting RubyJX Bot...
+loading command matrix...
+owner commands: hidden
+public panel: ready</pre>
+        </aside>
+      </div>
+    </section>
+
+    <section class="wrap intro-strip" id="ecosistema">
+      <article>
+        <span class="chip">Diseño cyber neon</span>
+        <h2>Hecho para que tu comunidad se sienta viva.</h2>
+        <p>RubyJX Bot no es solo una lista de comandos: mezcla economía, juego social, administración, utilidades y contenido visual para que cada grupo tenga movimiento, personalidad y control.</p>
+      </article>
+      <article class="mini-orbit">
+        <img src="assets/bot-emblem.png" alt="">
+        <div>
+          <strong>Identidad RubyJX</strong>
+          <p>Inspirado en circuitos morados, terminales pixel y energía eléctrica estilo cyber.</p>
+        </div>
+      </article>
+    </section>
+
+    <section class="wrap feature-grid">
+      <article class="feature-card">
+        <span>💰</span>
+        <h3>Economía y progreso</h3>
+        <p>Banco, coins, recompensas, apuestas, cofres, rankings, granjas y acciones de riesgo para crear competencia sana dentro del grupo.</p>
+      </article>
+      <article class="feature-card">
+        <span>👥</span>
+        <h3>Moderación de grupos</h3>
+        <p>Administra seguridad, advertencias, silencios, filtros, antilinks, rachas, menciones, bienvenida y control de actividad.</p>
+      </article>
+      <article class="feature-card">
+        <span>🎴</span>
+        <h3>Gacha social</h3>
+        <p>Personajes, colección, tienda, favoritos, ventas, robos, trades y rankings para que el chat tenga objetivos constantes.</p>
+      </article>
+      <article class="feature-card">
+        <span>🛠️</span>
+        <h3>Herramientas útiles</h3>
+        <p>IA, traducción, cálculos, resúmenes, enlaces, capturas web, multimedia, comandos de texto y diagnóstico del sistema.</p>
+      </article>
+    </section>
+
+    <section class="showcase wrap" id="galeria">
+      <div class="section-head">
+        <span class="chip">Neon Lab</span>
+        <h2>Visuales originales para la web del bot.</h2>
+        <p>Las imágenes fueron creadas desde cero con referencias de estilo: circuitos violetas, brillo pixel, terminal oscuro y energía de bot futurista.</p>
+      </div>
+      <div class="gallery">
+        <img src="assets/hero-neon.png" alt="Banner cyber neon original de RubyJX Bot">
+        <img src="assets/command-dashboard.png" alt="Dashboard neon de comandos RubyJX Bot">
+        <img src="assets/bot-emblem.png" alt="Emblema cyber neon RubyJX Bot">
+      </div>
+    </section>
+
+    <section class="command-panel" id="comandos">
+      <div class="wrap">
+        <div class="section-head wide">
+          <span class="chip">Panel de comandos</span>
+          <h2>Todos los comandos públicos documentados por categoría.</h2>
+          <p>Se excluyen comandos de owner. Cada comando tiene descripción amigable, uso sugerido, aliases y consejo práctico. Usa el buscador para encontrar cualquier función del bot.</p>
+        </div>
+
+        <div class="filters">
+          <label class="search-box">
+            <span>Buscar</span>
+            <input id="searchInput" type="search" placeholder="Ejemplo: farm, racha, sticker, chatgpt, ban...">
+          </label>
+          <label>
+            <span>Categoría</span>
+            <select id="categorySelect"></select>
+          </label>
+          <label>
+            <span>Orden</span>
+            <select id="sortSelect">
+              <option value="name">Nombre A-Z</option>
+              <option value="category">Categoría</option>
+              <option value="aliases">Más aliases</option>
+            </select>
+          </label>
+        </div>
+
+        <div class="category-rail" id="categoryRail"></div>
+        <div class="result-line" id="resultLine"></div>
+        <div class="commands-grid" id="commandsGrid"></div>
+      </div>
+    </section>
+
+    <section class="wrap guide" id="guia">
+      <div class="section-head">
+        <span class="chip">Cómo se usa</span>
+        <h2>Una guía rápida para nuevos usuarios.</h2>
+      </div>
+      <div class="guide-grid">
+        <article>
+          <b>1</b>
+          <h3>Elige una categoría</h3>
+          <p>Empieza por economía, grupo, stickers o utilidades. Cada categoría tiene su propio estilo y objetivo dentro del bot.</p>
+        </article>
+        <article>
+          <b>2</b>
+          <h3>Usa el prefijo</h3>
+          <p>Los ejemplos usan punto por defecto, como <code>.menu</code>, <code>.balance</code> o <code>.racha</code>. Si tu bot tiene otro prefijo, usa ese.</p>
+        </article>
+        <article>
+          <b>3</b>
+          <h3>Lee la respuesta</h3>
+          <p>RubyJX Bot suele indicar errores, requisitos, cooldowns, permisos o próximos pasos en el mismo mensaje.</p>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="wrap footer-grid">
+      <div>
+        <strong>RubyJX Bot</strong>
+        <p>Web pública de comandos. Los comandos de owner fueron omitidos a propósito.</p>
+      </div>
+      <a class="btn ghost" href="#inicio">Volver arriba</a>
+    </div>
+  </footer>
+
+  <script src="assets/commands-data.js"></script>
+  <script src="scripts/site.js"></script>
+</body>
+</html>
